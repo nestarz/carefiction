@@ -1,0 +1,169 @@
+@font-face {
+  font-family: "terminal-grotesque-webfont";
+  src: url("./assets/fonts/terminal-grotesque-webfont.woff") format("woff");
+}
+
+@font-face {
+  font-family: "Minipax";
+  src: url("./assets/fonts/Minipax-Medium.woff") format("woff");
+}
+
+* {
+  box-sizing: content-box;
+}
+
+html {
+  font-family: "Minipax";
+  font-size: 10px;
+}
+
+body {
+  margin: 0;
+}
+
+body > div {
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  grid-gap: 5rem 1rem;
+  margin: 4rem 5%;
+}
+
+a {
+  font-size: 2rem;
+  color: black;
+  grid-column: span 4;
+  justify-self: center;
+}
+
+a:nth-of-type(4) {
+  grid-column: span 7;
+}
+
+h1,
+h2 {
+  font-family: "terminal-grotesque-webfont";
+  margin: 0;
+  font-weight: 300;
+  text-transform: uppercase;
+}
+
+h1 {
+  display: grid;
+  font-size: 6rem;
+  line-height: 5rem;
+  grid-column: span 7;
+}
+
+.svg,
+svg,
+img,
+.image {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  grid-column: 4 / 10;
+}
+
+.svg {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+path {
+  fill: transparent;
+  stroke: black;
+}
+
+.image {
+  min-height: 32vw;
+  border: 1px solid black;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  font-size: 6rem;
+  line-height: 0;
+}
+
+.image.locked {
+  border: none;
+}
+
+h2 {
+  font-size: 4rem;
+  text-align: center;
+  grid-column: 7 / -1;
+}
+
+time {
+  margin: 0;
+  font-size: 3rem;
+  grid-column: 9 / 12;
+}
+
+p {
+  margin: 0;
+  white-space: pre-wrap;
+  font-size: 3rem;
+  line-height: 1.5;
+  grid-column: 3 / 11;
+}
+
+.editable + .editable {
+  padding-left: 1rem;
+}
+
+.blank span,
+li {
+  font-family: "andale mono", times, serif;
+  font-size: 1.5rem;
+  margin: 0;
+  padding: 0;
+  border: none;
+  background: transparent;
+  color: inherit;
+  padding: 1rem 2rem;
+}
+
+.blank::before {
+  content: "\00a0\00a0(";
+}
+
+.blank::after {
+  content: ")\00a0\00a0";
+}
+
+li {
+  list-style: none;
+  grid-column: span 4;
+  justify-self: center;
+}
+
+li:nth-of-type(4) {
+  grid-column: span 7;
+}
+
+.controls {
+  display: grid;
+  grid-gap: 0.5rem;
+  justify-items: baseline;
+}
+
+button {
+  border: 1px solid black;
+  border-radius: 0;
+  color: black;
+  margin: 1px;
+  background: none;
+}
+
+button:disabled {
+  color: rgb(212, 212, 212);
+  border-color: rgb(212, 212, 212);
+}
+
+body > div > .controls {
+  grid-column: 1 / 13;
+  justify-items: center;
+}

@@ -1,0 +1,9 @@
+{
+  "imports": {
+    "../prev/App copy.jsx": "../build/prev/App copy.js",
+    "../prev/App.jsx": "../build/prev/App.js",
+    "../src/App.jsx": "../build/src/App.js",
+    "../src/utils/Dessin.jsx": "../build/src/utils/Dessin.js",
+    "../src/utils/Edtiable.jsx": "../build/src/utils/Edtiable.js"
+  }
+}
