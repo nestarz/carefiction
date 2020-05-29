@@ -1,5 +1,6 @@
 {
   "imports": {
+    "../prev/App copy 2.jsx": "../build/prev/App copy 2.js",
     "../prev/App copy.jsx": "../build/prev/App copy.js",
     "../prev/App.jsx": "../build/prev/App.js",
     "../src/App.jsx": "../build/src/App.js",

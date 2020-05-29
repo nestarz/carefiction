@@ -1,33 +1,37 @@
-export const insert = (text, letter, index) => `${text.slice(0, index)}${letter}${text.slice(index)}`;
-export const remove = (text, index) => `${text.slice(0, index)}${text.slice(index + 1)}`;
-const Editable = ({current, init, set, onValid}) => {
+import React, {useState, useEffect, useRef} from "react";
+const setCaretNode = (node, index) => {
+  if (node.lastChild)
+    window.getSelection().collapse(node.lastChild, index > 0 ? index : node.lastChild.textContent.length + index + 1);
+};
+export default ({current = "", placeholder, setCurrent, className}) => {
   const ref = useRef();
-  const [caret, setCaret] = useState(0);
+  const [focus, setFocus] = useState(false);
   useEffect(() => {
-    ref.current.textContent = current ?? init;
-    setCaretNode(ref.current, caret);
-  }, [current, init]);
-  useEffect(() => onValid(![init, ""].includes(current)), [init, current]);
+    ref.current.innerText = placeholder;
+  }, [placeholder]);
+  useEffect(() => {
+    if (focus)
+      setCaretNode(ref.current, -1);
+    if (focus && ref.current.innerText === placeholder)
+      ref.current.innerText = "";
+    else if (!focus && ref.current.innerText === "")
+      ref.current.innerText = placeholder;
+  }, [focus, placeholder]);
+  useEffect(() => {
+    if (!focus && current && current != placeholder)
+      ref.current.innerText = current;
+  }, [current, focus, placeholder]);
   return React.createElement("span", {
+    className,
     ref,
     contentEditable: true,
-    onKeyPress: (e) => {
-      if (e.key.length === 1) {
-        const caret2 = window.getSelection().anchorOffset;
-        set(insert(current, e.key, caret2));
-        setCaret(caret2 + 1);
-      }
-      e.preventDefault();
+    onKeyUp: () => {
+      if (!["", placeholder].includes(ref.current.innerText))
+        setCurrent(ref.current.innerText);
+      else
+        setCurrent(null);
     },
-    onKeyDown: ({keyCode, target: {textContent: t}}) => {
-      if (keyCode === 8) {
-        const caret2 = window.getSelection().anchorOffset;
-        set(remove(current, caret2));
-        setCaret(caret2 - 1);
-      } else if (t === init) {
-        set("");
-      }
-    },
-    onBlur: ({target: {textContent: t}}) => t === "" && set(init)
+    onBlur: () => setFocus(false),
+    onFocus: () => setFocus(true)
   });
 };

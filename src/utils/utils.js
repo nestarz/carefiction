@@ -1,13 +1,3 @@
-export const setCaretNode = (node, index) => {
-  if (node.lastChild)
-    window
-      .getSelection()
-      .collapse(
-        node.lastChild,
-        index > 0 ? index : node.lastChild.textContent.length + index + 1
-      );
-};
-
 export const classs = (...args) =>
   args
     .flatMap((object) =>

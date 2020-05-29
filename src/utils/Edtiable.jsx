@@ -1,41 +1,45 @@
+import React, { useState, useEffect, useRef } from "react";
 
-export const insert = (text, letter, index) =>
-`${text.slice(0, index)}${letter}${text.slice(index)}`;
+const setCaretNode = (node, index) => {
+  if (node.lastChild)
+    window
+      .getSelection()
+      .collapse(
+        node.lastChild,
+        index > 0 ? index : node.lastChild.textContent.length + index + 1
+      );
+};
 
-export const remove = (text, index) =>
-`${text.slice(0, index)}${text.slice(index + 1)}`;
-
-const Editable = ({ current, init, set, onValid }) => {
-    const ref = useRef();
-    const [caret, setCaret] = useState(0);
-    useEffect(() => {
-      ref.current.textContent = current ?? init;
-      setCaretNode(ref.current, caret);
-    }, [current, init]);
-    useEffect(() => onValid(![init, ""].includes(current)), [init, current]);
-    return (
-      <span
-        ref={ref}
-        contentEditable={true}
-        onKeyPress={(e) => {
-          if (e.key.length === 1) {
-            const caret = window.getSelection().anchorOffset;
-            set(insert(current, e.key, caret));
-            setCaret(caret + 1);
-          }
-          e.preventDefault();
-        }}
-        onKeyDown={({ keyCode, target: { textContent: t } }) => {
-          if (keyCode === 8) {
-            const caret = window.getSelection().anchorOffset;
-            set(remove(current, caret));
-            setCaret(caret - 1);
-          } else if (t === init) {
-            set("");
-          }
-        }}
-        onBlur={({ target: { textContent: t } }) => t === "" && set(init)}
-      ></span>
-    );
-  };
-  
+export default ({ current = "", placeholder, setCurrent, className }) => {
+  const ref = useRef();
+  const [focus, setFocus] = useState(false);
+  useEffect(() => {
+    ref.current.innerText = placeholder;
+  }, [placeholder]);
+  useEffect(() => {
+    if (focus) setCaretNode(ref.current, -1);
+    if (focus && ref.current.innerText === placeholder)
+      ref.current.innerText = "";
+    else if (!focus && ref.current.innerText === "")
+      ref.current.innerText = placeholder;
+  }, [focus, placeholder]);
+  useEffect(() => {
+    if (!focus && current && current != placeholder)
+      ref.current.innerText = current;
+  }, [current, focus, placeholder]);
+  return (
+    <span
+      className={className}
+      ref={ref}
+      contentEditable={true}
+      // onKeyDown={(e) => e.keyCode === 13 && e.preventDefault()}
+      onKeyUp={() => {
+        if (!["", placeholder].includes(ref.current.innerText))
+          setCurrent(ref.current.innerText);
+        else setCurrent(null);
+      }}
+      onBlur={() => setFocus(false)}
+      onFocus={() => setFocus(true)}
+    ></span>
+  );
+};

@@ -1,266 +1,391 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useMemo, useRef } from "react";
 import { Link, Route, Router } from "wouter";
 
+import Editable from "./utils/Edtiable.jsx";
 import Dessin from "./utils/Dessin.jsx";
-import { classs, setCaretNode, formatDate, toBase64 } from "./utils/utils.js";
 
-const gun = window.Gun({ peers: ["http://127.0.0.1:8765/gun"] }).get(12);
+import { useGunSetState, useGunState } from "./utils/gun-hooks.js";
+import { classs, formatDate, toBase64 } from "./utils/utils.js";
+
 const session = new Date().toISOString();
+const gun = window.Gun({ peers: ["http://127.0.0.1:8765/gun"] }).get(100 * 1);
 
-export const useGunState = (node, initialState = undefined) => {
-  const [graph] = useState(node);
-  const [value, setValue] = useState(initialState);
+const Blank = ({ node, lock, remove }) => {
+  const [placeholder, setPlaceholder] = useGunState(node.get("placeholder"));
+  const [current, setCurrent] = useGunState(node.get(session).get("current"));
+  const [_, setValue] = useGunState(node.get("values").get(session));
   useEffect(() => {
-    const listener = graph.on((value) => setValue(value));
-    return () => listener.off();
-  }, [node]);
-  return value;
-};
-
-export const useGunSetState = (node) => {
-  const [set, setSet] = useState([]);
-  const add = (id) => (prev) => [...prev, id];
-  const remove = (id) => (p) => p.filter((i) => i !== id.split("/").pop());
-  const register = (_, id) => (_ ? setSet(add(id)) : setSet(remove(id)));
-  useEffect(() => {
-    const listener = node.map().once(register);
-    return () => listener.off();
-  }, [node]);
-  return set;
-};
-
-const Editable = ({ current = "", placeholder, setCurrent }) => {
-  const ref = useRef();
-  const [focus, setFocus] = useState(false);
-  useEffect(() => {
-    ref.current.innerText = placeholder;
-  }, []);
-  useEffect(() => {
-    if (focus) setCaretNode(ref.current, -1);
-    if (focus && ref.current.innerText === placeholder)
-      ref.current.innerText = "";
-    else if (!focus && ref.current.innerText === "")
-      ref.current.innerText = placeholder;
-  }, [focus]);
-  useEffect(() => {
-    if (!focus && current && current != placeholder)
-      ref.current.innerText = current;
-  }, [current, focus]);
+    if (current)
+      setValue({ createdAt: new Date().toISOString(), value: current });
+  }, [current]);
   return (
-    <span
-      ref={ref}
-      contentEditable={true}
-      // onKeyDown={(e) => e.keyCode === 13 && e.preventDefault()}
-      onKeyUp={() => {
-        if (!["", placeholder].includes(ref.current.innerText))
-          setCurrent(ref.current.innerText);
-        else setCurrent(null);
-      }}
-      onBlur={() => setFocus(false)}
-      onFocus={() => setFocus(true)}
-    ></span>
-  );
-};
-
-const Gap = ({ node, onValid, onRemove, locked }) => {
-  const type = useGunState(node.get("type"));
-  const id = type === "blank" ? session : "text";
-  const current = useGunState(node.get("current").get(id));
-  const placeholder = useGunState(node.get("placeholder"), "");
-  const setCurrent = (value) => {
-    node.get("current").get(id).put(value);
-    type === "blank" && node.get("values").get(session).put(value);
-  };
-  const editable = (locked && type === "blank") || (!locked && type === "text");
-  useEffect(() => onValid(!editable || current), [current, editable]);
-
-  return (
-    <>
-      <span className={classs({ editable }, type)}>
-        {editable ? (
+    <span className="blank">
+      {lock ? (
+        <Editable
+          current={current}
+          placeholder={placeholder}
+          setCurrent={setCurrent}
+        />
+      ) : (
+        <>
           <Editable
-            onValid={onValid}
-            setCurrent={setCurrent}
-            current={current}
-            placeholder={placeholder}
+            current={placeholder}
+            placeholder={"write something here"}
+            setCurrent={setPlaceholder}
           />
-        ) : (
-          <span>{current ?? placeholder}</span>
-        )}
-        {!locked && (
-          <button onClick={() => onValid(true) || onRemove(node)}>-</button>
-        )}
-      </span>
-    </>
+          <button onClick={remove}>Remove The Blank</button>
+        </>
+      )}
+    </span>
   );
 };
 
-const GapValue = ({ node }) => {
-  const value = useGunState(node);
-  return <li>{value}</li>;
-};
-
-const GapValues = ({ node }) => {
-  const values = useGunSetState(node.get("values"));
-
-  return (
+const Sentence = ({ node, lock, remove, onValid }) => {
+  const [placeholder] = useGunState(node.get("placeholder"));
+  const [current, setCurrent] = useGunState(node.get("current"));
+  const [bold, setBold] = useGunState(node.get("bold"));
+  useEffect(() => onValid(current !== placeholder && current), [current]);
+  return lock ? (
+    <span className={classs({ bold })}>{current}</span>
+  ) : (
     <>
-      {values.map((id) => (
-        <GapValue node={node.get("values").get(id)} />
-      ))}
+      <Editable
+        className={classs({ bold })}
+        current={current}
+        placeholder={placeholder}
+        setCurrent={setCurrent}
+      />
+      <button onClick={() => setBold(!bold)}>{`${
+        bold ? "Remove" : "Add"
+      } Emphasis`}</button>
+      <button onClick={remove}>Remove The Text</button>
     </>
   );
 };
 
-const Paragraph = ({ node }) => {
-  const gaps = useGunSetState(node.get("gaps"));
-  const locked = useGunState(node.get("locked"), true);
+const isType = (t) => ({ data: { type } }) => type === t;
+const byCreateAt = ({ data: { createdAt: a } }, { data: { createdAt: b } }) =>
+  +Date.parse(a) > +Date.parse(b);
+
+const Paragraph = ({ node, remove }) => {
+  const [gaps, setGaps] = useGunSetState(node.get("gaps"));
+  const [values] = useGunSetState(node.get("gaps").map().get("values"));
+  const [lock, setLock] = useGunState(node.get("lock"));
   const [valid, setValid] = useState(true);
-  const lock = () => node.get("locked").put(true);
-  const getGapFromId = (id) => node.get("gaps").get(id);
-  const removeGap = (child) => node.get("gaps").unset(child);
-  const createGap = () =>
-    node.get("gaps").set({
-      type: gaps.length % 2 ? "blank" : "text",
-      placeholder:
-        gaps.length % 2 ? "write something here" : "Continue the story...",
-    });
+  useEffect(() => setValid((prev) => gaps.length === 0 || prev), [gaps]);
+  const blanks = useMemo(() => gaps.filter(isType("blank")).length);
+  const texts = useMemo(() => gaps.filter(isType("text")).length);
+
+  const add = (type, placeholder) =>
+    setGaps({ createdAt: new Date().toISOString(), type, placeholder });
+  const addText = () => add("text", "Continue the story...");
+  const addBlank = () => add("blank", "write something here...");
 
   return (
     <>
       <p>
-        {gaps.map((id) => (
-          <Gap
-            key={id}
-            locked={locked}
-            node={getGapFromId(id)}
-            onValid={setValid}
-            onRemove={removeGap}
-          />
-        ))}
-        {!locked && (
-          <div className="controls">
-            <button disabled={!(valid && gaps.length < 3)} onClick={createGap}>
-              Add a Gap
+        {gaps
+          .sort(byCreateAt)
+          .map(({ data, ...props }) =>
+            data.type === "text" ? (
+              <Sentence {...props} lock={lock} onValid={setValid} />
+            ) : (
+              <Blank {...props} lock={lock} />
+            )
+          )}
+        {!lock && (
+          <>
+            <button disabled={!(texts < 2)} onClick={addText}>
+              Add A Text
             </button>
-            <button disabled={!(valid && gaps.length > 1)} onClick={lock}>
-              Lock
+            <button disabled={!(blanks < 1)} onClick={addBlank}>
+              Add A Blank
             </button>
-          </div>
+          </>
         )}
       </p>
-      {gaps.map((id) => (
-        <GapValues node={getGapFromId(id)} id={id} />
+      {values
+        .sort(byCreateAt)
+        .map(({ data: { value } }) => value && <li>{value}</li>)}
+      <Dessins node={node} lock={lock} />
+      {!lock && (
+        <>
+          <button
+            disabled={!(valid && gaps.length !== 0)}
+            onClick={() => setLock(true)}
+          >
+            Lock The Paragraph
+          </button>
+          <button onClick={remove}>Remove The Paragraph</button>
+        </>
+      )}
+    </>
+  );
+};
+
+const Dessins = ({ node, lock }) => {
+  const [dessins, setDessins] = useGunSetState(node.get("dessins2"));
+  const add = () => setDessins({ createdAt: new Date().toISOString() });
+  return (
+    <>
+      {dessins.sort(byCreateAt).map(({ key, node, remove }) => (
+        <Dessin key={key} node={node} remove={remove} />
       ))}
-      {/* <Dessin node={node} /> */}
+      {!lock && dessins.length === 0 && (
+        <button onClick={add}>Add A Drawing</button>
+      )}
+    </>
+  );
+};
+
+const Paragraphs = ({ node }) => {
+  const [paragraphs, setParagraphs] = useGunSetState(node.get("paragraphs4"));
+  const add = () => setParagraphs({ createdAt: new Date().toISOString() });
+  return (
+    <>
+      {paragraphs.sort(byCreateAt).map(({ key, node, remove }) => (
+        <Paragraph key={key} node={node} remove={remove} />
+      ))}
+      <button onClick={add}>Add A Paragraph</button>
     </>
   );
 };
 
 const Text = ({ node, placeholder = "Write something here..." }) => {
-  const title = useGunState(node.get("current"));
-  const locked = useGunState(node.get("locked"));
+  const [title, setTitle] = useGunState(node.get("current"));
+  const [lock, setLock] = useGunState(node.get("locked"));
 
-  return !locked ? (
+  return !lock ? (
     <span>
       <Editable
         current={title}
         placeholder={placeholder}
-        setCurrent={(value) => node.get("current").put(value)}
+        setCurrent={setTitle}
       />
-      <button onClick={() => node.get("locked").put(true)}>Lock</button>
+      <button onClick={() => setLock(true)}>Lock</button>
     </span>
   ) : (
     <span>{title}</span>
   );
 };
 
-const Page = ({ node }) => {
-  const createdAt = useGunState(node.get("createdAt"));
-  const image = useGunState(node.get("image").get("src"));
-  const lockedImage = useGunState(node.get("image").get("locked"));
-  const paragraphs = useGunSetState(node.get("paragraphs"));
-  const create = () =>
-    node.get("paragraphs").set({
-      createdAt: new Date().toISOString(),
-      locked: false,
-    });
-
-  const addImage = async (file) => {
-    const maxSizeKo = 300;
+const Image = ({ node, maxSizeKo = 0 }) => {
+  const [src, setSrc] = useGunState(node.get("src"));
+  const [lock, setLock] = useGunState(node.get("lock"));
+  const add = async (event) => {
+    const file = event.target.files[0];
     const sizeKo = parseInt(file.size / 1000);
     if (sizeKo > maxSizeKo)
       alert(`Image too big (${sizeKo} ko > ${maxSizeKo} ko)`);
-    else node.get("image").put({ src: await toBase64(file) });
+    else setSrc(await toBase64(file));
   };
 
+  return (
+    <div className={classs({ lock, empty: !src }, "image")}>
+      {src ? (
+        <>
+          <img src={src} />
+          {!lock && (
+            <>
+              <button onClick={() => setSrc(null)}>Remove</button>
+              <button onClick={() => setLock(true)}>Lock</button>
+            </>
+          )}
+        </>
+      ) : (
+        <input onChange={add} type="file" accept="image/*"></input>
+      )}
+    </div>
+  );
+};
+
+const Page = ({ id, node }) => {
+  const [createdAt] = useGunState(node.get("createdAt"));
   return (
     <>
       <h1>
         <span>Care Fiction:</span>
         <Text node={node.get("title")} placeholder={"Enter A Title"} />
       </h1>
-      {image ? (
-        <div className={classs({ locked: lockedImage }, "image")}>
-          <img src={image} />
-          {!lockedImage && (
-            <>
-              <button onClick={() => node.get("image").get("src").put(null)}>
-                Remove
-              </button>
-              <button onClick={() => node.get("image").get("locked").put(true)}>
-                Lock
-              </button>
-            </>
-          )}
-        </div>
-      ) : (
-        <div className="image">
-          <input
-            onChange={(e) => addImage(e.target.files[0])}
-            type="file"
-            accept="image/*"
-          ></input>
-        </div>
-      )}
+      <ol start="0">
+        <li>
+          <Link href="/about/">Intro</Link>
+        </li>
+        <li className="active">
+          <a href="#">First visit</a>
+        </li>
+        <li>
+          <Link href={`/context/${id}`}>Context</Link>
+        </li>
+      </ol>
+      <Image maxSizeKo={300} node={node.get("image")} />
       <h2>
         <Text node={node.get("subtitle")} placeholder={"Enter A Subtitle"} />
       </h2>
       <time datetime={createdAt}>{formatDate(createdAt)}</time>
-      {paragraphs.map((id) => (
-        <Paragraph key={id} node={node.get("paragraphs").get(id)} />
-      ))}
-      <div className="controls">
-        <button onClick={create}>Add A Thought</button>
-      </div>
+      <Paragraphs node={node} />
     </>
   );
 };
 
-const GunLink = ({ id, node }) => {
-  return (
-    <Link href={`/fiction/${id}`}>
-      <a>{id}</a>
-    </Link>
-  );
-};
-
 const Pages = () => {
-  const pages = useGunSetState(gun.get("pages"));
-
-  const create = () =>
-    gun.get("pages").set({
-      createdAt: new Date().toISOString(),
-    });
+  const [pages, setPages] = useGunSetState(gun.get("pages-2"));
+  const add = () => setPages({ createdAt: new Date().toISOString() });
+  console.log(pages);
 
   return (
     <>
-      <div className="controls">
-        <button onClick={create}>Add A New Fiction</button>
-      </div>
-      {pages.map((id) => (
-        <GunLink key={id} id={id} node={gun.get("pages").get(id)} />
+      <button onClick={add}>Add A New Fiction</button>
+      {pages.sort(byCreateAt).map(({ key }) => (
+        <Link href={`/fiction/${key}`}>
+          <a>{key}</a>
+        </Link>
       ))}
+    </>
+  );
+};
+
+const About = () => {
+  return (
+    <>
+      <h1>
+        <span>CARE FICTION:</span>
+        <span>A PLAYGROUND FOR COMMONERS</span>
+      </h1>
+      <h2>Welcome!</h2>
+      <p>
+        <i>Care Fiction</i> is the prototype of a playground for collaborative
+        dreaming, envisioning, conceiving, projecting. It all starts with a
+        targeted resource, or commons. We invite our guests to react to an
+        existing value, by pouring their ideas, resources, scenarios, inside the
+        container.
+      </p>
+      <p>
+        Our generative fiction tool will combine all contributions and produce
+        an ever changing story. The more we all add, the more the story becomes
+        richer, and selected. May the dream breach through the screen and become
+        real.
+      </p>
+    </>
+  );
+};
+
+const getIframeSrc = (src) =>
+  src
+    .replace(
+      /(?:http[s]?:\/\/)?(?:www\.)?(?:youtube\.com|youtu\.be)\/(?:watch\?v=)?(.+)/g,
+      "http://www.youtube-nocookie.com/embed/$1?&loop=1&autopause=0"
+    )
+    .replace(
+      /(?:http[s]?:\/\/(?:www.)?vimeo\.com)\/(.+)/g,
+      "//player.vimeo.com/video/$1?&loop=1&autopause=0"
+    );
+
+const Video = ({ node }) => {
+  const [src, setSrc] = useGunState(node.get("src"));
+  const [lock, setLock] = useGunState(node.get("lock"));
+  const input = useRef();
+  const submit = () => {
+    const incSrc = input.current.value;
+    if (getIframeSrc(incSrc) != incSrc) setSrc(incSrc);
+    else alert("wrong video link (youtube/vimeo)");
+  };
+
+  return src ? (
+    <div className="video">
+      <iframe src={getIframeSrc(src)}></iframe>
+      {!lock && (
+        <>
+          <button onClick={() => setSrc(null)}>Remove Link to Video</button>
+          <button onClick={() => setLock(!lock)}>Lock</button>
+        </>
+      )}
+    </div>
+  ) : (
+    <div className="video">
+      <input
+        ref={input}
+        type="text"
+        placeholder="Add Vimeo/Youtube Link"
+      ></input>
+      <button onClick={submit}>Submit</button>
+    </div>
+  );
+};
+
+const ContextParagraph = ({ node, remove }) => {
+  const [lock, setLock] = useGunState(node.get("lock"));
+  const [withImage, setWithImage] = useGunState(node.get("withImage"), false);
+  const [withVideo, setWithVideo] = useGunState(node.get("withVideo"), false);
+  const [valid, setValid] = useState(false);
+
+  return (
+    <>
+      <p className="context">
+        <Sentence node={node} onValid={setValid} lock={lock} />
+      </p>
+      {!lock && (
+        <>
+          <button disabled={!valid} onClick={() => setLock(true)}>
+            Lock The Paragraph
+          </button>
+          <button onClick={remove}>Remove The Paragraph</button>
+          {!withVideo && (
+            <button onClick={() => setWithImage(!withImage)}>
+              {withImage ? "Remove" : "Add"} Image
+            </button>
+          )}
+          {!withImage && (
+            <button onClick={() => setWithVideo(!withVideo)}>
+              {withVideo ? "Remove" : "Add"} Video
+            </button>
+          )}
+        </>
+      )}
+      {withVideo && <Video node={node.get("video")} />}
+      {withImage && <Image maxSizeKo={500} node={node.get("image")} />}
+    </>
+  );
+};
+
+const ContextParagraphs = ({ node }) => {
+  const [texts, setTexts] = useGunSetState(node.get("context").get("texts"));
+  const add = () =>
+    setTexts({
+      createdAt: new Date().toISOString(),
+      placeholder: "Write a text",
+    });
+  return (
+    <>
+      {texts.map(({ ...props }) => (
+        <ContextParagraph {...props} />
+      ))}
+      <button onClick={add}>Add A New Paragraph</button>
+    </>
+  );
+};
+
+const Context = ({ id, node }) => {
+  return (
+    <>
+      <h1>
+        <span>Care Fiction:</span>
+        <Text node={node.get("title")} placeholder={"Enter A Title"} />
+      </h1>
+      <ol start="0">
+        <li>
+          <Link href="/about/">Intro</Link>
+        </li>
+        <li className="active">
+          <Link href={`/fiction/${id}`}>First Visit</Link>
+        </li>
+        <li>
+          <Link href={`/context/${id}`}>Context</Link>
+        </li>
+      </ol>
+      <Image maxSizeKo={300} node={node.get("image")} />
+      <h2>CO-WRITE THE STORY!</h2>
+      <ContextParagraphs node={node} />
     </>
   );
 };
@@ -269,9 +394,12 @@ export default () => {
   return (
     <Router basepath={location.pathname}>
       <Route path="/" component={Pages} />
-      <Route path="/about">About Us</Route>
-      <Route path="/fiction/:id">
-        {({ id }) => <Page node={gun.get("pages").get(id)} />}
+      <Route path="/about" component={About}></Route>
+      <Route path="/fiction/:key">
+        {({ key }) => <Page id={key} node={gun.get("pages").get(key)} />}
+      </Route>
+      <Route path="/context/:key">
+        {({ key }) => <Context id={key} node={gun.get("pages").get(key)} />}
       </Route>
     </Router>
   );
