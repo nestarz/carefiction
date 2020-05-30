@@ -10,7 +10,7 @@ import { classs, formatDate, toBase64 } from "./utils/utils.js";
 const session = new Date().toISOString();
 
 const gun = window
-  .Gun({ peers: ["https://gun.eliasrhouzlane.com/gun"] })
+  .Gun({ peers: ["https://gun.eliasrhouzlane.com/gun", "http://carefiction-gun.herokuapp.com/gun"] })
   .get(100 * 1);
 
 const Blank = ({ node, lock, remove }) => {
