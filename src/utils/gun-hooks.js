@@ -22,7 +22,7 @@ export const useGunSetState = (node) => {
   };
   useEffect(() => {
     const listener = node.map().on(register);
-    return () => listener.off();
+    // return () => listener.off();
   }, [node]);
   return [
     set,
