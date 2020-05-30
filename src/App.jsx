@@ -12,7 +12,6 @@ const session = new Date().toISOString();
 const gun = window
   .Gun({
     peers: [
-      "http://gunjs.herokuapp.com/gun",
       "https://gun.eliasrhouzlane.com/gun",
       "http://carefiction-gun.herokuapp.com/gun",
     ],
