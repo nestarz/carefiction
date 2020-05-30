@@ -7,7 +7,7 @@ import {classs, formatDate, toBase64} from "./../../src/utils/utils.js";
 const session = new Date().toISOString();
 const gun = window.Gun({
   peers: ["https://gun.eliasrhouzlane.com/gun", "http://carefiction-gun.herokuapp.com/gun"]
-}).get("alpha-0");
+}).get("alpha-1");
 const Blank = ({node, lock, remove}) => {
   const [placeholder, setPlaceholder] = useGunState(node.get("placeholder"));
   const [current, setCurrent] = useGunState(node.get(session).get("current"));

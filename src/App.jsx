@@ -16,7 +16,7 @@ const gun = window
       "http://carefiction-gun.herokuapp.com/gun",
     ],
   })
-  .get("alpha-0");
+  .get("alpha-1");
 
 const Blank = ({ node, lock, remove }) => {
   const [placeholder, setPlaceholder] = useGunState(node.get("placeholder"));
