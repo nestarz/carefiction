@@ -9,7 +9,9 @@ import { classs, formatDate, toBase64 } from "./utils/utils.js";
 
 const session = new Date().toISOString();
 
-const gun = (window.Gun({ peers: ["http://127.0.0.1:8765/gun"] }).get(100 * 1));
+const gun = window
+  .Gun({ peers: ["https://gun.eliasrhouzlane.com/gun"] })
+  .get(100 * 1);
 
 const Blank = ({ node, lock, remove }) => {
   const [placeholder, setPlaceholder] = useGunState(node.get("placeholder"));
