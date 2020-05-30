@@ -24,7 +24,14 @@ export const useGunSetState = (node) => {
     const listener = node.map().on(register);
     return () => listener.off();
   }, [node]);
-  return [set, (value) => node.set(value)];
+  return [
+    set,
+    (value) => {
+      console.log(value);
+      console.log(node);
+      node.set(value);
+    },
+  ];
 };
 
 export const useGunState = (node, initialState = undefined) => {

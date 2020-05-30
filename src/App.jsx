@@ -242,10 +242,11 @@ const Page = ({ id, node }) => {
 };
 
 const Pages = () => {
-  const [pages, setPages] = useGunSetState(gun.get("pages-2"));
+  const [pages, setPages] = useGunSetState(gun.get("pages"));
   const add = () =>
     setPages({ createdAt: new Date().toISOString(), lock: false });
 
+  console.log(pages);
   return (
     <>
       <button onClick={add}>Add A New Fiction</button>
