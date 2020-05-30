@@ -60,13 +60,14 @@ const byCreateAt = ({data: {createdAt: a}}, {data: {createdAt: b}}) => +Date.par
 const Paragraph = ({node, remove}) => {
   const [gaps, setGaps] = useGunSetState(node.get("gaps"));
   const [values] = useGunSetState(node.get("gaps").map().get("values"));
-  const [lock, setLock] = useGunState(node.get("lock"));
+  const [lock, setLock] = useGunState(node.get("lock"), true);
   const [valid, setValid] = useState(true);
   useEffect(() => setValid((prev) => gaps.length === 0 || prev), [gaps]);
   const blanks = useMemo(() => gaps.filter(isType("blank")).length);
   const texts = useMemo(() => gaps.filter(isType("text")).length);
   const add = (type, placeholder) => setGaps({
     createdAt: new Date().toISOString(),
+    locked: false,
     type,
     placeholder
   });
@@ -111,7 +112,8 @@ const Dessins = ({node, lock}) => {
 const Paragraphs = ({node}) => {
   const [paragraphs, setParagraphs] = useGunSetState(node.get("paragraphs4"));
   const add = () => setParagraphs({
-    createdAt: new Date().toISOString()
+    createdAt: new Date().toISOString(),
+    lock: false
   });
   return React.createElement(React.Fragment, null, paragraphs.sort(byCreateAt).map(({key, node: node2, remove}) => React.createElement(Paragraph, {
     key,
@@ -123,7 +125,7 @@ const Paragraphs = ({node}) => {
 };
 const Text = ({node, placeholder = "Write something here..."}) => {
   const [title, setTitle] = useGunState(node.get("current"));
-  const [lock, setLock] = useGunState(node.get("locked"));
+  const [lock, setLock] = useGunState(node.get("lock"), true);
   return !lock ? React.createElement("span", null, React.createElement(Editable, {
     current: title,
     placeholder,
@@ -134,7 +136,7 @@ const Text = ({node, placeholder = "Write something here..."}) => {
 };
 const Image = ({node, maxSizeKo = 0}) => {
   const [src, setSrc] = useGunState(node.get("src"));
-  const [lock, setLock] = useGunState(node.get("lock"));
+  const [lock, setLock] = useGunState(node.get("lock"), true);
   const add = async (event) => {
     const file = event.target.files[0];
     const sizeKo = parseInt(file.size / 1000);
@@ -178,10 +180,7 @@ const Page = ({id, node}) => {
   }, "Context"))), React.createElement(Image, {
     maxSizeKo: 300,
     node: node.get("image")
-  }), React.createElement("h2", null, React.createElement(Text, {
-    node: node.get("subtitle"),
-    placeholder: "Enter A Subtitle"
-  })), React.createElement("time", {
+  }), React.createElement("h2", null), React.createElement("time", {
     datetime: createdAt
   }, formatDate(createdAt)), React.createElement(Paragraphs, {
     node
@@ -190,9 +189,9 @@ const Page = ({id, node}) => {
 const Pages = () => {
   const [pages, setPages] = useGunSetState(gun.get("pages-2"));
   const add = () => setPages({
-    createdAt: new Date().toISOString()
+    createdAt: new Date().toISOString(),
+    lock: false
   });
-  console.log(pages);
   return React.createElement(React.Fragment, null, React.createElement("button", {
     onClick: add
   }, "Add A New Fiction"), pages.sort(byCreateAt).map(({key}) => React.createElement(Link, {
@@ -205,7 +204,7 @@ const About = () => {
 const getIframeSrc = (src) => src.replace(/(?:http[s]?:\/\/)?(?:www\.)?(?:youtube\.com|youtu\.be)\/(?:watch\?v=)?(.+)/g, "http://www.youtube-nocookie.com/embed/$1?&loop=1&autopause=0").replace(/(?:http[s]?:\/\/(?:www.)?vimeo\.com)\/(.+)/g, "//player.vimeo.com/video/$1?&loop=1&autopause=0");
 const Video = ({node}) => {
   const [src, setSrc] = useGunState(node.get("src"));
-  const [lock, setLock] = useGunState(node.get("lock"));
+  const [lock, setLock] = useGunState(node.get("lock"), true);
   const input = useRef();
   const submit = () => {
     const incSrc = input.current.value;
@@ -233,7 +232,7 @@ const Video = ({node}) => {
   }, "Submit"));
 };
 const ContextParagraph = ({node, remove}) => {
-  const [lock, setLock] = useGunState(node.get("lock"));
+  const [lock, setLock] = useGunState(node.get("lock"), true);
   const [withImage, setWithImage] = useGunState(node.get("withImage"), false);
   const [withVideo, setWithVideo] = useGunState(node.get("withVideo"), false);
   const [valid, setValid] = useState(false);
@@ -263,7 +262,8 @@ const ContextParagraphs = ({node}) => {
   const [texts, setTexts] = useGunSetState(node.get("context").get("texts"));
   const add = () => setTexts({
     createdAt: new Date().toISOString(),
-    placeholder: "Write a text"
+    placeholder: "Write a text",
+    lock: false
   });
   return React.createElement(React.Fragment, null, texts.map(({...props}) => React.createElement(ContextParagraph, {
     ...props
@@ -279,11 +279,11 @@ const Context = ({id, node}) => {
     start: "0"
   }, React.createElement("li", null, React.createElement(Link, {
     href: "/about/"
-  }, "Intro")), React.createElement("li", {
+  }, "Intro")), React.createElement("li", null, React.createElement(Link, {
+    href: `/fiction/${id}`
+  }, "First visit")), React.createElement("li", {
     className: "active"
   }, React.createElement(Link, {
-    href: `/fiction/${id}`
-  }, "First Visit")), React.createElement("li", null, React.createElement(Link, {
     href: `/context/${id}`
   }, "Context"))), React.createElement(Image, {
     maxSizeKo: 300,

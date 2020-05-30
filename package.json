@@ -16,6 +16,7 @@
     "gun": "0.2020.520",
     "gun/gun": "0.2020.520",
     "gun/lib/unset.js": "0.2020.520",
-    "wouter": "2.4.0"
+    "wouter": "2.4.0",
+    "localforage": "1.7.3"
   }
 }

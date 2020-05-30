@@ -8,7 +8,8 @@ import { useGunSetState, useGunState } from "./utils/gun-hooks.js";
 import { classs, formatDate, toBase64 } from "./utils/utils.js";
 
 const session = new Date().toISOString();
-const gun = window.Gun({ peers: ["http://127.0.0.1:8765/gun"] }).get(100 * 1);
+
+const gun = (window.Gun({ peers: ["http://127.0.0.1:8765/gun"] }).get(100 * 1));
 
 const Blank = ({ node, lock, remove }) => {
   const [placeholder, setPlaceholder] = useGunState(node.get("placeholder"));
@@ -70,14 +71,19 @@ const byCreateAt = ({ data: { createdAt: a } }, { data: { createdAt: b } }) =>
 const Paragraph = ({ node, remove }) => {
   const [gaps, setGaps] = useGunSetState(node.get("gaps"));
   const [values] = useGunSetState(node.get("gaps").map().get("values"));
-  const [lock, setLock] = useGunState(node.get("lock"));
+  const [lock, setLock] = useGunState(node.get("lock"), true);
   const [valid, setValid] = useState(true);
   useEffect(() => setValid((prev) => gaps.length === 0 || prev), [gaps]);
   const blanks = useMemo(() => gaps.filter(isType("blank")).length);
   const texts = useMemo(() => gaps.filter(isType("text")).length);
 
   const add = (type, placeholder) =>
-    setGaps({ createdAt: new Date().toISOString(), type, placeholder });
+    setGaps({
+      createdAt: new Date().toISOString(),
+      locked: false,
+      type,
+      placeholder,
+    });
   const addText = () => add("text", "Continue the story...");
   const addBlank = () => add("blank", "write something here...");
 
@@ -140,7 +146,8 @@ const Dessins = ({ node, lock }) => {
 
 const Paragraphs = ({ node }) => {
   const [paragraphs, setParagraphs] = useGunSetState(node.get("paragraphs4"));
-  const add = () => setParagraphs({ createdAt: new Date().toISOString() });
+  const add = () =>
+    setParagraphs({ createdAt: new Date().toISOString(), lock: false });
   return (
     <>
       {paragraphs.sort(byCreateAt).map(({ key, node, remove }) => (
@@ -153,8 +160,7 @@ const Paragraphs = ({ node }) => {
 
 const Text = ({ node, placeholder = "Write something here..." }) => {
   const [title, setTitle] = useGunState(node.get("current"));
-  const [lock, setLock] = useGunState(node.get("locked"));
-
+  const [lock, setLock] = useGunState(node.get("lock"), true);
   return !lock ? (
     <span>
       <Editable
@@ -171,7 +177,7 @@ const Text = ({ node, placeholder = "Write something here..." }) => {
 
 const Image = ({ node, maxSizeKo = 0 }) => {
   const [src, setSrc] = useGunState(node.get("src"));
-  const [lock, setLock] = useGunState(node.get("lock"));
+  const [lock, setLock] = useGunState(node.get("lock"), true);
   const add = async (event) => {
     const file = event.target.files[0];
     const sizeKo = parseInt(file.size / 1000);
@@ -220,7 +226,7 @@ const Page = ({ id, node }) => {
       </ol>
       <Image maxSizeKo={300} node={node.get("image")} />
       <h2>
-        <Text node={node.get("subtitle")} placeholder={"Enter A Subtitle"} />
+        {/* <Text node={node.get("subtitle")} placeholder={"Enter A Subtitle"} /> */}
       </h2>
       <time datetime={createdAt}>{formatDate(createdAt)}</time>
       <Paragraphs node={node} />
@@ -230,8 +236,8 @@ const Page = ({ id, node }) => {
 
 const Pages = () => {
   const [pages, setPages] = useGunSetState(gun.get("pages-2"));
-  const add = () => setPages({ createdAt: new Date().toISOString() });
-  console.log(pages);
+  const add = () =>
+    setPages({ createdAt: new Date().toISOString(), lock: false });
 
   return (
     <>
@@ -283,7 +289,7 @@ const getIframeSrc = (src) =>
 
 const Video = ({ node }) => {
   const [src, setSrc] = useGunState(node.get("src"));
-  const [lock, setLock] = useGunState(node.get("lock"));
+  const [lock, setLock] = useGunState(node.get("lock"), true);
   const input = useRef();
   const submit = () => {
     const incSrc = input.current.value;
@@ -314,7 +320,7 @@ const Video = ({ node }) => {
 };
 
 const ContextParagraph = ({ node, remove }) => {
-  const [lock, setLock] = useGunState(node.get("lock"));
+  const [lock, setLock] = useGunState(node.get("lock"), true);
   const [withImage, setWithImage] = useGunState(node.get("withImage"), false);
   const [withVideo, setWithVideo] = useGunState(node.get("withVideo"), false);
   const [valid, setValid] = useState(false);
@@ -354,6 +360,7 @@ const ContextParagraphs = ({ node }) => {
     setTexts({
       createdAt: new Date().toISOString(),
       placeholder: "Write a text",
+      lock: false,
     });
   return (
     <>
@@ -376,10 +383,10 @@ const Context = ({ id, node }) => {
         <li>
           <Link href="/about/">Intro</Link>
         </li>
-        <li className="active">
-          <Link href={`/fiction/${id}`}>First Visit</Link>
-        </li>
         <li>
+          <Link href={`/fiction/${id}`}>First visit</Link>
+        </li>
+        <li className="active">
           <Link href={`/context/${id}`}>Context</Link>
         </li>
       </ol>
@@ -391,6 +398,7 @@ const Context = ({ id, node }) => {
 };
 
 export default () => {
+  // const lol = useGun();
   return (
     <Router basepath={location.pathname}>
       <Route path="/" component={Pages} />
