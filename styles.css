@@ -1,12 +1,14 @@
 @font-face {
   font-family: "terminal-grotesque-webfont";
-  src: url("./assets/fonts/terminal-grotesque-webfont.woff") format("woff");
+  src: url("./assets/fonts/terminal-grotesque-webfont.woff2") format("woff2"),
+    url("./assets/fonts/terminal-grotesque-webfont.woff") format("woff");
   font-display: swap;
 }
 
 @font-face {
   font-family: "Minipax";
-  src: url("./assets/fonts/Minipax-Medium.woff") format("woff");
+  src: url("./assets/fonts/Minipax-Medium.woff2") format("woff2"),
+    url("./assets/fonts/Minipax-Medium.woff") format("woff");
   font-display: swap;
 }
 
@@ -45,7 +47,7 @@ ol li {
   padding: 0;
   font-size: 2rem;
   font-family: "Minipax", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
-  Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+    Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
   line-height: 3.25rem;
 }
 
@@ -66,8 +68,9 @@ a:nth-of-type(4) {
 
 h1,
 h2 {
-  font-family: "terminal-grotesque-webfont", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
-  Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+  font-family: "terminal-grotesque-webfont", -apple-system, BlinkMacSystemFont,
+    "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue",
+    sans-serif;
   margin: 0;
   font-weight: 300;
   text-transform: uppercase;
@@ -149,8 +152,8 @@ p {
 
 .blank span,
 li {
-  font-family: "andale mono", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
-  Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+  font-family: "andale mono", -apple-system, BlinkMacSystemFont, "Segoe UI",
+    Roboto, Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
   font-size: 1.5rem;
   margin: 0;
   padding: 0;
