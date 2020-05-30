@@ -1,0 +1,34 @@
+import React from "react";
+
+import { useGunState } from "../utils/gun-hooks.js";
+import { classs } from "../utils/utils.js";
+
+export default ({ node, maxSizeKo = 0 }) => {
+  const [src, setSrc] = useGunState(node.get("src"));
+  const [lock, setLock] = useGunState(node.get("lock"), true);
+  const add = async (event) => {
+    const file = event.target.files[0];
+    const sizeKo = parseInt(file.size / 1000);
+    if (sizeKo > maxSizeKo)
+      alert(`Image too big (${sizeKo} ko > ${maxSizeKo} ko)`);
+    else setSrc(await toBase64(file));
+  };
+
+  return (
+    <div className={classs({ lock, empty: !src }, "image")}>
+      {src ? (
+        <>
+          <img src={src} />
+          {!lock && (
+            <>
+              <button onClick={() => setSrc(null)}>Remove</button>
+              <button onClick={() => setLock(true)}>Lock</button>
+            </>
+          )}
+        </>
+      ) : (
+        <input onChange={add} type="file" accept="image/*"></input>
+      )}
+    </div>
+  );
+};

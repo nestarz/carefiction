@@ -1,1 +1,0 @@
-var Gun="undefined"!=typeof window?window.Gun:require("../gun");const rel_=Gun.val.link._,node_=Gun.node._;Gun.chain.unset=function(n){return this&&n&&n[node_]&&n[node_].put&&n[node_].put[node_]&&n[node_].put[node_][rel_]&&this.put({[n[node_].put[node_][rel_]]:null}),this};

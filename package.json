@@ -6,17 +6,13 @@
   "author": "Elias Rhouzlane",
   "dependencies": {
     "@eliaspourquoi/heritage": "^0.1.9",
-    "esdev": "^0.1.1",
-    "react": "^16.13.1"
+    "esdev": "^0.1.1"
   },
   "webDependencies": {
     "es-module-shims": "0.4.6",
     "react": "16.13.1",
     "react-dom": "16.13.1",
     "gun": "0.2020.520",
-    "gun/gun": "0.2020.520",
-    "gun/lib/unset.js": "0.2020.520",
-    "wouter": "2.4.0",
-    "localforage": "1.7.3"
+    "wouter": "2.4.0"
   }
 }

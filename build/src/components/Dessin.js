@@ -1,6 +1,6 @@
 import React, {useState, useRef, useMemo} from "react";
-import {useGunState} from "./../../../src/utils/gun-hooks.js";
-import {classs} from "./../../../src/utils/utils.js";
+import {useGunSetState, useGunState} from "./../../../src/utils/gun-hooks.js";
+import {classs, byCreateAt} from "./../../../src/utils/utils.js";
 const getPath = (points) => points.reduce((acc, [mode, x, y], i) => i === 0 ? `M${x},${y}` : `${acc}${mode || "L"}${x} ${y}`, "");
 const getProj = (svg, x, y) => {
   const CTM = svg.getScreenCTM();
@@ -12,7 +12,7 @@ const getProj = (svg, x, y) => {
   return [projX, projY];
 };
 let time = 0;
-export default ({node, remove}) => {
+const Dessin = ({node, remove}) => {
   const [str, setStr] = useGunState(node.get("points"));
   const [lock, setLock] = useGunState(node.get("lock"));
   const [editable, setEditable] = useGunState(node.get("editable"));
@@ -68,4 +68,17 @@ export default ({node, remove}) => {
     ref: path,
     d
   })));
+};
+export default ({node, lock}) => {
+  const [dessins, setDessins] = useGunSetState(node.get("dessins"));
+  const add = () => setDessins({
+    createdAt: new Date().toISOString()
+  });
+  return React.createElement(React.Fragment, null, dessins.sort(byCreateAt).map(({key, node: node2, remove}) => React.createElement(Dessin, {
+    key,
+    node: node2,
+    remove
+  })), !lock && dessins.length === 0 && React.createElement("button", {
+    onClick: add
+  }, "Add A Drawing"));
 };

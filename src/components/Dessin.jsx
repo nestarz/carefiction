@@ -1,6 +1,6 @@
 import React, { useState, useRef, useMemo } from "react";
-import { useGunState } from "./gun-hooks.js";
-import { classs } from "./utils.js";
+import { useGunSetState, useGunState } from "../utils/gun-hooks.js";
+import { classs, byCreateAt } from "../utils/utils.js";
 
 const getPath = (points) =>
   points.reduce(
@@ -17,7 +17,7 @@ const getProj = (svg, x, y) => {
 };
 
 let time = 0;
-export default ({ node, remove }) => {
+const Dessin = ({ node, remove }) => {
   const [str, setStr] = useGunState(node.get("points"));
   const [lock, setLock] = useGunState(node.get("lock"));
   const [editable, setEditable] = useGunState(node.get("editable"));
@@ -77,6 +77,21 @@ export default ({ node, remove }) => {
         >
           <path stroke-width="0.2" ref={path} d={d}></path>
         </svg>
+      )}
+    </>
+  );
+};
+
+export default ({ node, lock }) => {
+  const [dessins, setDessins] = useGunSetState(node.get("dessins"));
+  const add = () => setDessins({ createdAt: new Date().toISOString() });
+  return (
+    <>
+      {dessins.sort(byCreateAt).map(({ key, node, remove }) => (
+        <Dessin key={key} node={node} remove={remove} />
+      ))}
+      {!lock && dessins.length === 0 && (
+        <button onClick={add}>Add A Drawing</button>
       )}
     </>
   );

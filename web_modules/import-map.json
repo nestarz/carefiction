@@ -1,19 +1,13 @@
 {
   "imports": {
+    "es-module-shims": "./es-module-shims/0.4.6/es-module-shims.js",
     "react": "./react/16.13.1/react.js",
     "react-dom": "./react-dom/16.13.1/react-dom.js",
-    "es-module-shims": "./es-module-shims/0.4.6/es-module-shims.js",
     "gun": "./gun/0.2020.520/gun.js",
-    "@altrx/gundb-react-hooks": "./@altrx/gundb-react-hooks/0.1.0/gundb-react-hooks.js",
-    "gun/lib/unset.js": "./gun/0.2020.520/unset.js",
-    "wouter": "./wouter/2.4.0/wouter.js",
-    "localforage": "./localforage/1.7.3/localforage.js"
+    "wouter": "./wouter/2.4.0/wouter.js"
   },
   "scopes": {
     "./react-dom/16.13.1/": {
-      "react": "./react/16.13.1/react.js"
-    },
-    "./@altrx/gundb-react-hooks/0.1.0/": {
       "react": "./react/16.13.1/react.js"
     },
     "./wouter/2.4.0/": {

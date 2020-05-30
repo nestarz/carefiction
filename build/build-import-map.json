@@ -1,10 +1,15 @@
 {
   "imports": {
-    "../prev/App copy 2.jsx": "../build/prev/App copy 2.js",
-    "../prev/App copy.jsx": "../build/prev/App copy.js",
-    "../prev/App.jsx": "../build/prev/App.js",
     "../src/App.jsx": "../build/src/App.js",
-    "../src/utils/Dessin.jsx": "../build/src/utils/Dessin.js",
-    "../src/utils/Edtiable.jsx": "../build/src/utils/Edtiable.js"
+    "../src/components/About.jsx": "../build/src/components/About.js",
+    "../src/components/Context.jsx": "../build/src/components/Context.js",
+    "../src/components/Dessin.jsx": "../build/src/components/Dessin.js",
+    "../src/components/Edtiable.jsx": "../build/src/components/Edtiable.js",
+    "../src/components/Image.jsx": "../build/src/components/Image.js",
+    "../src/components/Page.jsx": "../build/src/components/Page.js",
+    "../src/components/Pages.jsx": "../build/src/components/Pages.js",
+    "../src/components/Paragraphs.jsx": "../build/src/components/Paragraphs.js",
+    "../src/components/Text.jsx": "../build/src/components/Text.js",
+    "../src/components/Video.jsx": "../build/src/components/Video.js"
   }
 }
