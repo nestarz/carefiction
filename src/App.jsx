@@ -13,6 +13,7 @@ const gun = window
   .Gun({
     peers: [
       "https://gun.eliasrhouzlane.com/gun",
+      "https://carefiction-gun.herokuapp.com/gun"
     ],
   })
   .get("alpha-2");

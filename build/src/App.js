@@ -6,7 +6,7 @@ import {useGunSetState, useGunState} from "./../../src/utils/gun-hooks.js";
 import {classs, formatDate, toBase64} from "./../../src/utils/utils.js";
 const session = new Date().toISOString();
 const gun = window.Gun({
-  peers: ["https://gun.eliasrhouzlane.com/gun"]
+  peers: ["https://gun.eliasrhouzlane.com/gun", "https://carefiction-gun.herokuapp.com/gun"]
 }).get("alpha-2");
 const Blank = ({node, lock, remove}) => {
   const [placeholder, setPlaceholder] = useGunState(node.get("placeholder"));
