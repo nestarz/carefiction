@@ -168,7 +168,6 @@ const Paragraphs = ({ node }) => {
 const Text = ({ node, placeholder = "Write something here..." }) => {
   const [title, setTitle] = useGunState(node.get("current"));
   const [lock, setLock] = useGunState(node.get("lock"), true);
-  console.log(lock);
   return !lock ? (
     <span>
       <Editable
