@@ -35,6 +35,7 @@ export const useGunState = (node, initialState = undefined) => {
   const [value, setValue] = useState(initialState);
   useEffect(() => {
     let event;
+    node.once((data) => setValue(data));
     node.on((data, _, __, e) => {
       event = e;
       setValue(data);
