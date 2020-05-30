@@ -21,27 +21,25 @@ export const useGunSetState = (node) => {
     return data ? setSet(add(data, key)) : setSet(remove(key));
   };
   useEffect(() => {
-    const listener = node.map().on(register);
-    // return () => listener.off();
+    let event;
+    node.map().on((data, key, data, e) => {
+      event = e;
+      register(data, key);
+    });
+    return () => event?.off();
   }, [node]);
-  return [
-    set,
-    (value) => {
-      console.log(value);
-      console.log(node);
-      node.set(value);
-    },
-  ];
+  return [set, (value) => node.set(value)];
 };
 
 export const useGunState = (node, initialState = undefined) => {
   const [value, setValue] = useState(initialState);
   useEffect(() => {
-    const listener = node
-      .back()
-      .get(node._.get)
-      .on((value) => setValue(value));
-    return () => listener.off();
+    let event;
+    node.on((data, _, _, e) => {
+      event = e;
+      setValue(data);
+    });
+    return () => event?.off();
   }, [node]);
   return [value, (value) => node.put(value)];
 };
