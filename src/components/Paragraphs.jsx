@@ -1,4 +1,6 @@
-import React, { useState, useEffect, useMemo } from "react";
+/* @jsx h */
+import { h, Fragment } from "preact";
+import { useState, useEffect, useMemo } from "preact/hooks";
 
 import { useGunSetState, useGunState } from "../utils/gun-hooks.js";
 import { byCreateAt } from "../utils/utils.js";

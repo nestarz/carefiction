@@ -1,6 +1,6 @@
-import React from "react";
+import {h, Fragment} from "preact";
 import {useGunState} from "./../../../src/utils/gun-hooks.js";
-import {classs} from "./../../../src/utils/utils.js";
+import {classs, toBase64} from "./../../../src/utils/utils.js";
 export default ({node, maxSizeKo = 0}) => {
   const [src, setSrc] = useGunState(node.get("src"));
   const [lock, setLock] = useGunState(node.get("lock"), true);
@@ -12,18 +12,18 @@ export default ({node, maxSizeKo = 0}) => {
     else
       setSrc(await toBase64(file));
   };
-  return React.createElement("div", {
+  return h("div", {
     className: classs({
       lock,
       empty: !src
     }, "image")
-  }, src ? React.createElement(React.Fragment, null, React.createElement("img", {
+  }, src ? h(Fragment, null, h("img", {
     src
-  }), !lock && React.createElement(React.Fragment, null, React.createElement("button", {
+  }), !lock && h(Fragment, null, h("button", {
     onClick: () => setSrc(null)
-  }, "Remove"), React.createElement("button", {
+  }, "Remove"), h("button", {
     onClick: () => setLock(true)
-  }, "Lock"))) : React.createElement("input", {
+  }, "Lock"))) : h("input", {
     onChange: add,
     type: "file",
     accept: "image/*"

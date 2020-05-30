@@ -1,5 +1,7 @@
-import React, { useState } from "react";
-import { Link } from "wouter";
+/* @jsx h */
+import { h, Fragment } from "preact";
+import { useState } from "preact/hooks";
+import { Link } from "wouter-preact";
 
 import { useGunSetState, useGunState } from "../utils/gun-hooks.js";
 

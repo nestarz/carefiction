@@ -1,5 +1,5 @@
-import React from "react";
-import {Link} from "wouter";
+import {h, Fragment} from "preact";
+import {Link} from "wouter-preact";
 import {useGunState} from "./../../../src/utils/gun-hooks.js";
 import {formatDate} from "./../../../src/utils/utils.js";
 import Paragraphs2 from "./../../../src/components/Paragraphs.jsx";
@@ -7,28 +7,28 @@ import {Text as Text2} from "./../../../src/components/Text.jsx";
 import Image2 from "./../../../src/components/Image.jsx";
 export default ({id, node}) => {
   const [createdAt] = useGunState(node.get("createdAt"));
-  return React.createElement(React.Fragment, null, React.createElement("h1", null, React.createElement("span", null, "Care Fiction:"), React.createElement(Text2, {
+  return h(Fragment, null, h("h1", null, h("span", null, "Care Fiction:"), h(Text2, {
     node: node.get("title"),
     placeholder: "Enter A Title"
-  })), React.createElement("ol", {
+  })), h("ol", {
     start: "0"
-  }, React.createElement("li", null, React.createElement(Link, {
+  }, h("li", null, h(Link, {
     href: "/about/"
-  }, "Intro")), React.createElement("li", {
+  }, "Intro")), h("li", {
     className: "active"
-  }, React.createElement("a", {
+  }, h("a", {
     href: "#"
-  }, "First visit")), React.createElement("li", null, React.createElement(Link, {
+  }, "First visit")), h("li", null, h(Link, {
     href: `/context/${id}`
-  }, "Context"))), React.createElement(Image2, {
+  }, "Context"))), h(Image2, {
     maxSizeKo: 300,
     node: node.get("image")
-  }), React.createElement("h2", null, React.createElement(Text2, {
+  }), h("h2", null, h(Text2, {
     node: node.get("subtitle"),
     placeholder: "Enter A Subtitle"
-  })), React.createElement("time", {
+  })), h("time", {
     datetime: createdAt
-  }, formatDate(createdAt)), React.createElement(Paragraphs2, {
+  }, formatDate(createdAt)), h(Paragraphs2, {
     node
   }));
 };

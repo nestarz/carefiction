@@ -1,5 +1,6 @@
-import React from "react";
-import { Route, Router } from "wouter";
+/* @jsx h */
+import { h, Fragment } from "preact";
+import { Route, Router } from "wouter-preact";
 
 import Page from "./components/Page.jsx";
 import Pages from "./components/Pages.jsx";

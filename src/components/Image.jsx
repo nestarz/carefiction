@@ -1,7 +1,8 @@
-import React from "react";
+/* @jsx h */
+import { h, Fragment } from "preact";
 
 import { useGunState } from "../utils/gun-hooks.js";
-import { classs } from "../utils/utils.js";
+import { classs, toBase64 } from "../utils/utils.js";
 
 export default ({ node, maxSizeKo = 0 }) => {
   const [src, setSrc] = useGunState(node.get("src"));

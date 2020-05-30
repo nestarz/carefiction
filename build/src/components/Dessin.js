@@ -1,4 +1,5 @@
-import React, {useState, useRef, useMemo} from "react";
+import {h, Fragment} from "preact";
+import {useState, useRef, useMemo} from "preact/hooks";
 import {useGunSetState, useGunState} from "./../../../src/utils/gun-hooks.js";
 import {classs, byCreateAt} from "./../../../src/utils/utils.js";
 const getPath = (points) => points.reduce((acc, [mode, x, y], i) => i === 0 ? `M${x},${y}` : `${acc}${mode || "L"}${x} ${y}`, "");
@@ -35,22 +36,22 @@ const Dessin = ({node, remove}) => {
         setMode("M");
     }
   };
-  return React.createElement(React.Fragment, null, !lock && React.createElement("div", {
+  return h(Fragment, null, !lock && h("div", {
     className: "drawing-controls"
-  }, React.createElement("button", {
+  }, h("button", {
     onClick: () => setEditable(!editable)
-  }, !editable ? "Make it editable" : "Make it fixed"), React.createElement("button", {
+  }, !editable ? "Make it editable" : "Make it fixed"), h("button", {
     disabled: points.length < 10,
     onClick: () => setLock(true)
-  }, "Lock The Drawing"), React.createElement("button", {
+  }, "Lock The Drawing"), h("button", {
     onClick: remove
-  }, "Remove The Drawing")), !editable ? React.createElement("svg", {
+  }, "Remove The Drawing")), !editable ? h("svg", {
     viewBox: `0 0 100 100`,
     namespace: "http://www.w3.org/2000/svg"
-  }, React.createElement("path", {
+  }, h("path", {
     "stroke-width": "0.2",
     d
-  })) : React.createElement("svg", {
+  })) : h("svg", {
     className: classs({
       lock,
       editable
@@ -63,7 +64,7 @@ const Dessin = ({node, remove}) => {
     onTouchStart: onClick,
     onTouchEnd: onClick,
     onTouchMove: (e) => onMove(e.touches[0])
-  }, React.createElement("path", {
+  }, h("path", {
     "stroke-width": "0.2",
     ref: path,
     d
@@ -74,11 +75,11 @@ export default ({node, lock}) => {
   const add = () => setDessins({
     createdAt: new Date().toISOString()
   });
-  return React.createElement(React.Fragment, null, dessins.sort(byCreateAt).map(({key, node: node2, remove}) => React.createElement(Dessin, {
+  return h(Fragment, null, dessins.sort(byCreateAt).map(({key, node: node2, remove}) => h(Dessin, {
     key,
     node: node2,
     remove
-  })), !lock && dessins.length === 0 && React.createElement("button", {
+  })), !lock && dessins.length === 0 && h("button", {
     onClick: add
   }, "Add A Drawing"));
 };

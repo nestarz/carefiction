@@ -1,4 +1,5 @@
-import React, {useState, useEffect, useRef} from "react";
+import {h, Fragment} from "preact";
+import {useState, useEffect, useRef} from "preact/hooks";
 const setCaretNode = (node, index) => {
   if (node.lastChild)
     window.getSelection().collapse(node.lastChild, index > 0 ? index : node.lastChild.textContent.length + index + 1);
@@ -21,7 +22,7 @@ export default ({current = "", placeholder, setCurrent, className}) => {
     if (!focus && current && current != placeholder)
       ref.current.innerText = current;
   }, [current, focus, placeholder]);
-  return React.createElement("span", {
+  return h("span", {
     className,
     ref,
     contentEditable: true,

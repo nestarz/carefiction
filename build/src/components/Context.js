@@ -1,5 +1,6 @@
-import React, {useState} from "react";
-import {Link} from "wouter";
+import {h, Fragment} from "preact";
+import {useState} from "preact/hooks";
+import {Link} from "wouter-preact";
 import {useGunSetState, useGunState} from "./../../../src/utils/gun-hooks.js";
 import Video2 from "./../../../src/components/Video.jsx";
 import Image2 from "./../../../src/components/Image.jsx";
@@ -9,24 +10,24 @@ const ContextParagraph = ({node, remove}) => {
   const [withImage, setWithImage] = useGunState(node.get("withImage"), false);
   const [withVideo, setWithVideo] = useGunState(node.get("withVideo"), false);
   const [valid, setValid] = useState(false);
-  return React.createElement(React.Fragment, null, React.createElement("p", {
+  return h(Fragment, null, h("p", {
     className: "context"
-  }, React.createElement(Sentence, {
+  }, h(Sentence, {
     node,
     onValid: setValid,
     lock
-  })), !lock && React.createElement(React.Fragment, null, React.createElement("button", {
+  })), !lock && h(Fragment, null, h("button", {
     disabled: !valid,
     onClick: () => setLock(true)
-  }, "Lock The Paragraph"), React.createElement("button", {
+  }, "Lock The Paragraph"), h("button", {
     onClick: remove
-  }, "Remove The Paragraph"), !withVideo && React.createElement("button", {
+  }, "Remove The Paragraph"), !withVideo && h("button", {
     onClick: () => setWithImage(!withImage)
-  }, withImage ? "Remove" : "Add", " Image"), !withImage && React.createElement("button", {
+  }, withImage ? "Remove" : "Add", " Image"), !withImage && h("button", {
     onClick: () => setWithVideo(!withVideo)
-  }, withVideo ? "Remove" : "Add", " Video")), withVideo && React.createElement(Video2, {
+  }, withVideo ? "Remove" : "Add", " Video")), withVideo && h(Video2, {
     node: node.get("video")
-  }), withImage && React.createElement(Image2, {
+  }), withImage && h(Image2, {
     maxSizeKo: 500,
     node: node.get("image")
   }));
@@ -38,30 +39,30 @@ const ContextParagraphs = ({node}) => {
     placeholder: "Write a text",
     lock: false
   });
-  return React.createElement(React.Fragment, null, texts.map(({...props}) => React.createElement(ContextParagraph, {
+  return h(Fragment, null, texts.map(({...props}) => h(ContextParagraph, {
     ...props
-  })), React.createElement("button", {
+  })), h("button", {
     onClick: add
   }, "Add A New Paragraph"));
 };
 export default ({id, node}) => {
-  return React.createElement(React.Fragment, null, React.createElement("h1", null, React.createElement("span", null, "Care Fiction:"), React.createElement(Text2, {
+  return h(Fragment, null, h("h1", null, h("span", null, "Care Fiction:"), h(Text2, {
     node: node.get("title"),
     placeholder: "Enter A Title"
-  })), React.createElement("ol", {
+  })), h("ol", {
     start: "0"
-  }, React.createElement("li", null, React.createElement(Link, {
+  }, h("li", null, h(Link, {
     href: "/about/"
-  }, "Intro")), React.createElement("li", null, React.createElement(Link, {
+  }, "Intro")), h("li", null, h(Link, {
     href: `/fiction/${id}`
-  }, "First visit")), React.createElement("li", {
+  }, "First visit")), h("li", {
     className: "active"
-  }, React.createElement(Link, {
+  }, h(Link, {
     href: `/context/${id}`
-  }, "Context"))), React.createElement(Image2, {
+  }, "Context"))), h(Image2, {
     maxSizeKo: 300,
     node: node.get("image")
-  }), React.createElement("h2", null, "CO-WRITE THE STORY!"), React.createElement(ContextParagraphs, {
+  }), h("h2", null, "CO-WRITE THE STORY!"), h(ContextParagraphs, {
     node
   }));
 };

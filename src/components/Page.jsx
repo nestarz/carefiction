@@ -1,5 +1,6 @@
-import React from "react";
-import { Link } from "wouter";
+/* @jsx h */
+import { h, Fragment } from "preact";
+import { Link } from "wouter-preact";
 
 import { useGunState } from "../utils/gun-hooks.js";
 import { formatDate } from "../utils/utils.js";

@@ -1,8 +1,5 @@
-import React from "react";
-import ReactDOM from "react-dom";
+import { h, render } from "preact";
+
 import App from "./App.jsx";
 
-ReactDOM.render(
-  React.createElement(App),
-  document.body.appendChild(document.createElement("div"))
-);
+render(h(App), document.body.appendChild(document.createElement("div")));

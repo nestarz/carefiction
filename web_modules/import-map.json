@@ -1,17 +1,17 @@
 {
   "imports": {
     "es-module-shims": "./es-module-shims/0.4.6/es-module-shims.js",
-    "react": "./react/16.13.1/react.js",
-    "react-dom": "./react-dom/16.13.1/react-dom.js",
     "gun": "./gun/0.2020.520/gun.js",
-    "wouter": "./wouter/2.4.0/wouter.js"
+    "preact": "./preact/10.4.4/preact.js",
+    "preact/hooks": "./preact/10.4.4/hooks.js",
+    "wouter-preact": "./wouter-preact/2.4.0/wouter-preact.js"
   },
   "scopes": {
-    "./react-dom/16.13.1/": {
-      "react": "./react/16.13.1/react.js"
+    "./preact/10.4.4/": {
+      "preact": "./preact/10.4.4/preact.js"
     },
-    "./wouter/2.4.0/": {
-      "react": "./react/16.13.1/react.js"
+    "./wouter-preact/2.4.0/": {
+      "preact": "./preact/10.4.4/preact.js"
     }
   }
 }

@@ -1,4 +1,6 @@
-import React, { useEffect } from "react";
+/* @jsx h */
+import { h } from "preact";
+import { useEffect } from "preact/hooks";
 
 import { useGunState } from "../utils/gun-hooks.js";
 import { classs } from "../utils/utils.js";

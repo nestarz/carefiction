@@ -1,4 +1,6 @@
-import React, { useState, useEffect, useRef } from "react";
+/* @jsx h */
+import { h, Fragment } from "preact";
+import { useState, useEffect, useRef } from "preact/hooks";
 
 const setCaretNode = (node, index) => {
   if (node.lastChild)

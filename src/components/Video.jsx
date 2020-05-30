@@ -1,4 +1,6 @@
-import React, { useRef } from "react";
+/* @jsx h */
+import { h, Fragment } from "preact";
+import { useRef } from "preact/hooks";
 
 import { useGunState } from "../utils/gun-hooks.js";
 

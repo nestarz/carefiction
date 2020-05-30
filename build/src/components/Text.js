@@ -1,4 +1,5 @@
-import React, {useEffect} from "react";
+import {h} from "preact";
+import {useEffect} from "preact/hooks";
 import {useGunState} from "./../../../src/utils/gun-hooks.js";
 import {classs} from "./../../../src/utils/utils.js";
 import Editable from "./../../../src/components/Edtiable.jsx";
@@ -14,17 +15,17 @@ export const Blank = ({node, lock, remove}) => {
         value: current
       });
   }, [current]);
-  return React.createElement("span", {
+  return h("span", {
     className: "blank"
-  }, lock ? React.createElement(Editable, {
+  }, lock ? h(Editable, {
     current,
     placeholder,
     setCurrent
-  }) : React.createElement(React.Fragment, null, React.createElement(Editable, {
+  }) : h(Fragment, null, h(Editable, {
     current: placeholder,
     placeholder: "write something here",
     setCurrent: setPlaceholder
-  }), React.createElement("button", {
+  }), h("button", {
     onClick: remove
   }, "Remove The Blank")));
 };
@@ -33,31 +34,31 @@ export const Sentence = ({node, lock, remove, onValid}) => {
   const [current, setCurrent] = useGunState(node.get("current"));
   const [bold, setBold] = useGunState(node.get("bold"));
   useEffect(() => onValid(current !== placeholder && current), [current]);
-  return lock ? React.createElement("span", {
+  return lock ? h("span", {
     className: classs({
       bold
     })
-  }, current) : React.createElement(React.Fragment, null, React.createElement(Editable, {
+  }, current) : h(Fragment, null, h(Editable, {
     className: classs({
       bold
     }),
     current,
     placeholder,
     setCurrent
-  }), React.createElement("button", {
+  }), h("button", {
     onClick: () => setBold(!bold)
-  }, `${bold ? "Remove" : "Add"} Emphasis`), React.createElement("button", {
+  }, `${bold ? "Remove" : "Add"} Emphasis`), h("button", {
     onClick: remove
   }, "Remove The Text"));
 };
 export const Text = ({node, placeholder = "Write something here..."}) => {
   const [title, setTitle] = useGunState(node.get("current"));
   const [lock, setLock] = useGunState(node.get("lock"), true);
-  return !lock ? React.createElement("span", null, React.createElement(Editable, {
+  return !lock ? h("span", null, h(Editable, {
     current: title,
     placeholder,
     setCurrent: setTitle
-  }), React.createElement("button", {
+  }), h("button", {
     onClick: () => setLock(true)
-  }, "Lock")) : React.createElement("span", null, title);
+  }, "Lock")) : h("span", null, title);
 };

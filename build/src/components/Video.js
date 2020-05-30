@@ -1,4 +1,5 @@
-import React, {useRef} from "react";
+import {h, Fragment} from "preact";
+import {useRef} from "preact/hooks";
 import {useGunState} from "./../../../src/utils/gun-hooks.js";
 const getIframeSrc = (src) => src.replace(/(?:http[s]?:\/\/)?(?:www\.)?(?:youtube\.com|youtu\.be)\/(?:watch\?v=)?(.+)/g, "http://www.youtube-nocookie.com/embed/$1?&loop=1&autopause=0").replace(/(?:http[s]?:\/\/(?:www.)?vimeo\.com)\/(.+)/g, "//player.vimeo.com/video/$1?&loop=1&autopause=0");
 export default ({node}) => {
@@ -12,21 +13,21 @@ export default ({node}) => {
     else
       alert("wrong video link (youtube/vimeo)");
   };
-  return src ? React.createElement("div", {
+  return src ? h("div", {
     className: "video"
-  }, React.createElement("iframe", {
+  }, h("iframe", {
     src: getIframeSrc(src)
-  }), !lock && React.createElement(React.Fragment, null, React.createElement("button", {
+  }), !lock && h(Fragment, null, h("button", {
     onClick: () => setSrc(null)
-  }, "Remove Link to Video"), React.createElement("button", {
+  }, "Remove Link to Video"), h("button", {
     onClick: () => setLock(!lock)
-  }, "Lock"))) : React.createElement("div", {
+  }, "Lock"))) : h("div", {
     className: "video"
-  }, React.createElement("input", {
+  }, h("input", {
     ref: input,
     type: "text",
     placeholder: "Add Vimeo/Youtube Link"
-  }), React.createElement("button", {
+  }), h("button", {
     onClick: submit
   }, "Submit"));
 };

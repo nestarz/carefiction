@@ -1,7 +1,9 @@
-import React from "react";
-import { Link } from "wouter";
+/* @jsx h */
+import { h, Fragment } from "preact";
+import { Link } from "wouter-preact";
 
 import { useGunSetState } from "../utils/gun-hooks.js";
+import { byCreateAt } from "../utils/utils.js";
 
 export default ({ node }) => {
   const [pages, setPages] = useGunSetState(node.get("pages"));

@@ -10,9 +10,9 @@
   },
   "webDependencies": {
     "es-module-shims": "0.4.6",
-    "react": "16.13.1",
-    "react-dom": "16.13.1",
-    "gun": "0.2020.520",
-    "wouter": "2.4.0"
+    "preact": "10.4.4",
+    "preact/hooks": "10.4.4",
+    "wouter-preact": "2.4.0",
+    "gun": "0.2020.520"
   }
 }
