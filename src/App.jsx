@@ -15,7 +15,7 @@ const gun = window
       "https://gun.eliasrhouzlane.com/gun",
     ],
   })
-  .get("alpha-1");
+  .get("alpha-2");
 
 const Blank = ({ node, lock, remove }) => {
   const [placeholder, setPlaceholder] = useGunState(node.get("placeholder"));
@@ -245,7 +245,6 @@ const Pages = () => {
   const add = () =>
     setPages({ createdAt: new Date().toISOString(), lock: false });
 
-  console.log(pages);
   return (
     <>
       <button onClick={add}>Add A New Fiction</button>

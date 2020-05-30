@@ -7,7 +7,7 @@ import {classs, formatDate, toBase64} from "./../../src/utils/utils.js";
 const session = new Date().toISOString();
 const gun = window.Gun({
   peers: ["https://gun.eliasrhouzlane.com/gun"]
-}).get("alpha-1");
+}).get("alpha-2");
 const Blank = ({node, lock, remove}) => {
   const [placeholder, setPlaceholder] = useGunState(node.get("placeholder"));
   const [current, setCurrent] = useGunState(node.get(session).get("current"));
@@ -192,7 +192,6 @@ const Pages = () => {
     createdAt: new Date().toISOString(),
     lock: false
   });
-  console.log(pages);
   return React.createElement(React.Fragment, null, React.createElement("button", {
     onClick: add
   }, "Add A New Fiction"), pages.sort(byCreateAt).map(({key}) => React.createElement(Link, {

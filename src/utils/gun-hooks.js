@@ -22,7 +22,7 @@ export const useGunSetState = (node) => {
   };
   useEffect(() => {
     let event;
-    node.map().on((data, key, data, e) => {
+    node.map().on((data, key, _, e) => {
       event = e;
       register(data, key);
     });
@@ -35,7 +35,7 @@ export const useGunState = (node, initialState = undefined) => {
   const [value, setValue] = useState(initialState);
   useEffect(() => {
     let event;
-    node.on((data, _, _, e) => {
+    node.on((data, _, __, e) => {
       event = e;
       setValue(data);
     });
