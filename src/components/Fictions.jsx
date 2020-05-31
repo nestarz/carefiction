@@ -8,6 +8,11 @@ import { byCreateAt, classs } from "../utils/utils.js";
 import { Text } from "./Text.jsx";
 import { session } from "../App.jsx";
 
+const Image = ({ node }) => {
+  const [src] = useGunState(node.get("src"));
+  return src ? <img src={src} /> : <></>;
+};
+
 export default ({ node, currentKey }) => {
   const [pages, setPages] = useGunSetState(node.get("pages"));
   const [lock, setLock] = useGunState(
@@ -19,7 +24,7 @@ export default ({ node, currentKey }) => {
   };
 
   return (
-    <ol start="0">
+    <>
       {pages.sort(byCreateAt).map(({ key, node: fiction, data }) => {
         const [lock] = useGunState(fiction.get("title").get("lock"));
         const [current] = useGunState(fiction.get("title").get("current"));
@@ -34,18 +39,21 @@ export default ({ node, currentKey }) => {
                 placeholder="Name your fiction..."
               />
             ) : (
-              <Link href={`/fiction/${key}`}>{current}</Link>
+              <>
+                <Image node={fiction.get("image")} />
+                <Link href={`/fiction/${key}`}>{current}</Link>
+              </>
             )}
           </li>
         );
       })}
       {!lock && (
-        <li>
+        <li className="add">
           <a href="#" onClick={add}>
             Add a new fiction
           </a>
         </li>
       )}
-    </ol>
+    </>
   );
 };
