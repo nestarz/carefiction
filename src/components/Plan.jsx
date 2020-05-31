@@ -6,6 +6,7 @@ import { useGunSetState, useGunState } from "../utils/gun-hooks.js";
 import { byCreateAt, classs } from "../utils/utils.js";
 
 import Editable from "./Edtiable.jsx";
+import { Text } from "./Text.jsx";
 import Image from "./Image.jsx";
 import { session } from "../App.jsx";
 
@@ -64,8 +65,8 @@ const Landmark = ({ data, remove, key, node, index }) => {
   );
 };
 
-const Plan = ({ node, remove }) => {
-  const [lock, setLock] = useGunState(node.get("plans"));
+const Plan = ({ node, remove, index }) => {
+  const [lock, setLock] = useGunState(node.get("lock"));
   const [landmarks, setLandmarks] = useGunSetState(node.get("landmarks"));
 
   const setLandmark = (e) => {
@@ -76,9 +77,13 @@ const Plan = ({ node, remove }) => {
   };
   return (
     <>
+      <p>
+        <span>{index + 1}.</span>
+        <Text node={node.get("title")} placeholder={"Enter A Title"} />
+      </p>
       <Image
         className={classs("landmark-container", { lock })}
-        maxSizeKo={300}
+        maxSizeKo={400}
         node={node.get("image")}
         onClick={setLandmark}
       >
@@ -125,8 +130,8 @@ export default ({ node }) => {
 
   return (
     <>
-      {plans.sort(byCreateAt).map(({ key, node, remove }) => (
-        <Plan key={key} node={node} remove={remove} />
+      {plans.sort(byCreateAt).map(({ key, node, remove }, index) => (
+        <Plan key={key} node={node} remove={remove} index={index} />
       ))}
       <button onClick={add}>Add a plan</button>
     </>

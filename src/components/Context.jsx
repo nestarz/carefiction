@@ -71,7 +71,7 @@ export default ({ fiction, chapter }) => {
         <Text node={fiction.get("title")} placeholder={"Enter A Title"} />
       </h1>
       <Nav node={fiction} />
-      <Image maxSizeKo={300} node={fiction.get("image")} />
+      <Image maxSizeKo={400} node={fiction.get("image")} />
       <h2>CO-WRITE THE STORY!</h2>
       <ContextParagraphs node={chapter} />
     </>

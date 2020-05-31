@@ -19,9 +19,10 @@ export default ({fiction, chapter}) => {
     node: fiction.get("title"),
     placeholder: "Enter A Title"
   }))), h(Nav2, {
-    node: fiction
+    node: fiction,
+    currentKey: chapter._.get
   }), type === "paragraphs" && typeLock ? h(Fragment, null, h(Image2, {
-    maxSizeKo: 300,
+    maxSizeKo: 400,
     node: chapter.get("image")
   }), h("h2", null, h(Text2, {
     node: chapter.get("subtitle"),

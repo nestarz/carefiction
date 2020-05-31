@@ -17,8 +17,8 @@ export default ({ node }) => {
         <span>Care Fiction:</span>
         <Text node={node.get("title")} placeholder={"Enter A Title"} />
       </h1>
-      <Nav node={node} />
-      <Image maxSizeKo={300} node={node.get("image")} />
+      <Nav node={node} currentKey={node._.get} />
+      <Image maxSizeKo={400} node={node.get("image")} />
       <h2>
         <Text node={node.get("subtitle")} placeholder={"Enter A Subtitle"} />
       </h2>

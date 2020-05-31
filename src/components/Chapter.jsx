@@ -23,10 +23,10 @@ export default ({ fiction, chapter }) => {
           <Text node={fiction.get("title")} placeholder={"Enter A Title"} />
         </Link>
       </h1>
-      <Nav node={fiction} />
+      <Nav node={fiction} currentKey={chapter._.get} />
       {type === "paragraphs" && typeLock ? (
         <>
-          <Image maxSizeKo={300} node={chapter.get("image")} />
+          <Image maxSizeKo={400} node={chapter.get("image")} />
           <h2>
             <Text
               node={chapter.get("subtitle")}

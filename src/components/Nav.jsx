@@ -2,12 +2,12 @@
 import { h, Fragment } from "preact";
 import { Link } from "wouter-preact";
 import { useGunSetState, useGunState } from "../utils/gun-hooks.js";
-import { byCreateAt } from "../utils/utils.js";
+import { byCreateAt, classs } from "../utils/utils.js";
 
 import { session } from "../App.jsx";
 import { Text } from "./Text.jsx";
 
-export default ({ node }) => {
+export default ({ node, currentKey }) => {
   const [chapters, setChapters] = useGunSetState(node.get("chapters"));
   const [lock, setLock] = useGunState(
     node.get(session).get("chapters").get("creation").get("lock")
@@ -29,7 +29,7 @@ export default ({ node }) => {
         const [lock] = useGunState(chapter.get("subtitle").get("lock"));
         const [current] = useGunState(chapter.get("subtitle").get("current"));
         return (
-          <li>
+          <li className={classs({ active: currentKey === key })}>
             {!lock ? (
               <Text
                 node={chapter.get("subtitle")}

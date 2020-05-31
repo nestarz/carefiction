@@ -53,7 +53,7 @@ export default ({fiction, chapter}) => {
   })), h(Nav2, {
     node: fiction
   }), h(Image2, {
-    maxSizeKo: 300,
+    maxSizeKo: 400,
     node: fiction.get("image")
   }), h("h2", null, "CO-WRITE THE STORY!"), h(ContextParagraphs, {
     node: chapter

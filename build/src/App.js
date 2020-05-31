@@ -7,7 +7,7 @@ export const session = new Date().toISOString();
 export default () => {
   const node = window.Gun({
     peers: ["https://gun.eliasrhouzlane.com/gun", "https://carefiction-gun.herokuapp.com/gun"]
-  }).get("alpha-6");
+  }).get("alpha-7");
   return h(Router, {
     basepath: location.pathname
   }, h(Route, {

@@ -3,6 +3,7 @@ import {useEffect} from "preact/hooks";
 import {useGunSetState, useGunState} from "./../../../src/utils/gun-hooks.js";
 import {byCreateAt, classs} from "./../../../src/utils/utils.js";
 import Editable from "./../../../src/components/Edtiable.jsx";
+import {Text as Text2} from "./../../../src/components/Text.jsx";
 import Image2 from "./../../../src/components/Image.jsx";
 import {session} from "./../../../src/App.jsx";
 export const Blank = ({node, remove}) => {
@@ -54,8 +55,8 @@ const Landmark = ({data, remove, key, node, index}) => {
     key: key2
   }, value))));
 };
-const Plan = ({node, remove}) => {
-  const [lock, setLock] = useGunState(node.get("plans"));
+const Plan = ({node, remove, index}) => {
+  const [lock, setLock] = useGunState(node.get("lock"));
   const [landmarks, setLandmarks] = useGunSetState(node.get("landmarks"));
   const setLandmark = (e) => {
     if (lock)
@@ -68,19 +69,22 @@ const Plan = ({node, remove}) => {
       y
     });
   };
-  return h(Fragment, null, h(Image2, {
+  return h(Fragment, null, h("p", null, h("span", null, index + 1, "."), h(Text2, {
+    node: node.get("title"),
+    placeholder: "Enter A Title"
+  })), h(Image2, {
     className: classs("landmark-container", {
       lock
     }),
-    maxSizeKo: 300,
+    maxSizeKo: 400,
     node: node.get("image"),
     onClick: setLandmark
-  }, landmarks.map(({key, data, remove: remove2, node: node2}, index) => h(Landmark, {
+  }, landmarks.map(({key, data, remove: remove2, node: node2}, index2) => h(Landmark, {
     data,
     key,
     remove: remove2,
     node: node2,
-    index
+    index: index2
   }))), !lock && h(Fragment, null, h("button", {
     onClick: () => setLock(true)
   }, "Lock The Plan"), h("button", {
@@ -93,10 +97,11 @@ export default ({node}) => {
     createdAt: new Date().toISOString(),
     lock: false
   });
-  return h(Fragment, null, plans.sort(byCreateAt).map(({key, node: node2, remove}) => h(Plan, {
+  return h(Fragment, null, plans.sort(byCreateAt).map(({key, node: node2, remove}, index) => h(Plan, {
     key,
     node: node2,
-    remove
+    remove,
+    index
   })), h("button", {
     onClick: add
   }, "Add a plan"));

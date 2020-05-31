@@ -7,6 +7,7 @@ import { byCreateAt } from "../utils/utils.js";
 
 import { Sentence, Blank } from "./Text.jsx";
 import Dessins from "./Dessin.jsx";
+import Image from "./Image.jsx";
 
 const isType = (t) => ({ data: { type } }) => type === t;
 
@@ -14,6 +15,7 @@ const Paragraph = ({ node, remove }) => {
   const [gaps, setGaps] = useGunSetState(node.get("gaps"));
   const [values] = useGunSetState(node.get("gaps").map().get("values"));
   const [lock, setLock] = useGunState(node.get("lock"), true);
+  const [withImage, setWithImage] = useGunState(node.get("withImage"), false);
   const [valid, setValid] = useState(true);
 
   useEffect(() => setValid((prev) => gaps.length === 0 || prev), [gaps]);
@@ -31,6 +33,8 @@ const Paragraph = ({ node, remove }) => {
 
   return (
     <>
+      <Dessins node={node} lock={lock} />
+      {withImage && <Image maxSizeKo={500} node={node.get("image")} />}
       <p>
         {gaps
           .sort(byCreateAt)
@@ -61,9 +65,11 @@ const Paragraph = ({ node, remove }) => {
       {values
         .sort(byCreateAt)
         .map(({ data: { value } }) => value && <li>{value}</li>)}
-      <Dessins node={node} lock={lock} />
       {!lock && (
         <>
+          <button onClick={() => setWithImage(!withImage)}>
+            {withImage ? "Remove" : "Add"} Image
+          </button>
           <button
             disabled={!(valid && gaps.length !== 0)}
             onClick={() => setLock(true)}

@@ -3,12 +3,12 @@ import { h, Fragment } from "preact";
 import { Link } from "wouter-preact";
 
 import { useGunState, useGunSetState } from "../utils/gun-hooks.js";
-import { byCreateAt } from "../utils/utils.js";
+import { byCreateAt, classs } from "../utils/utils.js";
 
 import { Text } from "./Text.jsx";
 import { session } from "../App.jsx";
 
-export default ({ node }) => {
+export default ({ node, currentKey }) => {
   const [pages, setPages] = useGunSetState(node.get("pages"));
   const [lock, setLock] = useGunState(
     node.get(session).get("pages").get("creation").get("lock")
@@ -24,14 +24,18 @@ export default ({ node }) => {
         const [lock] = useGunState(fiction.get("title").get("lock"));
         const [current] = useGunState(fiction.get("title").get("current"));
         return (
-          <li>
+          <li className={classs({ active: currentKey === key })}>
             {!lock ? (
               <Text
                 node={fiction.get("title")}
                 placeholder="Name your fiction..."
               />
             ) : (
-              <Link href={`/fiction/${key}`}>{current}</Link>
+              <Link
+                href={`/fiction/${key}`}
+              >
+                {current}
+              </Link>
             )}
           </li>
         );
@@ -39,7 +43,7 @@ export default ({ node }) => {
       {!lock && (
         <li>
           <a href="#" onClick={add}>
-            Add a new chapter
+            Add a new fiction
           </a>
         </li>
       )}

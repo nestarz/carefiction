@@ -16,7 +16,7 @@ export default () => {
         "https://carefiction-gun.herokuapp.com/gun",
       ],
     })
-    .get("alpha-6");
+    .get("alpha-7");
 
   return (
     <Router basepath={location.pathname}>

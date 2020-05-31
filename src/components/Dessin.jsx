@@ -25,7 +25,7 @@ const Dessin = ({ node, remove }) => {
   const [editable, setEditable] = useGunState(node.get("editable"));
 
   const points = useMemo(
-    () => (str ? JSON.parse(str).slice(0).slice(-200) : []),
+    () => (str ? JSON.parse(str).slice(0).slice(-600) : []),
     [str]
   );
   const d = useMemo(() => getPath(points), [points]);
@@ -38,9 +38,9 @@ const Dessin = ({ node, remove }) => {
 
   const onMove = ({ clientX, clientY }) => {
     const delta = Date.now() - time;
-    if (delta > 50) {
+    if (delta > 5) {
       if (record) {
-        const [x, y] = getProj(svg.current, clientX, clientY).map(Math.floor);
+        const [x, y] = getProj(svg.current, clientX, clientY).map(x => Math.floor(x * 100) / 100);
         setStr(JSON.stringify([...points, [mode, x, y]]));
         setMode("L");
         time = Date.now();
@@ -63,7 +63,7 @@ const Dessin = ({ node, remove }) => {
       )}
       {!editable ? (
         <svg viewBox={`0 0 100 100`} namespace="http://www.w3.org/2000/svg">
-          <path stroke-width="0.2" d={d}></path>
+          <path stroke-width="0.3" d={d}></path>
         </svg>
       ) : (
         <svg
@@ -77,7 +77,7 @@ const Dessin = ({ node, remove }) => {
           onTouchEnd={onClick}
           onTouchMove={(e) => onMove(e.touches[0])}
         >
-          <path stroke-width="0.2" ref={path} d={d}></path>
+          <path stroke-width="0.3" ref={path} d={d}></path>
         </svg>
       )}
     </>

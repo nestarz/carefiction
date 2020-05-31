@@ -13,9 +13,10 @@ export default ({node}) => {
     node: node.get("title"),
     placeholder: "Enter A Title"
   })), h(Nav2, {
-    node
+    node,
+    currentKey: node._.get
   }), h(Image2, {
-    maxSizeKo: 300,
+    maxSizeKo: 400,
     node: node.get("image")
   }), h("h2", null, h(Text2, {
     node: node.get("subtitle"),

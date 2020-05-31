@@ -1,10 +1,10 @@
 import {h, Fragment} from "preact";
 import {Link} from "wouter-preact";
 import {useGunSetState, useGunState} from "./../../../src/utils/gun-hooks.js";
-import {byCreateAt} from "./../../../src/utils/utils.js";
+import {byCreateAt, classs} from "./../../../src/utils/utils.js";
 import {session} from "./../../../src/App.jsx";
 import {Text as Text2} from "./../../../src/components/Text.jsx";
-export default ({node}) => {
+export default ({node, currentKey}) => {
   const [chapters, setChapters] = useGunSetState(node.get("chapters"));
   const [lock, setLock] = useGunState(node.get(session).get("chapters").get("creation").get("lock"));
   const add = () => {
@@ -21,7 +21,11 @@ export default ({node}) => {
   }, "Intro")), chapters.sort(byCreateAt).map(({key, node: chapter}) => {
     const [lock2] = useGunState(chapter.get("subtitle").get("lock"));
     const [current] = useGunState(chapter.get("subtitle").get("current"));
-    return h("li", null, !lock2 ? h(Text2, {
+    return h("li", {
+      className: classs({
+        active: currentKey === key
+      })
+    }, !lock2 ? h(Text2, {
       node: chapter.get("subtitle"),
       placeholder: "Name your chapter..."
     }) : h(Link, {
