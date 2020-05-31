@@ -14,15 +14,18 @@ export default ({ node, currentKey }) => {
     node.get(session).get("pages").get("creation").get("lock")
   );
   const add = () => {
-    setPages({ createdAt: new Date().toISOString(), lock: false });
+    setPages({ createdAt: new Date().toISOString(), lock: false, session });
     setLock(true);
   };
 
   return (
     <ol start="0">
-      {pages.sort(byCreateAt).map(({ key, node: fiction }) => {
+      {pages.sort(byCreateAt).map(({ key, node: fiction, data }) => {
         const [lock] = useGunState(fiction.get("title").get("lock"));
         const [current] = useGunState(fiction.get("title").get("current"));
+        const [pageSession] = useGunState(fiction.get("session"));
+
+        if (!lock && pageSession != session) return;
         return (
           <li className={classs({ active: currentKey === key })}>
             {!lock ? (
@@ -31,11 +34,7 @@ export default ({ node, currentKey }) => {
                 placeholder="Name your fiction..."
               />
             ) : (
-              <Link
-                href={`/fiction/${key}`}
-              >
-                {current}
-              </Link>
+              <Link href={`/fiction/${key}`}>{current}</Link>
             )}
           </li>
         );

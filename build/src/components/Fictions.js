@@ -10,15 +10,19 @@ export default ({node, currentKey}) => {
   const add = () => {
     setPages({
       createdAt: new Date().toISOString(),
-      lock: false
+      lock: false,
+      session
     });
     setLock(true);
   };
   return h("ol", {
     start: "0"
-  }, pages.sort(byCreateAt).map(({key, node: fiction}) => {
+  }, pages.sort(byCreateAt).map(({key, node: fiction, data}) => {
     const [lock2] = useGunState(fiction.get("title").get("lock"));
     const [current] = useGunState(fiction.get("title").get("current"));
+    const [pageSession] = useGunState(fiction.get("session"));
+    if (!lock2 && pageSession != session)
+      return;
     return h("li", {
       className: classs({
         active: currentKey === key

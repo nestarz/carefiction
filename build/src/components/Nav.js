@@ -10,7 +10,8 @@ export default ({node, currentKey}) => {
   const add = () => {
     setChapters({
       createdAt: new Date().toISOString(),
-      lock: false
+      lock: false,
+      session
     });
     setLock(true);
   };
@@ -18,9 +19,12 @@ export default ({node, currentKey}) => {
     start: "0"
   }, h("li", null, h(Link, {
     href: "/"
-  }, "Intro")), chapters.sort(byCreateAt).map(({key, node: chapter}) => {
+  }, "Intro")), chapters.sort(byCreateAt).map(({key, node: chapter, data}) => {
     const [lock2] = useGunState(chapter.get("subtitle").get("lock"));
     const [current] = useGunState(chapter.get("subtitle").get("current"));
+    const [chapterSession] = useGunState(chapter.get("session"));
+    if (!lock2 && chapterSession != session)
+      return;
     return h("li", {
       className: classs({
         active: currentKey === key
