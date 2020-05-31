@@ -2,13 +2,16 @@
   "imports": {
     "../src/App.jsx": "../build/src/App.js",
     "../src/components/About.jsx": "../build/src/components/About.js",
+    "../src/components/Chapter.jsx": "../build/src/components/Chapter.js",
     "../src/components/Context.jsx": "../build/src/components/Context.js",
     "../src/components/Dessin.jsx": "../build/src/components/Dessin.js",
     "../src/components/Edtiable.jsx": "../build/src/components/Edtiable.js",
+    "../src/components/Fiction.jsx": "../build/src/components/Fiction.js",
+    "../src/components/Fictions.jsx": "../build/src/components/Fictions.js",
     "../src/components/Image.jsx": "../build/src/components/Image.js",
-    "../src/components/Page.jsx": "../build/src/components/Page.js",
-    "../src/components/Pages.jsx": "../build/src/components/Pages.js",
+    "../src/components/Nav.jsx": "../build/src/components/Nav.js",
     "../src/components/Paragraphs.jsx": "../build/src/components/Paragraphs.js",
+    "../src/components/Plan.jsx": "../build/src/components/Plan.js",
     "../src/components/Text.jsx": "../build/src/components/Text.js",
     "../src/components/Video.jsx": "../build/src/components/Video.js"
   }

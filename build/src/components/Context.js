@@ -2,6 +2,7 @@ import {h, Fragment} from "preact";
 import {useState} from "preact/hooks";
 import {Link} from "wouter-preact";
 import {useGunSetState, useGunState} from "./../../../src/utils/gun-hooks.js";
+import Nav2 from "./../../../src/components/Nav.jsx";
 import Video2 from "./../../../src/components/Video.jsx";
 import Image2 from "./../../../src/components/Image.jsx";
 import {Text as Text2, Sentence} from "./../../../src/components/Text.jsx";
@@ -45,24 +46,16 @@ const ContextParagraphs = ({node}) => {
     onClick: add
   }, "Add A New Paragraph"));
 };
-export default ({id, node}) => {
+export default ({fiction, chapter}) => {
   return h(Fragment, null, h("h1", null, h("span", null, "Care Fiction:"), h(Text2, {
-    node: node.get("title"),
+    node: fiction.get("title"),
     placeholder: "Enter A Title"
-  })), h("ol", {
-    start: "0"
-  }, h("li", null, h(Link, {
-    href: "/about/"
-  }, "Intro")), h("li", null, h(Link, {
-    href: `/fiction/${id}`
-  }, "First visit")), h("li", {
-    className: "active"
-  }, h(Link, {
-    href: `/context/${id}`
-  }, "Context"))), h(Image2, {
+  })), h(Nav2, {
+    node: fiction
+  }), h(Image2, {
     maxSizeKo: 300,
-    node: node.get("image")
+    node: fiction.get("image")
   }), h("h2", null, "CO-WRITE THE STORY!"), h(ContextParagraphs, {
-    node
+    node: chapter
   }));
 };

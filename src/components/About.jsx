@@ -1,9 +1,10 @@
 /* @jsx h */
 import { h, Fragment } from "preact";
+import Fictions from "./Fictions.jsx";
 
-export default () => {
+export default ({ node }) => {
   return (
-    <>
+    <div className="about">
       <h1>
         <span>CARE FICTION:</span>
         <span>A PLAYGROUND FOR COMMONERS</span>
@@ -22,6 +23,7 @@ export default () => {
         richer, and selected. May the dream breach through the screen and become
         real.
       </p>
-    </>
+      <Fictions node={node} />
+    </div>
   );
 };

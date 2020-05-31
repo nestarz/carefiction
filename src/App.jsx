@@ -2,10 +2,9 @@
 import { h, Fragment } from "preact";
 import { Route, Router } from "wouter-preact";
 
-import Page from "./components/Page.jsx";
-import Pages from "./components/Pages.jsx";
+import Chapter from "./components/Chapter.jsx";
 import About from "./components/About.jsx";
-import Context from "./components/Context.jsx";
+import Fiction from "./components/Fiction.jsx";
 
 export const session = new Date().toISOString();
 
@@ -17,18 +16,25 @@ export default () => {
         "https://carefiction-gun.herokuapp.com/gun",
       ],
     })
-    .get("alpha-2");
+    .get("alpha-6");
 
   return (
     <Router basepath={location.pathname}>
-      <Route path="/">{() => <Pages node={node.get("pages")} />}</Route>
-      <Route path="/about" component={About}></Route>
+      <Route path="/">{() => <About node={node} />}</Route>
       <Route path="/fiction/:key">
-        {({ key }) => <Page id={key} node={node.get("pages").get(key)} />}
+        {({ key }) => <Fiction node={node.get("pages").get(key)} />}
       </Route>
-      <Route path="/context/:key">
-        {({ key }) => (
-          <Context id={key} node={node.get("pages").get(key).get("context")} />
+      <Route path="/fiction/:fiction/chapter/:chapter">
+        {({ fiction, chapter }) => (
+          <Chapter
+            id={chapter}
+            fiction={node.get("pages").get(fiction)}
+            chapter={node
+              .get("pages")
+              .get(fiction)
+              .get("chapters")
+              .get(chapter)}
+          />
         )}
       </Route>
     </Router>

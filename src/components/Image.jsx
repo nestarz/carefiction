@@ -4,7 +4,7 @@ import { h, Fragment } from "preact";
 import { useGunState } from "../utils/gun-hooks.js";
 import { classs, toBase64 } from "../utils/utils.js";
 
-export default ({ node, maxSizeKo = 0 }) => {
+export default ({ node, children, maxSizeKo = 0, className, onClick }) => {
   const [src, setSrc] = useGunState(node.get("src"));
   const [lock, setLock] = useGunState(node.get("lock"), true);
   const add = async (event) => {
@@ -16,10 +16,10 @@ export default ({ node, maxSizeKo = 0 }) => {
   };
 
   return (
-    <div className={classs({ lock, empty: !src }, "image")}>
+    <div className={classs({ lock, empty: !src }, "image", className)}>
       {src ? (
         <>
-          <img src={src} />
+          <img onClick={onClick} src={src} />
           {!lock && (
             <>
               <button onClick={() => setSrc(null)}>Remove</button>
@@ -30,6 +30,7 @@ export default ({ node, maxSizeKo = 0 }) => {
       ) : (
         <input onChange={add} type="file" accept="image/*"></input>
       )}
+      {children}
     </div>
   );
 };

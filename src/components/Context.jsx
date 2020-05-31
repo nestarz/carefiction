@@ -5,6 +5,7 @@ import { Link } from "wouter-preact";
 
 import { useGunSetState, useGunState } from "../utils/gun-hooks.js";
 
+import Nav from "./Nav.jsx";
 import Video from "./Video.jsx";
 import Image from "./Image.jsx";
 import { Text, Sentence } from "./Text.jsx";
@@ -62,27 +63,17 @@ const ContextParagraphs = ({ node }) => {
   );
 };
 
-export default ({ id, node }) => {
+export default ({ fiction, chapter }) => {
   return (
     <>
       <h1>
         <span>Care Fiction:</span>
-        <Text node={node.get("title")} placeholder={"Enter A Title"} />
+        <Text node={fiction.get("title")} placeholder={"Enter A Title"} />
       </h1>
-      <ol start="0">
-        <li>
-          <Link href="/about/">Intro</Link>
-        </li>
-        <li>
-          <Link href={`/fiction/${id}`}>First visit</Link>
-        </li>
-        <li className="active">
-          <Link href={`/context/${id}`}>Context</Link>
-        </li>
-      </ol>
-      <Image maxSizeKo={300} node={node.get("image")} />
+      <Nav node={fiction} />
+      <Image maxSizeKo={300} node={fiction.get("image")} />
       <h2>CO-WRITE THE STORY!</h2>
-      <ContextParagraphs node={node} />
+      <ContextParagraphs node={chapter} />
     </>
   );
 };

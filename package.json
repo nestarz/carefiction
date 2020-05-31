@@ -14,5 +14,10 @@
     "preact/hooks": "10.4.4",
     "wouter-preact": "2.4.0",
     "gun": "0.2020.520"
+  },
+  "devDependencies": {
+    "gun": "^0.2020.520",
+    "preact": "^10.4.4",
+    "wouter-preact": "^2.4.0"
   }
 }

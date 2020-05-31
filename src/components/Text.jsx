@@ -1,6 +1,6 @@
 /* @jsx h */
-import { h } from "preact";
-import { useEffect } from "preact/hooks";
+import { h, Fragment } from "preact";
+import { useState, useEffect } from "preact/hooks";
 
 import { useGunState } from "../utils/gun-hooks.js";
 import { classs } from "../utils/utils.js";
@@ -62,18 +62,23 @@ export const Sentence = ({ node, lock, remove, onValid }) => {
 };
 
 export const Text = ({ node, placeholder = "Write something here..." }) => {
-  const [title, setTitle] = useGunState(node.get("current"));
+  const [current, setCurrent] = useGunState(node.get("current"));
   const [lock, setLock] = useGunState(node.get("lock"), true);
+  const [valid, setValid] = useState(false);
+
   return !lock ? (
     <span>
       <Editable
-        current={title}
+        current={current}
         placeholder={placeholder}
-        setCurrent={setTitle}
+        setCurrent={setCurrent}
+        onValid={setValid}
       />
-      <button onClick={() => setLock(true)}>Lock</button>
+      <button disabled={!valid} onClick={() => setLock(true)}>
+        Lock
+      </button>
     </span>
   ) : (
-    <span>{title}</span>
+    <span>{current}</span>
   );
 };
