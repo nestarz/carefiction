@@ -41,21 +41,16 @@ export const Blank = ({ node, lock, remove }) => {
 export const Sentence = ({ node, lock, remove, onValid }) => {
   const [placeholder] = useGunState(node.get("placeholder"));
   const [current, setCurrent] = useGunState(node.get("current"));
-  const [bold, setBold] = useGunState(node.get("bold"));
   useEffect(() => onValid(current !== placeholder && current), [current]);
   return lock ? (
-    <span className={classs({ bold })}>{current}</span>
+    <span>{current}</span>
   ) : (
     <>
       <Editable
-        className={classs({ bold })}
         current={current}
         placeholder={placeholder}
         setCurrent={setCurrent}
       />
-      <button onClick={() => setBold(!bold)}>{`${
-        bold ? "Remove" : "Add"
-      } Emphasis`}</button>
       <button onClick={remove}>Remove The Text</button>
     </>
   );

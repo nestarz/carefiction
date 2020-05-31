@@ -32,22 +32,12 @@ export const Blank = ({node, lock, remove}) => {
 export const Sentence = ({node, lock, remove, onValid}) => {
   const [placeholder] = useGunState(node.get("placeholder"));
   const [current, setCurrent] = useGunState(node.get("current"));
-  const [bold, setBold] = useGunState(node.get("bold"));
   useEffect(() => onValid(current !== placeholder && current), [current]);
-  return lock ? h("span", {
-    className: classs({
-      bold
-    })
-  }, current) : h(Fragment, null, h(Editable, {
-    className: classs({
-      bold
-    }),
+  return lock ? h("span", null, current) : h(Fragment, null, h(Editable, {
     current,
     placeholder,
     setCurrent
   }), h("button", {
-    onClick: () => setBold(!bold)
-  }, `${bold ? "Remove" : "Add"} Emphasis`), h("button", {
     onClick: remove
   }, "Remove The Text"));
 };
