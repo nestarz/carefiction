@@ -51,6 +51,7 @@ const Paragraph = ({node, remove}) => {
 };
 export default ({node}) => {
   const [paragraphs, setParagraphs] = useGunSetState(node.get("paragraphs"));
+  useEffect(() => () => console.log(paragraphs, node._.get), [node]);
   const add = () => setParagraphs({
     createdAt: new Date().toISOString(),
     lock: false

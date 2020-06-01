@@ -26,7 +26,10 @@ export const useGunSetState = (node) => {
       event = e;
       register(data, key);
     });
-    return () => event?.off();
+    return () => {
+      event?.off();
+      setSet([]);
+    };
   }, [node]);
   return [set, (value) => node.set(value)];
 };
@@ -40,7 +43,10 @@ export const useGunState = (node, initialState = undefined) => {
       event = e;
       setValue(data);
     });
-    return () => event?.off();
+    return () => {
+      event?.off();
+      setValue(initialState);
+    };
   }, [node]);
   return [value, (value) => node.put(value)];
 };
