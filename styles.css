@@ -45,7 +45,7 @@ img {
 
 nav:last-of-type a {
   display: block;
-  width: min-content;
+  width: max-content;
 }
 
 main > div {
