@@ -4,10 +4,11 @@ import { useState, useRef, useMemo } from "preact/hooks";
 import { useGunSetState, useGunState } from "../utils/gun-hooks.js";
 import { classs, byCreateAt } from "../utils/utils.js";
 
+const p = (i) => i || 0;
 const getPath = (points) =>
   points.reduce(
     (acc, [mode, x, y], i) =>
-      i === 0 ? `M${x},${y}` : `${acc}${mode || "L"}${x} ${y}`,
+      i === 0 ? `M${p(x)},${p(y)}` : `${acc}${mode || "L"}${p(x)},${p(y)}`,
     ""
   );
 
@@ -18,6 +19,15 @@ const getProj = (svg, x, y) => {
   return [projX, projY];
 };
 
+const unparse = (str) =>
+  [
+    ...str.matchAll(
+      /([A-Z]-?\d*\.{0,1}\d+\.?-?\d*\.{0,1}\d+,-?\d*\.{0,1}\d+\.?-?\d*\.{0,1}\d+)/g
+    ),
+  ].map((x) =>
+    [x[0][0], ...x[0].substring(1).split(",")].map((y) => (+y ? +y : y))
+  );
+
 let time = 0;
 export default ({ node, remove }) => {
   const [str, setStr] = useGunState(node.get("points"));
@@ -25,7 +35,7 @@ export default ({ node, remove }) => {
   const [nonEditable, setNonEditable] = useGunState(node.get("non-editable"));
 
   const points = useMemo(
-    () => (str ? JSON.parse(str).slice(0).slice(-600) : []),
+    () => (str ? unparse(str).slice(0).slice(-1600) : []),
     [str]
   );
   const d = useMemo(() => getPath(points), [points]);
@@ -38,12 +48,12 @@ export default ({ node, remove }) => {
 
   const onMove = ({ clientX, clientY }) => {
     const delta = Date.now() - time;
-    if (delta > 5) {
+    if (delta > 40) {
       if (record) {
-        const [x, y] = getProj(svg.current, clientX, clientY).map(
-          (x) => Math.floor(x * 100) / 100
+        const [x, y] = getProj(svg.current, clientX, clientY).map((x) =>
+          Math.floor(x)
         );
-        setStr(JSON.stringify([...points, [mode, x, y]]));
+        setStr(getPath([...points, [mode, x, y]]));
         setMode("L");
         time = Date.now();
       } else setMode("M");
@@ -64,14 +74,14 @@ export default ({ node, remove }) => {
         </div>
       )}
       {nonEditable ? (
-        <svg viewBox={`0 0 100 100`} namespace="http://www.w3.org/2000/svg">
-          <path stroke-width="0.3" d={d}></path>
+        <svg viewBox={`0 0 1000 1000`} namespace="http://www.w3.org/2000/svg">
+          <path stroke-width="3" d={d}></path>
         </svg>
       ) : (
         <svg
           className={classs({ lock, editable: !nonEditable })}
           ref={svg}
-          viewBox={`0 0 100 100`}
+          viewBox={`0 0 1000 1000`}
           namespace="http://www.w3.org/2000/svg"
           onClick={onClick}
           onMouseMove={onMove}
@@ -79,7 +89,7 @@ export default ({ node, remove }) => {
           onTouchEnd={onClick}
           onTouchMove={(e) => onMove(e.touches[0])}
         >
-          <path stroke-width="0.3" ref={path} d={d}></path>
+          <path stroke-width="3" ref={path} d={d}></path>
         </svg>
       )}
     </>

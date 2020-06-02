@@ -6,7 +6,7 @@ import Fiction2 from "./../../src/components/Fiction.jsx";
 export default () => {
   const node = useGun({
     peers: ["https://gun.eliasrhouzlane.com/gun", "https://carefiction-gun.herokuapp.com/gun"],
-    root: "alpha-22"
+    root: "alpha-23"
   });
   return h(Router, {
     basepath: location.pathname
