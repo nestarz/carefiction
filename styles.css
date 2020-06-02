@@ -43,6 +43,11 @@ img {
   width: 100%;
 }
 
+nav:last-of-type a {
+  display: block;
+  width: min-content;
+}
+
 main > div {
   display: grid;
   grid-gap: 2rem;
@@ -101,7 +106,7 @@ header details summary > input {
   margin-left: 1rem;
 }
 
-::placeholder { 
+::placeholder {
   color: black;
   opacity: 1;
 }
