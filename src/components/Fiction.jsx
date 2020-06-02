@@ -42,15 +42,26 @@ const ListChapters = ({ node, parent }) => {
 const CreateChapter = ({ parent, node }) => {
   const [_, setChapters] = useGunSetState(node.get("chapters"));
   const [lock, setLock] = useState(false);
-  const add = (title) =>
-    setChapters({
+  const add = (title) => {
+    const chapter = setChapters({
       createdAt: new Date().toISOString(),
-    })
+    });
+
+    chapter
+      .get("chapters")
+      .get("Intro")
+      .put({ createdAt: new Date().toISOString() })
+      .get("titles")
+      .get("values")
+      .get(session)
+      .put({ current: "Intro", count: 1 });
+
+    chapter
       .get("titles")
       .get("values")
       .get(session)
       .put({ current: title, count: 1 });
-
+  };
   return (
     <input
       readOnly={lock}
@@ -76,20 +87,23 @@ const Path = ({ node }) => {
 
   return (
     <>
-      <details>
-        <summary>
-          <span>></span>
-          <InputText placeholder={title.current} node={node.get("titles")} />
-        </summary>
-        <div>
-          <Counter node={node.get("titles")} />
-        </div>
-      </details>
+      {title.current && (
+        <details>
+          <summary>
+            <span>></span>
+            <InputText placeholder={title.current} node={node.get("titles")} />
+          </summary>
+          <div>
+            <Counter node={node.get("titles")} />
+          </div>
+        </details>
+      )}
     </>
   );
 };
 
 export default ({ parent, node }) => {
+  console.log(parent);
   return (
     <>
       <header>

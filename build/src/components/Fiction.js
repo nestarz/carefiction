@@ -26,12 +26,21 @@ const ListChapters = ({node, parent}) => {
 const CreateChapter = ({parent, node}) => {
   const [_, setChapters] = useGunSetState(node.get("chapters"));
   const [lock, setLock] = useState(false);
-  const add = (title) => setChapters({
-    createdAt: new Date().toISOString()
-  }).get("titles").get("values").get(session).put({
-    current: title,
-    count: 1
-  });
+  const add = (title) => {
+    const chapter = setChapters({
+      createdAt: new Date().toISOString()
+    });
+    chapter.get("chapters").get("Intro").put({
+      createdAt: new Date().toISOString()
+    }).get("titles").get("values").get(session).put({
+      current: "Intro",
+      count: 1
+    });
+    chapter.get("titles").get("values").get(session).put({
+      current: title,
+      count: 1
+    });
+  };
   return h("input", {
     readOnly: lock,
     type: "text",
@@ -50,7 +59,7 @@ const Path = ({node}) => {
   const title = titles.map(({data}) => ({
     ...data
   })).reduce((a, b) => a.count > b.count ? a : b, {});
-  return h(Fragment, null, h("details", null, h("summary", null, h("span", null, ">"), h(InputText2, {
+  return h(Fragment, null, title.current && h("details", null, h("summary", null, h("span", null, ">"), h(InputText2, {
     placeholder: title.current,
     node: node.get("titles")
   })), h("div", null, h(Counter2, {
@@ -58,6 +67,7 @@ const Path = ({node}) => {
   }))));
 };
 export default ({parent, node}) => {
+  console.log(parent);
   return h(Fragment, null, h("header", null, h("div", null, h(Link, {
     to: "/"
   }, "Care Fiction"), parent && h(Path, {
