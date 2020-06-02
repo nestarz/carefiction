@@ -13,7 +13,7 @@ export default ({ node, remove }) => {
     <>
       {!lock && (
         <div className="before-lock">
-          <button onClick={remove}>╳</button>
+          <button onClick={remove}>✕</button>
           <button className={classs({ lock })} onClick={() => setLock(!lock)}>
             {lock ? "🔒" : "🔓"}
           </button>

@@ -16,7 +16,7 @@ export default ({node, remove, placeholder}) => {
     className: "before-lock"
   }, h("button", {
     onClick: remove
-  }, "╳"), h("button", {
+  }, "✕"), h("button", {
     className: classs({
       lock
     }),

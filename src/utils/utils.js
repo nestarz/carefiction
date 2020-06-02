@@ -32,4 +32,4 @@ export const toBase64 = (file) =>
 export const byCreateAt = (
   { data: { createdAt: a } },
   { data: { createdAt: b } }
-) => +Date.parse(a) > +Date.parse(b);
+) => new Date(b) - new Date(a);

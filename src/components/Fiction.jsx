@@ -37,6 +37,7 @@ const ListChapters = ({ node, parent }) => {
 
   return chapters
     .sort(byCreateAt)
+    .reverse()
     .map(({ key, node: child }) => (
       <ChapterTitle key={key} parent={parent} node={child} />
     ));

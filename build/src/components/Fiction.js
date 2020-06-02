@@ -20,7 +20,7 @@ const ChapterTitle = ({parent, node}) => {
 };
 const ListChapters = ({node, parent}) => {
   const [chapters] = useGunSetState(node.get("chapters"));
-  return chapters.sort(byCreateAt).map(({key, node: child}) => h(ChapterTitle, {
+  return chapters.sort(byCreateAt).reverse().map(({key, node: child}) => h(ChapterTitle, {
     key,
     parent,
     node: child

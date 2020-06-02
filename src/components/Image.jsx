@@ -19,7 +19,7 @@ export default ({ node, remove, maxSizeKo = 400, onClick }) => {
     <>
       {!lock && (
         <div className="before-lock">
-          <button onClick={remove}>╳</button>
+          <button onClick={remove}>✕</button>
           {src && (
             <button onClick={() => setLock(true)}>{lock ? "🔒" : "🔓"}</button>
           )}

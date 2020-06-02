@@ -52,7 +52,7 @@ export const useGunState = (node, initialState = undefined) => {
 };
 
 export const useGun = ({ peers, root }) => {
-  return window.Gun({ peers }).get(root);
+  return window.Gun({ peers, localStorage: false }).get(root);
 };
 
 // export const gunWorker = (worker, key = "100") => ({

@@ -16,7 +16,7 @@ export default ({node, remove, maxSizeKo = 400, onClick}) => {
     className: "before-lock"
   }, h("button", {
     onClick: remove
-  }, "╳"), src && h("button", {
+  }, "✕"), src && h("button", {
     onClick: () => setLock(true)
   }, lock ? "🔒" : "🔓")), src ? h("img", {
     onClick,

@@ -1,7 +1,7 @@
 import {h, Fragment} from "preact";
 import {useState, useRef, useMemo} from "preact/hooks";
-import {useGunSetState, useGunState} from "./../../../src/utils/gun-hooks.js";
-import {classs, byCreateAt} from "./../../../src/utils/utils.js";
+import {useGunState} from "./../../../src/utils/gun-hooks.js";
+import {classs} from "./../../../src/utils/utils.js";
 const p = (i) => i || 0;
 const getPath = (points) => points.reduce((acc, [mode, x, y], i) => i === 0 ? `M${p(x)},${p(y)}` : `${acc}${mode || "L"}${p(x)},${p(y)}`, "");
 const getProj = (svg, x, y) => {
@@ -42,7 +42,7 @@ export default ({node, remove}) => {
     className: "before-lock"
   }, h("button", {
     onClick: remove
-  }, "╳"), h("button", {
+  }, "✕"), h("button", {
     disabled: points.length < 10,
     onClick: () => setLock(true)
   }, lock ? "🔒" : "🔓"), h("button", {

@@ -227,6 +227,7 @@ textarea,
   resize: none;
   font-family: var(--font);
   white-space: pre-line;
+  outline: none;
 }
 
 textarea {
@@ -263,6 +264,13 @@ article {
   border: none;
   padding: 0;
   filter: grayscale(100%) brightness(0);
+  width: 1.8rem;
+}
+
+.before-lock button:hover {
+  filter: grayscale(100%) brightness(100);
+  color: white;
+  background: none;
 }
 
 .before-lock .lock {

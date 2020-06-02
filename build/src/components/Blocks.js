@@ -13,7 +13,8 @@ const components = {
 };
 export const BlocksContent = ({node}) => {
   const [blocks] = useGunSetState(node.get("blocks"));
-  return blocks.sort(byCreateAt).map(({node: node2, data, remove}) => h("article", {
+  return blocks.sort(byCreateAt).reverse().map(({key, node: node2, data, remove}) => h("article", {
+    key,
     className: data.type
   }, h(components[data.type], {
     node: node2,
@@ -27,6 +28,7 @@ export const BlocksProducer = ({node}) => {
     type
   });
   return Object.keys(components).map((type) => h("button", {
+    key: type,
     onClick: () => add(type)
   }, type));
 };

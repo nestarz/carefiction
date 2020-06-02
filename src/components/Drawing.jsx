@@ -1,8 +1,8 @@
 /* @jsx h */
 import { h, Fragment } from "preact";
 import { useState, useRef, useMemo } from "preact/hooks";
-import { useGunSetState, useGunState } from "../utils/gun-hooks.js";
-import { classs, byCreateAt } from "../utils/utils.js";
+import { useGunState } from "../utils/gun-hooks.js";
+import { classs } from "../utils/utils.js";
 
 const p = (i) => i || 0;
 const getPath = (points) =>
@@ -64,7 +64,7 @@ export default ({ node, remove }) => {
     <>
       {!lock && (
         <div className="before-lock">
-          <button onClick={remove}>╳</button>
+          <button onClick={remove}>✕</button>
           <button disabled={points.length < 10} onClick={() => setLock(true)}>
             {lock ? "🔒" : "🔓"}
           </button>
