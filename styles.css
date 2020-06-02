@@ -61,6 +61,7 @@ header a {
   text-transform: uppercase;
   background: white;
   align-self: baseline;
+  user-select: none;
 }
 
 header details {
@@ -107,6 +108,10 @@ nav > div {
   display: inline;
 }
 
+nav > div > span {
+  user-select: none;
+}
+
 nav > div > span,
 nav input {
   display: block;
@@ -134,8 +139,15 @@ button {
 }
 
 a:hover,
-button:hover {
+button:hover,
+.drawing svg {
   background: white;
+}
+
+.drawing svg {
+  max-height: 30vmin;
+  object-fit: cover;
+  width: 100%;
 }
 
 input,
@@ -162,7 +174,8 @@ textarea,
 
 textarea[readonly],
 textarea[readonly="readonly"],
-.textarea {
+.textarea,
+.drawing svg {
   border: var(--border);
 }
 

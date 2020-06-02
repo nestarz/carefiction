@@ -4,9 +4,9 @@ import { useGunState } from "../utils/gun-hooks.js";
 import { classs } from "../utils/utils.js";
 import { useRef, useEffect } from "preact/hooks";
 
-export default ({ node, placeholder }) => {
+export default ({ node, remove, placeholder }) => {
   const [value, setValue] = useGunState(node.get("current"));
-  const [lock, setLock] = useGunState(node.get("lock"));
+  const [lock, setLock] = useGunState(node.get("lock"), true);
   const ref = useRef();
   useEffect(() => {
     if (ref.current) {
@@ -16,11 +16,14 @@ export default ({ node, placeholder }) => {
   }, [value, lock]);
   return (
     <>
-      <div className="before-lock">
-        <button className={classs({ lock })} onClick={() => setLock(!lock)}>
-          {lock ? "🔒" : "🔓"}
-        </button>
-      </div>
+      {!lock && (
+        <div className="before-lock">
+          <button onClick={remove}>╳</button>
+          <button className={classs({ lock })} onClick={() => setLock(!lock)}>
+            {lock ? "🔒" : "🔓"}
+          </button>
+        </div>
+      )}
       {lock ? (
         <div className="textarea">{value}</div>
       ) : (

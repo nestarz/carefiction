@@ -2,9 +2,9 @@ import {h, Fragment} from "preact";
 import {useGunState} from "./../../../src/utils/gun-hooks.js";
 import {classs} from "./../../../src/utils/utils.js";
 import {useRef, useEffect} from "preact/hooks";
-export default ({node, placeholder}) => {
+export default ({node, remove, placeholder}) => {
   const [value, setValue] = useGunState(node.get("current"));
-  const [lock, setLock] = useGunState(node.get("lock"));
+  const [lock, setLock] = useGunState(node.get("lock"), true);
   const ref = useRef();
   useEffect(() => {
     if (ref.current) {
@@ -12,9 +12,11 @@ export default ({node, placeholder}) => {
       ref.current.style.height = 10 + ref.current.scrollHeight + "px";
     }
   }, [value, lock]);
-  return h(Fragment, null, h("div", {
+  return h(Fragment, null, !lock && h("div", {
     className: "before-lock"
   }, h("button", {
+    onClick: remove
+  }, "╳"), h("button", {
     className: classs({
       lock
     }),

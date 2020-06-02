@@ -22,7 +22,7 @@ let time = 0;
 export default ({ node, remove }) => {
   const [str, setStr] = useGunState(node.get("points"));
   const [lock, setLock] = useGunState(node.get("lock"));
-  const [editable, setEditable] = useGunState(node.get("editable"));
+  const [nonEditable, setNonEditable] = useGunState(node.get("non-editable"));
 
   const points = useMemo(
     () => (str ? JSON.parse(str).slice(0).slice(-600) : []),
@@ -58,18 +58,18 @@ export default ({ node, remove }) => {
           <button disabled={points.length < 10} onClick={() => setLock(true)}>
             {lock ? "🔒" : "🔓"}
           </button>
-          <button onClick={() => setEditable(!editable)}>
-            {editable ? "✎" : "☉"}
+          <button onClick={() => setNonEditable(!nonEditable)}>
+            {nonEditable ? "☉" : "✎"}
           </button>
         </div>
       )}
-      {!editable ? (
+      {nonEditable ? (
         <svg viewBox={`0 0 100 100`} namespace="http://www.w3.org/2000/svg">
           <path stroke-width="0.3" d={d}></path>
         </svg>
       ) : (
         <svg
-          className={classs({ lock, editable })}
+          className={classs({ lock, editable: !nonEditable })}
           ref={svg}
           viewBox={`0 0 100 100`}
           namespace="http://www.w3.org/2000/svg"

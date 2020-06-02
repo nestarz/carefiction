@@ -16,7 +16,7 @@ let time = 0;
 export default ({node, remove}) => {
   const [str, setStr] = useGunState(node.get("points"));
   const [lock, setLock] = useGunState(node.get("lock"));
-  const [editable, setEditable] = useGunState(node.get("editable"));
+  const [nonEditable, setNonEditable] = useGunState(node.get("non-editable"));
   const points = useMemo(() => str ? JSON.parse(str).slice(0).slice(-600) : [], [str]);
   const d = useMemo(() => getPath(points), [points]);
   const svg = useRef();
@@ -44,8 +44,8 @@ export default ({node, remove}) => {
     disabled: points.length < 10,
     onClick: () => setLock(true)
   }, lock ? "🔒" : "🔓"), h("button", {
-    onClick: () => setEditable(!editable)
-  }, editable ? "✎" : "☉")), !editable ? h("svg", {
+    onClick: () => setNonEditable(!nonEditable)
+  }, nonEditable ? "☉" : "✎")), nonEditable ? h("svg", {
     viewBox: `0 0 100 100`,
     namespace: "http://www.w3.org/2000/svg"
   }, h("path", {
@@ -54,7 +54,7 @@ export default ({node, remove}) => {
   })) : h("svg", {
     className: classs({
       lock,
-      editable
+      editable: !nonEditable
     }),
     ref: svg,
     viewBox: `0 0 100 100`,
