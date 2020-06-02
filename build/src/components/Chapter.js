@@ -1,32 +1,32 @@
 import {h, Fragment} from "preact";
-import {Link} from "wouter-preact";
-import {useGunState} from "./../../../src/utils/gun-hooks.js";
-import {formatDate} from "./../../../src/utils/utils.js";
-import Paragraphs2 from "./../../../src/components/Paragraphs.jsx";
-import {Text as Text2} from "./../../../src/components/Text.jsx";
+import {useGunSetState} from "./../../../src/utils/gun-hooks.js";
+import {byCreateAt} from "./../../../src/utils/utils.js";
+import Textarea2 from "./../../../src/components/Textarea.jsx";
+import Blank2 from "./../../../src/components/Blank.jsx";
 import Image2 from "./../../../src/components/Image.jsx";
-import Nav2 from "./../../../src/components/Nav.jsx";
-export default ({fiction, chapter}) => {
-  const [createdAt] = useGunState(chapter.get("createdAt"));
-  return h("div", {
-    className: "chapter"
-  }, h("h1", null, h(Link, {
-    to: `/fiction/${fiction._.get}`
-  }, h("span", null, "Care Fiction:"), h(Text2, {
-    node: fiction.get("title"),
-    placeholder: "Enter A Title"
-  }))), h(Nav2, {
-    node: fiction,
-    currentKey: chapter._.get
-  }), h(Image2, {
-    maxSizeKo: 400,
-    node: chapter.get("image")
-  }), h("h2", null, h(Text2, {
-    node: chapter.get("subtitle"),
-    placeholder: "Enter A Subtitle"
-  })), h("time", {
-    datetime: createdAt
-  }, formatDate(createdAt)), h(Paragraphs2, {
-    node: chapter
-  }));
+import Drawing2 from "./../../../src/components/Drawing.jsx";
+const components = {
+  text: Textarea2,
+  blank: Blank2,
+  image: Image2,
+  drawing: Drawing2
+};
+export const ChapterContent = ({node}) => {
+  const [blocks] = useGunSetState(node.get("blocks"));
+  return blocks.sort(byCreateAt).map(({node: node2, data, remove}) => h("article", {
+    className: data.type
+  }, h(components[data.type], {
+    node: node2,
+    remove
+  })));
+};
+export const ChapterControls = ({node}) => {
+  const [_, setBlocks] = useGunSetState(node.get("blocks"));
+  const add = (type) => setBlocks({
+    createdAt: new Date().toISOString(),
+    type
+  });
+  return Object.keys(components).map((type) => h("button", {
+    onClick: () => add(type)
+  }, type));
 };

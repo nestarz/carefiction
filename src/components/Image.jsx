@@ -2,9 +2,9 @@
 import { h, Fragment } from "preact";
 
 import { useGunState } from "../utils/gun-hooks.js";
-import { classs, toBase64 } from "../utils/utils.js";
+import { toBase64 } from "../utils/utils.js";
 
-export default ({ node, children, maxSizeKo = 0, className, onClick }) => {
+export default ({ node, remove, maxSizeKo = 400, onClick }) => {
   const [src, setSrc] = useGunState(node.get("src"));
   const [lock, setLock] = useGunState(node.get("lock"), true);
   const add = async (event) => {
@@ -16,21 +16,20 @@ export default ({ node, children, maxSizeKo = 0, className, onClick }) => {
   };
 
   return (
-    <div className={classs({ lock, empty: !src }, "image", className)}>
-      {src ? (
-        <>
-          <img onClick={onClick} src={src} />
-          {!lock && (
-            <>
-              <button onClick={() => setSrc(null)}>Remove</button>
-              <button onClick={() => setLock(true)}>Lock</button>
-            </>
+    <>
+      {!lock && (
+        <div className="before-lock">
+          <button onClick={remove}>╳</button>
+          {src && (
+            <button onClick={() => setLock(true)}>{lock ? "🔒" : "🔓"}</button>
           )}
-        </>
+        </div>
+      )}
+      {src ? (
+        <img onClick={onClick} src={src} />
       ) : (
         <input onChange={add} type="file" accept="image/*"></input>
       )}
-      {children}
-    </div>
+    </>
   );
 };

@@ -1,7 +1,7 @@
 import {h, Fragment} from "preact";
 import {useGunState} from "./../../../src/utils/gun-hooks.js";
-import {classs, toBase64} from "./../../../src/utils/utils.js";
-export default ({node, children, maxSizeKo = 0, className, onClick}) => {
+import {toBase64} from "./../../../src/utils/utils.js";
+export default ({node, remove, maxSizeKo = 400, onClick}) => {
   const [src, setSrc] = useGunState(node.get("src"));
   const [lock, setLock] = useGunState(node.get("lock"), true);
   const add = async (event) => {
@@ -12,21 +12,18 @@ export default ({node, children, maxSizeKo = 0, className, onClick}) => {
     else
       setSrc(await toBase64(file));
   };
-  return h("div", {
-    className: classs({
-      lock,
-      empty: !src
-    }, "image", className)
-  }, src ? h(Fragment, null, h("img", {
+  return h(Fragment, null, !lock && h("div", {
+    className: "before-lock"
+  }, h("button", {
+    onClick: remove
+  }, "╳"), src && h("button", {
+    onClick: () => setLock(true)
+  }, lock ? "🔒" : "🔓")), src ? h("img", {
     onClick,
     src
-  }), !lock && h(Fragment, null, h("button", {
-    onClick: () => setSrc(null)
-  }, "Remove"), h("button", {
-    onClick: () => setLock(true)
-  }, "Lock"))) : h("input", {
+  }) : h("input", {
     onChange: add,
     type: "file",
     accept: "image/*"
-  }), children);
+  }));
 };

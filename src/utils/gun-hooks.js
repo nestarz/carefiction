@@ -51,6 +51,10 @@ export const useGunState = (node, initialState = undefined) => {
   return [value, (value) => node.put(value)];
 };
 
+export const useGun = ({ peers, root }) => {
+  return window.Gun({ peers }).get(root);
+};
+
 // export const gunWorker = (worker, key = "100") => ({
 //   worker,
 //   get: (next) =>

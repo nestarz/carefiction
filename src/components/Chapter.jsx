@@ -1,33 +1,39 @@
 /* @jsx h */
 import { h, Fragment } from "preact";
-import { Link } from "wouter-preact";
+import { useGunSetState } from "../utils/gun-hooks.js";
+import { byCreateAt } from "../utils/utils.js"
 
-import { useGunState } from "../utils/gun-hooks.js";
-import { formatDate } from "../utils/utils.js";
-
-import Paragraphs from "./Paragraphs.jsx";
-import { Text } from "./Text.jsx";
+import Textarea from "./Textarea.jsx";
+import Blank from "./Blank.jsx";
 import Image from "./Image.jsx";
-import Nav from "./Nav.jsx";
+import Drawing from "./Drawing.jsx";
 
-export default ({ fiction, chapter }) => {
-  const [createdAt] = useGunState(chapter.get("createdAt"));
-  return (
-    <div className="chapter">
-      <h1>
-        <Link to={`/fiction/${fiction._.get}`}>
-          <span>Care Fiction:</span>
-          <Text node={fiction.get("title")} placeholder={"Enter A Title"} />
-        </Link>
-      </h1>
-      <Nav node={fiction} currentKey={chapter._.get} />
-      <Image maxSizeKo={400} node={chapter.get("image")} />
-      <h2>
-        <Text node={chapter.get("subtitle")} placeholder={"Enter A Subtitle"} />
-      </h2>
-      <time datetime={createdAt}>{formatDate(createdAt)}</time>
+const components = {
+  text: Textarea,
+  blank: Blank,
+  image: Image,
+  drawing: Drawing,
+};
 
-      <Paragraphs node={chapter} />
-    </div>
-  );
+export const ChapterContent = ({ node }) => {
+  const [blocks] = useGunSetState(node.get("blocks"));
+  return blocks
+    .sort(byCreateAt)
+    .map(({ node, data, remove }) => (
+      <article className={data.type}>
+        {h(components[data.type], { node, remove })}
+      </article>
+    ));
+};
+
+export const ChapterControls = ({ node }) => {
+  const [_, setBlocks] = useGunSetState(node.get("blocks"));
+  const add = (type) =>
+    setBlocks({
+      createdAt: new Date().toISOString(),
+      type,
+    });
+  return Object.keys(components).map((type) => (
+    <button onClick={() => add(type)}>{type}</button>
+  ));
 };

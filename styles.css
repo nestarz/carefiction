@@ -1,355 +1,207 @@
-@font-face {
-  font-family: "terminal-grotesque-webfont";
-  src: url("./assets/fonts/terminal-grotesque-webfont.woff2") format("woff2"),
-    url("./assets/fonts/terminal-grotesque-webfont.woff") format("woff");
-  font-display: swap;
-}
-
-@font-face {
-  font-family: "Minipax";
-  src: url("./assets/fonts/Minipax-Medium.woff2") format("woff2"),
-    url("./assets/fonts/Minipax-Medium.woff") format("woff");
-  font-display: swap;
+:root {
+  --border: 2px solid #000;
+  --primary: #e7e7e7;
+  --font-size: 1.7rem;
+  --font: "andale mono", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+    Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
 }
 
 * {
-  box-sizing: content-box;
+  box-sizing: border-box;
 }
 
 html {
-  font-family: "Minipax", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
-    Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
   font-size: 10px;
 }
 
 body {
   margin: 0;
+  font-size: var(--font-size);
+  font-family: var(--font);
+  background-color: var(--primary);
 }
 
-body > div > div {
+body > div {
   display: grid;
-  grid-template-columns: repeat(12, 1fr);
-  grid-gap: 5rem 1rem;
-  margin: 6rem 6rem;
+  grid-template-columns: 2fr 1fr;
+  grid-template-rows: auto 1fr 5fr;
+  height: 100vh;
 }
 
-.fiction ol,
-.chapter ol {
-  margin: 0;
-  padding: 0;
-  grid-column: -1 / -3;
-  position: fixed;
-  top: 1rem;
-  right: 11rem;
+body > div > * > div {
+  padding: 2rem;
+  flex: 1;
 }
 
-.fiction  ol li,
-.chapter  ol li {
-  list-style: upper-roman;
-  padding: 0;
-  font-size: 1.7rem;
-  line-height: 3.25rem;
-  text-transform: capitalize;
-}
-
-ol li:not(.active) a:not(:hover) {
-  text-decoration: none;
-}
-
-a {
-  font-size: 1.7rem;
-  color: black;
-  grid-column: span 4;
-  /* justify-self: center; */
-}
-
-a:nth-of-type(4) {
-  grid-column: span 7;
-}
-
-h1,
-h1 a,
-h2 {
-  font-family: "andale mono", -apple-system, BlinkMacSystemFont, "Segoe UI",
-    Roboto, Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
-  margin: 0;
-  font-weight: 300;
-  font-size: 1.5rem;
-  text-transform: uppercase;
-  text-decoration: none;
-}
-
-h1,
-h1 a {
-  display: grid;
-  line-height: 1.2;
-  grid-column: span 7;
-  justify-items: baseline;
-  padding: 0 2rem 1rem 0;
-}
-
-h1 a:hover {
-  text-decoration: none;
-  box-shadow: inset -5px -5px 0px 5px #000;
-}
-
-img,
-video {
+img {
   width: 100%;
-  height: 100%;
-  object-fit: contain;
 }
 
-.image,
-.video {
-  grid-column: 4 / 10;
-}
-
-.video {
+main > div {
   display: grid;
+  grid-gap: 2rem;
+  grid-auto-rows: max-content;
+  overflow-y: scroll;
+  padding-bottom: 10rem;
 }
 
-.video iframe {
-  border: none;
+main > div > *:last-child {
+  padding-bottom: 50rem;
 }
 
-.svg {
+nav > div {
+  display: grid;
+  grid-gap: 2rem;
+  grid-template-columns: repeat(auto-fill, 9rem);
+}
+
+nav > div > span {
+  grid-column: 1 / -1;
+}
+
+header > div {
   display: flex;
-  justify-content: center;
-  flex-wrap: wrap;
 }
 
-path {
-  fill: transparent;
-  stroke: black;
+header {
+  grid-column: 1 / -1;
 }
 
-.video iframe,
-.image,
-.landmark-container {
-  min-height: 32vw;
+header a {
+  text-transform: uppercase;
+  background: white;
+  align-self: baseline;
 }
 
-.image.empty {
-  border: 1px solid black;
+header details {
+  flex: 1;
+  margin-left: 1rem;
+}
+
+header details summary {
   display: flex;
-  flex-wrap: wrap;
   justify-content: center;
   align-items: center;
-  font-size: 6rem;
-  line-height: 0;
 }
 
-h2 {
-  font-size: 4rem;
-  text-align: center;
-  grid-column: 7 / -1;
+header details span {
+  cursor: pointer;
 }
 
-time {
-  margin: 0;
-  font-size: 3rem;
-  grid-column: 9 / 12;
-}
-
-.fiction p,
-.chapter p {
-  margin: 0;
-  white-space: pre-wrap;
-  font-size: 3rem;
-  line-height: 1.5;
-  grid-column: 3 / 11;
-}
-
-h1,
-h2,
-.about p {
-  font-size: 1.7rem;
-}
-
-.about p {
-  margin: 0;
-  white-space: pre-wrap;
-  line-height: 1.5;
-  grid-column: 1 / 13;
-
-  font-family: "andale mono", -apple-system, BlinkMacSystemFont, "Segoe UI",
-    Roboto, Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
-}
-
-.about ol {
-  margin: 0;
-  padding: 0;
-  grid-column: 1 / 13;
-}
-
-.about  ol li {
-  list-style: upper-roman;
-  padding: 0;
-  font-size: 1rem;
-  line-height: 3.25rem;
-  text-transform: capitalize;
-  list-style-position: inside;
-}
-
-.editable + .editable {
-  padding-left: 1rem;
-}
-
-.blank span,
-li {
-  font-family: "andale mono", -apple-system, BlinkMacSystemFont, "Segoe UI",
-    Roboto, Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
-  font-size: 1.5rem;
-  margin: 0;
-  padding: 0;
-  border: none;
-  background: transparent;
-  color: inherit;
-  padding: 1rem 2rem;
-}
-
-.blank::before {
-  content: "\00a0\00a0(";
-}
-
-.blank::after {
-  content: ")\00a0\00a0";
-}
-
-li {
-  list-style: none;
-  grid-column: span 4;
-  justify-self: center;
-}
-
-li:nth-of-type(4) {
-  grid-column: span 7;
-}
-
-.controls {
+header details div:not(:empty) {
   display: grid;
-  grid-gap: 0.5rem;
-  justify-items: baseline;
+  grid-gap: 2rem;
+  grid-template-columns: repeat(auto-fill, 9rem);
+  padding: 2rem 0 0 2rem;
 }
 
+header details summary > input {
+  flex: 1;
+  margin-left: 1rem;
+}
+
+main {
+  border-top: var(--border);
+  grid-row: span 2;
+  display: flex;
+  justify-content: end;
+}
+
+nav {
+  border-top: var(--border);
+  border-left: var(--border);
+}
+
+a,
 button {
-  border: 1px solid black;
-  border-radius: 0;
-  color: black;
-  margin: 1px;
+  font-family: var(--font);
+  font-size: var(--font-size);
   background: none;
+  display: inline-block;
+  border: var(--border);
+  padding: 0.7rem 1rem;
+  color: black;
+  text-decoration: none;
+  cursor: pointer;
+  text-align: center;
 }
 
-button:disabled {
-  color: rgb(212, 212, 212);
-  border-color: rgb(212, 212, 212);
+a:hover,
+button:hover {
+  background: white;
 }
 
-body > div > div > button {
-  grid-column: 1 / 13;
-  justify-items: center;
-  margin: auto;
+input,
+textarea,
+.textarea {
+  background: white;
+  border: none;
+  padding: 1rem;
+  font-size: var(--font-size);
+  grid-column: 1/-1;
+  resize: none;
+  font-family: var(--font);
+  white-space: pre-line;
 }
 
-.drawings {
-  display: grid;
-  grid-gap: 1rem;
-  grid-template-columns: repeat(auto-fill, 20rem);
-  justify-content: center;
+textarea {
+  min-height: 15rem;
+}
 
+textarea,
+.textarea {
+  width: 100%;
+}
+
+textarea[readonly],
+textarea[readonly="readonly"],
+.textarea {
+  border: var(--border);
+}
+
+article {
   position: relative;
 }
 
-svg {
-  height: 100%;
-  width: 100%;
-  max-height: 30vh;
-  grid-column: 1 / -1;
-  padding: 5px;
-}
-
-.drawing-controls {
-  grid-column: 1 / -1;
-  margin: auto;
+.before-lock {
+  position: absolute;
+  top: 0;
+  left: -1rem;
   display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 }
 
-svg.editable:hover {
-  box-shadow: inset 0px 0px 0px 5px #000;
+.before-lock button {
+  border: none;
+  padding: 0;
+  filter: grayscale(100%) brightness(0);
 }
 
-svg + p,
-svg + .image {
-  margin-top: -10rem;
-}
-
-p span br:last-child {
+.before-lock .lock {
   display: none;
 }
 
-p .bold {
-  background-color: #ebebeb;
-  letter-spacing: 0.05em;
+article.blank {
+  display: inline;
 }
 
-p.context {
-  list-style: upper-roman;
-  display: list-item;
+article.blank > * {
+  margin-right: 2rem;
 }
 
-.question {
-  grid-column: 1 / 13;
+button .count,
+a .count {
+  vertical-align: super;
+  font-size: 70%;
+  color: red;
 }
 
-.question > div {
-  grid-column: 1 / 13;
-  display: block;
-  cursor: pointer;
+button:not(.clicked):disabled {
+  opacity: 0.5;
 }
 
-label {
-  font-size: 3rem;
-}
-
-.landmark-container {
-  position: relative;
-  grid-column: 2 / 12;
-}
-
-.landmark-container:not(.lock) {
-  cursor: pointer;
-}
-
-.landmark-container > span {
-  position: absolute;
-}
-
-.chapter.plan p span {
-  text-transform: capitalize;
-  margin-right: 1rem;
-}
-
-.landmark-container .answers {
-  max-height: 10rem;
-  overflow-y: scroll;
+button.clicked {
   background: white;
-  margin-top: 2rem;
-  padding: 0;
-}
-
-.landmark-container .blank {
-  background: white;
-}
-
-a:hover {
-  text-decoration: underline;
-}
-
-.about .add {
-  height: 100%;
-  display: flex;
-  align-items: flex-end;
-  padding: 1rem;
-  width: 100%;
 }

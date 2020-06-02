@@ -19,7 +19,7 @@ const getProj = (svg, x, y) => {
 };
 
 let time = 0;
-const Dessin = ({ node, remove }) => {
+export default ({ node, remove }) => {
   const [str, setStr] = useGunState(node.get("points"));
   const [lock, setLock] = useGunState(node.get("lock"));
   const [editable, setEditable] = useGunState(node.get("editable"));
@@ -40,7 +40,9 @@ const Dessin = ({ node, remove }) => {
     const delta = Date.now() - time;
     if (delta > 5) {
       if (record) {
-        const [x, y] = getProj(svg.current, clientX, clientY).map(x => Math.floor(x * 100) / 100);
+        const [x, y] = getProj(svg.current, clientX, clientY).map(
+          (x) => Math.floor(x * 100) / 100
+        );
         setStr(JSON.stringify([...points, [mode, x, y]]));
         setMode("L");
         time = Date.now();
@@ -51,14 +53,14 @@ const Dessin = ({ node, remove }) => {
   return (
     <>
       {!lock && (
-        <div className="drawing-controls">
-          <button onClick={() => setEditable(!editable)}>
-            {!editable ? "Make it editable" : "Make it fixed"}
-          </button>
+        <div className="before-lock">
+          <button onClick={remove}>╳</button>
           <button disabled={points.length < 10} onClick={() => setLock(true)}>
-            Lock The Drawing
+            {lock ? "🔒" : "🔓"}
           </button>
-          <button onClick={remove}>Remove The Drawing</button>
+          <button onClick={() => setEditable(!editable)}>
+            {editable ? "✎" : "☉"}
+          </button>
         </div>
       )}
       {!editable ? (
@@ -79,21 +81,6 @@ const Dessin = ({ node, remove }) => {
         >
           <path stroke-width="0.3" ref={path} d={d}></path>
         </svg>
-      )}
-    </>
-  );
-};
-
-export default ({ node, lock }) => {
-  const [dessins, setDessins] = useGunSetState(node.get("dessins"));
-  const add = () => setDessins({ createdAt: new Date().toISOString() });
-  return (
-    <>
-      {dessins.sort(byCreateAt).map(({ key, node, remove }) => (
-        <Dessin key={key} node={node} remove={remove} />
-      ))}
-      {!lock && dessins.length === 0 && (
-        <button onClick={add}>Add A Drawing</button>
       )}
     </>
   );

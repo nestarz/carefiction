@@ -1,28 +1,31 @@
 import {h, Fragment} from "preact";
 import {Route, Router} from "wouter-preact";
-import Chapter2 from "./../../src/components/Chapter.jsx";
-import About2 from "./../../src/components/About.jsx";
-import Fiction2 from "./../../src/components/Fiction.jsx";
+import {useGun} from "./../../src/utils/gun-hooks.js";
 export const session = new Date().toISOString();
+import Fiction2 from "./../../src/components/Fiction.jsx";
 export default () => {
-  const node = window.Gun({
-    peers: ["https://gun.eliasrhouzlane.com/gun", "https://carefiction-gun.herokuapp.com/gun"]
-  }).get("alpha-8");
+  const node = useGun({
+    peers: ["https://gun.eliasrhouzlane.com/gun", "https://carefiction-gun.herokuapp.com/gun"],
+    root: "alpha-18"
+  });
   return h(Router, {
     basepath: location.pathname
   }, h(Route, {
     path: "/"
-  }, () => h(About2, {
-    node
+  }, () => h(Fiction2, {
+    node,
+    fictionKey: "hello"
   })), h(Route, {
-    path: "/fiction/:key"
-  }, ({key}) => h(Fiction2, {
-    node: node.get("pages").get(key)
+    path: "/fiction/:fictionKey"
+  }, ({fictionKey}) => h(Fiction2, {
+    node,
+    fictionKey,
+    chapterKey: "Intro"
   })), h(Route, {
-    path: "/fiction/:fiction/chapter/:chapter"
-  }, ({fiction, chapter}) => h(Chapter2, {
-    id: chapter,
-    fiction: node.get("pages").get(fiction),
-    chapter: node.get("pages").get(fiction).get("chapters").get(chapter)
+    path: "/fiction/:fictionKey/chapter/:chapterKey"
+  }, ({fictionKey, chapterKey}) => h(Fiction2, {
+    node,
+    fictionKey,
+    chapterKey
   })));
 };

@@ -13,7 +13,7 @@ const getProj = (svg, x, y) => {
   return [projX, projY];
 };
 let time = 0;
-const Dessin = ({node, remove}) => {
+export default ({node, remove}) => {
   const [str, setStr] = useGunState(node.get("points"));
   const [lock, setLock] = useGunState(node.get("lock"));
   const [editable, setEditable] = useGunState(node.get("editable"));
@@ -37,15 +37,15 @@ const Dessin = ({node, remove}) => {
     }
   };
   return h(Fragment, null, !lock && h("div", {
-    className: "drawing-controls"
+    className: "before-lock"
   }, h("button", {
-    onClick: () => setEditable(!editable)
-  }, !editable ? "Make it editable" : "Make it fixed"), h("button", {
+    onClick: remove
+  }, "╳"), h("button", {
     disabled: points.length < 10,
     onClick: () => setLock(true)
-  }, "Lock The Drawing"), h("button", {
-    onClick: remove
-  }, "Remove The Drawing")), !editable ? h("svg", {
+  }, lock ? "🔒" : "🔓"), h("button", {
+    onClick: () => setEditable(!editable)
+  }, editable ? "✎" : "☉")), !editable ? h("svg", {
     viewBox: `0 0 100 100`,
     namespace: "http://www.w3.org/2000/svg"
   }, h("path", {
@@ -69,17 +69,4 @@ const Dessin = ({node, remove}) => {
     ref: path,
     d
   })));
-};
-export default ({node, lock}) => {
-  const [dessins, setDessins] = useGunSetState(node.get("dessins"));
-  const add = () => setDessins({
-    createdAt: new Date().toISOString()
-  });
-  return h(Fragment, null, dessins.sort(byCreateAt).map(({key, node: node2, remove}) => h(Dessin, {
-    key,
-    node: node2,
-    remove
-  })), !lock && dessins.length === 0 && h("button", {
-    onClick: add
-  }, "Add A Drawing"));
 };
