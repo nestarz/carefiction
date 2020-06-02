@@ -1,7 +1,7 @@
 import {h, Fragment} from "preact";
 import {useGunState} from "./../../../src/utils/gun-hooks.js";
 import {session} from "./../../../src/App.jsx";
-export default ({node, placeholder}) => {
+export default ({node, placeholder, onEnter = () => null}) => {
   const [value, setValue] = useGunState(node.get("values").get(session).get("current"));
   const [lock, setLock] = useGunState(node.get("values").get(session).get("lock"));
   const [count, setCount] = useGunState(node.get("values").get(session).get("count"));
@@ -13,6 +13,7 @@ export default ({node, placeholder}) => {
     value,
     onKeyPress: (e) => {
       if (e.which == 13) {
+        onEnter(e);
         setValue(e.target.value);
         setLock(true);
         setCount((count || 0) + 1);

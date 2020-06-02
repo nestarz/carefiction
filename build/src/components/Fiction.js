@@ -1,5 +1,5 @@
 import {h, Fragment} from "preact";
-import {useState} from "preact/hooks";
+import {useState, useRef} from "preact/hooks";
 import {Link} from "wouter-preact";
 import {useGunSetState} from "./../../../src/utils/gun-hooks.js";
 import {byCreateAt} from "./../../../src/utils/utils.js";
@@ -11,7 +11,7 @@ const ChapterTitle = ({parent, node}) => {
   const [titles] = useGunSetState(node.get("titles").get("values"));
   const title = titles.map(({data}) => ({
     ...data
-  })).reduce((a, b) => console.log(a) || a.count > b.count ? a : b, {});
+  })).reduce((a, b) => a.count > b.count ? a : b, {});
   return h(Link, {
     to: parent ? `/fiction/${parent._.get}/chapter/${node._.get}/` : `/fiction/${node._.get}/`
   }, h("span", null, title && title.current), h("span", {
@@ -65,15 +65,21 @@ const Path = ({node}) => {
   const title = titles.map(({data}) => ({
     ...data
   })).reduce((a, b) => a.count > b.count ? a : b, {});
-  return h(Fragment, null, title.current && h("details", null, h("summary", null, h("span", null, ">"), h(InputText2, {
+  const ref = useRef();
+  const openDetails = () => {
+    ref.current.open = true;
+  };
+  return h(Fragment, null, title.current && h("details", {
+    ref
+  }, h("summary", null, h("span", null, ">"), h(InputText2, {
     placeholder: title.current,
-    node: node.get("titles")
+    node: node.get("titles"),
+    onEnter: openDetails
   })), h("div", null, h(Counter2, {
     node: node.get("titles")
   }))));
 };
 export default ({parent, node}) => {
-  console.log(parent);
   return h(Fragment, null, h("header", null, h("div", null, h(Link, {
     to: "/"
   }, "Care Fiction"), parent && h(Path, {

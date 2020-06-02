@@ -1,6 +1,6 @@
 /* @jsx h */
 import { h, Fragment } from "preact";
-import { useState } from "preact/hooks";
+import { useState, useRef } from "preact/hooks";
 import { Link } from "wouter-preact";
 
 import { useGunSetState } from "../utils/gun-hooks.js";
@@ -16,7 +16,7 @@ const ChapterTitle = ({ parent, node }) => {
 
   const title = titles
     .map(({ data }) => ({ ...data }))
-    .reduce((a, b) => (console.log(a) || a.count > b.count ? a : b), {});
+    .reduce((a, b) => (a.count > b.count ? a : b), {});
 
   return (
     <Link
@@ -87,13 +87,21 @@ const Path = ({ node }) => {
     .map(({ data }) => ({ ...data }))
     .reduce((a, b) => (a.count > b.count ? a : b), {});
 
+  const ref = useRef();
+  const openDetails = () => {
+    ref.current.open = true;
+  };
   return (
     <>
       {title.current && (
-        <details>
+        <details ref={ref}>
           <summary>
             <span>></span>
-            <InputText placeholder={title.current} node={node.get("titles")} />
+            <InputText
+              placeholder={title.current}
+              node={node.get("titles")}
+              onEnter={openDetails}
+            />
           </summary>
           <div>
             <Counter node={node.get("titles")} />
@@ -105,7 +113,6 @@ const Path = ({ node }) => {
 };
 
 export default ({ parent, node }) => {
-  console.log(parent);
   return (
     <>
       <header>
