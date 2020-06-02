@@ -1,6 +1,6 @@
 /* @jsx h */
 import { h, Fragment } from "preact";
-import { Route, Router } from "wouter-preact";
+import { Route, Router, Switch } from "wouter-preact";
 import { useGun } from "./utils/gun-hooks.js";
 
 export const session = new Date().toISOString();
@@ -18,23 +18,33 @@ export default () => {
 
   return (
     <Router basepath={location.pathname}>
-      <Route path="/">{() => <Fiction node={node} />}</Route>
-      <Route path="/fiction/:fictionKey/">
-        {({ fictionKey }) => (
-          <Fiction
-            parent={node.get("chapters").get(fictionKey)}
-            node={node.get("chapters").get(fictionKey).get("chapters").get("Intro")}
-          />
-        )}
-      </Route>
-      <Route path="/fiction/:fictionKey/chapter/:chapterKey/">
-        {({ fictionKey, chapterKey }) => (
-          <Fiction
-            parent={node.get("chapters").get(fictionKey)}
-            node={node.get("chapters").get(fictionKey).get("chapters").get(chapterKey)}
-          />
-        )}
-      </Route>
+      <Switch>
+        <Route path="/fiction/:fictionKey/chapter/:chapterKey/">
+          {({ fictionKey, chapterKey }) => (
+            <Fiction
+              parent={node.get("chapters").get(fictionKey)}
+              node={node
+                .get("chapters")
+                .get(fictionKey)
+                .get("chapters")
+                .get(chapterKey)}
+            />
+          )}
+        </Route>
+        <Route path="/fiction/:fictionKey/">
+          {({ fictionKey }) => (
+            <Fiction
+              parent={node.get("chapters").get(fictionKey)}
+              node={node
+                .get("chapters")
+                .get(fictionKey)
+                .get("chapters")
+                .get("Intro")}
+            />
+          )}
+        </Route>
+        <Route path="/:rest*">{() => <Fiction node={node} />}</Route>
+      </Switch>
     </Router>
   );
 };
