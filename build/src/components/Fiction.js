@@ -2,6 +2,7 @@ import {h, Fragment} from "preact";
 import {useState} from "preact/hooks";
 import {Link} from "wouter-preact";
 import {useGunSetState} from "./../../../src/utils/gun-hooks.js";
+import {byCreateAt} from "./../../../src/utils/utils.js";
 import {session} from "./../../../src/App.jsx";
 import {BlocksContent, BlocksProducer} from "./../../../src/components/Blocks.jsx";
 import Counter2 from "./../../../src/components/Counter.jsx";
@@ -13,11 +14,13 @@ const ChapterTitle = ({parent, node}) => {
   })).reduce((a, b) => console.log(a) || a.count > b.count ? a : b, {});
   return h(Link, {
     to: parent ? `/fiction/${parent._.get}/chapter/${node._.get}/` : `/fiction/${node._.get}/`
-  }, h("span", null, title && title.current), h("span", null, title && title.count));
+  }, h("span", null, title && title.current), h("span", {
+    className: "count"
+  }, title && title.count));
 };
 const ListChapters = ({node, parent}) => {
   const [chapters] = useGunSetState(node.get("chapters"));
-  return chapters.map(({key, node: child}) => h(ChapterTitle, {
+  return chapters.sort(byCreateAt).map(({key, node: child}) => h(ChapterTitle, {
     key,
     parent,
     node: child
@@ -27,16 +30,19 @@ const CreateChapter = ({parent, node}) => {
   const [_, setChapters] = useGunSetState(node.get("chapters"));
   const [lock, setLock] = useState(false);
   const add = (title) => {
+    const createdAt = new Date().toISOString();
     const chapter = setChapters({
-      createdAt: new Date().toISOString()
+      createdAt
     });
     chapter.get("chapters").get("Intro").put({
-      createdAt: new Date().toISOString()
+      createdAt
     }).get("titles").get("values").get(session).put({
+      createdAt,
       current: "Intro",
       count: 1
     });
     chapter.get("titles").get("values").get(session).put({
+      createdAt,
       current: title,
       count: 1
     });

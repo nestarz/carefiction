@@ -49,16 +49,6 @@ main > div > *:last-child {
   padding-bottom: 50rem;
 }
 
-nav > div {
-  display: grid;
-  grid-gap: 2rem;
-  grid-template-columns: repeat(auto-fill, 9rem);
-}
-
-nav > div > span {
-  grid-column: 1 / -1;
-}
-
 header > div {
   display: flex;
 }
@@ -89,10 +79,10 @@ header details span {
 }
 
 header details div:not(:empty) {
-  display: grid;
-  grid-gap: 2rem;
-  grid-template-columns: repeat(auto-fill, 9rem);
-  padding: 2rem 0 0 2rem;
+  display: inline-block;
+  padding: 1rem 0 0 2rem;
+  line-height: 5rem;
+  margin-bottom: -1rem;
 }
 
 header details summary > input {
@@ -110,6 +100,23 @@ main {
 nav {
   border-top: var(--border);
   border-left: var(--border);
+  padding: 0 2rem;
+}
+
+nav > div {
+  display: inline;
+}
+
+nav > div > span,
+nav input {
+  display: block;
+  width: 100%;
+  margin-bottom: 2rem;
+}
+
+nav a,
+nav button {
+  margin: 0 2rem 2rem 0;
 }
 
 a,
@@ -185,8 +192,10 @@ article {
 
 article.blank {
   display: inline;
+  line-height: 5rem;
 }
 
+header details div:not(:empty) button,
 article.blank > * {
   margin-right: 2rem;
 }

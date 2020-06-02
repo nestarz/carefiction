@@ -4,6 +4,7 @@ import { useState } from "preact/hooks";
 import { Link } from "wouter-preact";
 
 import { useGunSetState } from "../utils/gun-hooks.js";
+import { byCreateAt } from "../utils/utils.js";
 import { session } from "../App.jsx";
 
 import { BlocksContent, BlocksProducer } from "./Blocks.jsx";
@@ -26,7 +27,7 @@ const ChapterTitle = ({ parent, node }) => {
       }
     >
       <span>{title && title.current}</span>
-      <span>{title && title.count}</span>
+      <span className="count">{title && title.count}</span>
     </Link>
   );
 };
@@ -34,33 +35,34 @@ const ChapterTitle = ({ parent, node }) => {
 const ListChapters = ({ node, parent }) => {
   const [chapters] = useGunSetState(node.get("chapters"));
 
-  return chapters.map(({ key, node: child }) => (
-    <ChapterTitle key={key} parent={parent} node={child} />
-  ));
+  return chapters
+    .sort(byCreateAt)
+    .map(({ key, node: child }) => (
+      <ChapterTitle key={key} parent={parent} node={child} />
+    ));
 };
 
 const CreateChapter = ({ parent, node }) => {
   const [_, setChapters] = useGunSetState(node.get("chapters"));
   const [lock, setLock] = useState(false);
   const add = (title) => {
-    const chapter = setChapters({
-      createdAt: new Date().toISOString(),
-    });
+    const createdAt = new Date().toISOString();
+    const chapter = setChapters({ createdAt });
 
     chapter
       .get("chapters")
       .get("Intro")
-      .put({ createdAt: new Date().toISOString() })
+      .put({ createdAt })
       .get("titles")
       .get("values")
       .get(session)
-      .put({ current: "Intro", count: 1 });
+      .put({ createdAt, current: "Intro", count: 1 });
 
     chapter
       .get("titles")
       .get("values")
       .get(session)
-      .put({ current: title, count: 1 });
+      .put({ createdAt, current: title, count: 1 });
   };
   return (
     <input
