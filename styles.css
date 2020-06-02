@@ -150,6 +150,27 @@ button:hover,
   width: 100%;
 }
 
+details[open] summary > span {
+  transform: rotate(90deg);
+} 
+
+details,
+details summary {
+  outline: none;
+}
+
+details > summary {
+  list-style: none;
+}
+details > summary::-webkit-details-marker {
+  display: none;
+}
+
+.drawing path {
+  fill: transparent;
+  stroke: black;
+}
+
 input,
 textarea,
 .textarea {
