@@ -122,23 +122,31 @@ export default ({ parent, node }) => {
       </main>
       <nav>
         <div>
-          <span>ADD</span>
-          <BlocksProducer node={node} />
+          <input type="checkbox" id="toggle-add" class="toggle hidden" />
+          <label for="toggle-add">Add</label>
+          <div className="details">
+            <BlocksProducer node={node} />
+          </div>
         </div>
       </nav>
       <nav>
         <div>
+          <input type="checkbox" id="toggle-list" class="toggle hidden" />
           {parent ? (
             <>
-              <span>Chapters</span>
-              <ListChapters parent={parent} node={parent} />
-              <CreateChapter parent={parent} node={parent} />
+              <label for="toggle-list">Chapters</label>
+              <div className="details">
+                <ListChapters parent={parent} node={parent} />
+                <CreateChapter parent={parent} node={parent} />
+              </div>
             </>
           ) : (
             <>
-              <span>Fictions</span>
-              <ListChapters node={node} />
-              <CreateChapter node={node} />
+              <label for="toggle-list">Fictions</label>
+              <div className="details">
+                <ListChapters node={node} />
+                <CreateChapter node={node} />
+              </div>
             </>
           )}
         </div>

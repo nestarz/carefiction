@@ -82,17 +82,37 @@ export default ({parent, node}) => {
     node
   }))), h("main", null, h("div", null, h(BlocksContent, {
     node
-  }))), h("nav", null, h("div", null, h("span", null, "ADD"), h(BlocksProducer, {
+  }))), h("nav", null, h("div", null, h("input", {
+    type: "checkbox",
+    id: "toggle-add",
+    class: "toggle hidden"
+  }), h("label", {
+    for: "toggle-add"
+  }, "Add"), h("div", {
+    className: "details"
+  }, h(BlocksProducer, {
     node
-  }))), h("nav", null, h("div", null, parent ? h(Fragment, null, h("span", null, "Chapters"), h(ListChapters, {
+  })))), h("nav", null, h("div", null, h("input", {
+    type: "checkbox",
+    id: "toggle-list",
+    class: "toggle hidden"
+  }), parent ? h(Fragment, null, h("label", {
+    for: "toggle-list"
+  }, "Chapters"), h("div", {
+    className: "details"
+  }, h(ListChapters, {
     parent,
     node: parent
   }), h(CreateChapter, {
     parent,
     node: parent
-  })) : h(Fragment, null, h("span", null, "Fictions"), h(ListChapters, {
+  }))) : h(Fragment, null, h("label", {
+    for: "toggle-list"
+  }, "Fictions"), h("div", {
+    className: "details"
+  }, h(ListChapters, {
     node
   }), h(CreateChapter, {
     node
-  })))));
+  }))))));
 };

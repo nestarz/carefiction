@@ -23,12 +23,18 @@ body {
 
 body > div {
   display: grid;
-  grid-template-columns: 2fr 1fr;
   grid-template-rows: auto 1fr 5fr;
   height: 100vh;
 }
 
-body > div > * > div {
+@media screen and (min-width: 768px) {
+  body > div {
+    grid-template-columns: 2fr 1fr;
+  }
+}
+
+body > div > main > div,
+body > div > header > div {
   padding: 2rem;
   flex: 1;
 }
@@ -50,11 +56,19 @@ main > div > *:last-child {
 }
 
 header > div {
-  display: flex;
+  display: grid;
+  grid-gap: 1rem;
+}
+
+@media screen and (min-width: 768px) {
+  header > div {
+    grid-template-columns: auto 1fr 1fr;
+  }
 }
 
 header {
   grid-column: 1 / -1;
+  overflow: hidden;
 }
 
 header a {
@@ -62,11 +76,6 @@ header a {
   background: white;
   align-self: baseline;
   user-select: none;
-}
-
-header details {
-  flex: 1;
-  margin-left: 1rem;
 }
 
 header details summary {
@@ -83,12 +92,16 @@ header details div:not(:empty) {
   display: inline-block;
   padding: 1rem 0 0 2rem;
   line-height: 5rem;
-  margin-bottom: -1rem;
 }
 
 header details summary > input {
   flex: 1;
   margin-left: 1rem;
+}
+
+::placeholder { 
+  color: black;
+  opacity: 1;
 }
 
 main {
@@ -100,23 +113,51 @@ main {
 
 nav {
   border-top: var(--border);
-  border-left: var(--border);
   padding: 0 2rem;
+}
+
+@media screen and (min-width: 768px) {
+  nav {
+    border-left: var(--border);
+  }
 }
 
 nav > div {
   display: inline;
 }
 
-nav > div > span {
-  user-select: none;
+.hidden {
+  display: none;
 }
 
-nav > div > span,
+.details {
+  display: none;
+}
+
+@media screen and (min-width: 768px) {
+  .details {
+    display: block;
+  }
+}
+
+.toggle:checked ~ .details {
+  display: block;
+}
+
+.details input {
+  margin-bottom: 2rem;
+}
+
+nav > div label {
+  user-select: none;
+  cursor: pointer;
+  padding: 2rem 0;
+}
+
+nav > div label,
 nav input {
   display: block;
   width: 100%;
-  margin-bottom: 2rem;
 }
 
 nav a,
@@ -150,9 +191,13 @@ button:hover,
   width: 100%;
 }
 
+summary > span {
+  user-select: none;
+}
+
 details[open] summary > span {
   transform: rotate(90deg);
-} 
+}
 
 details,
 details summary {
