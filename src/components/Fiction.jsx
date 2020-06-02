@@ -116,47 +116,39 @@ export default ({ parent, node }) => {
   return (
     <>
       <header>
-        <div>
-          <Link to="/">Care Fiction</Link>
-          {parent && <Path node={parent} />}
-          <Path node={node} />
-        </div>
+        <Link to="/">Care Fiction</Link>
+        {parent && <Path node={parent} />}
+        <Path node={node} />
       </header>
       <main>
-        <div>
-          <BlocksContent node={node} />
-        </div>
+        <BlocksContent node={node} />
       </main>
-      <nav>
-        <div>
-          <input type="checkbox" id="toggle-add" class="toggle hidden" />
-          <label for="toggle-add">Add</label>
-          <div className="details">
-            <BlocksProducer node={node} />
-          </div>
+      <aside>
+        <input type="checkbox" id="toggle-add" class="toggle hidden" />
+        <label for="toggle-add">Add</label>
+        <div className="details">
+          <BlocksProducer node={node} />
         </div>
-      </nav>
+      </aside>
       <nav>
-        <div>
-          <input type="checkbox" id="toggle-list" class="toggle hidden" />
-          {parent ? (
-            <>
-              <label for="toggle-list">Chapters</label>
-              <div className="details">
-                <ListChapters parent={parent} node={parent} />
-                <CreateChapter parent={parent} node={parent} />
-              </div>
-            </>
-          ) : (
-            <>
-              <label for="toggle-list">Fictions</label>
-              <div className="details">
-                <ListChapters node={node} />
-                <CreateChapter node={node} />
-              </div>
-            </>
-          )}
-        </div>
+        <input type="checkbox" id="toggle-list" class="toggle hidden" />
+        {parent ? (
+          <>
+            <label for="toggle-list">Chapters</label>
+            <div className="details">
+              <ListChapters parent={parent} node={parent} />
+              <CreateChapter parent={parent} node={parent} />
+            </div>
+          </>
+        ) : (
+          <>
+            <label for="toggle-list">Fictions</label>
+            <div className="details">
+              <ListChapters node={node} />
+              <CreateChapter node={node} />
+            </div>
+          </>
+        )}
       </nav>
     </>
   );

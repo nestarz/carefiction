@@ -77,15 +77,15 @@ const Path = ({node}) => {
   }))));
 };
 export default ({parent, node}) => {
-  return h(Fragment, null, h("header", null, h("div", null, h(Link, {
+  return h(Fragment, null, h("header", null, h(Link, {
     to: "/"
   }, "Care Fiction"), parent && h(Path, {
     node: parent
   }), h(Path, {
     node
-  }))), h("main", null, h("div", null, h(BlocksContent, {
+  })), h("main", null, h(BlocksContent, {
     node
-  }))), h("nav", null, h("div", null, h("input", {
+  })), h("aside", null, h("input", {
     type: "checkbox",
     id: "toggle-add",
     class: "toggle hidden"
@@ -95,7 +95,7 @@ export default ({parent, node}) => {
     className: "details"
   }, h(BlocksProducer, {
     node
-  })))), h("nav", null, h("div", null, h("input", {
+  }))), h("nav", null, h("input", {
     type: "checkbox",
     id: "toggle-list",
     class: "toggle hidden"
@@ -117,5 +117,5 @@ export default ({parent, node}) => {
     node
   }), h(CreateChapter, {
     node
-  }))))));
+  })))));
 };

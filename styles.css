@@ -33,49 +33,43 @@ body > div {
   }
 }
 
-body > div > main > div,
-body > div > header > div {
+main,
+header,
+nav,
+aside {
   padding: 2rem;
-  flex: 1;
 }
 
 img {
   width: 100%;
 }
 
-nav:last-of-type a {
-  display: block;
-  width: max-content;
-}
-
-main > div {
+main {
   display: grid;
   grid-gap: 2rem;
   grid-auto-rows: max-content;
   overflow-y: auto;
+  border-top: var(--border);
+  grid-row: span 2;
+}
+
+main > *:last-child {
   padding-bottom: 10rem;
 }
 
-main > div > *:last-child {
-  padding-bottom: 10rem;
-}
-
-header > div {
+header {
   display: grid;
   grid-gap: 1rem;
   overflow: hidden;
   height: 100%;
+  grid-column: 1 / -1;
+  overflow: hidden;
 }
 
 @media screen and (min-width: 768px) {
-  header > div {
+  header {
     grid-template-columns: auto 1fr 1fr;
   }
-}
-
-header {
-  grid-column: 1 / -1;
-  overflow: hidden;
 }
 
 header a {
@@ -111,26 +105,18 @@ header details summary > input {
   opacity: 1;
 }
 
-main {
-  border-top: var(--border);
-  grid-row: span 2;
-  display: flex;
-  justify-content: end;
-}
-
+aside,
 nav {
+  display: inline;
   border-top: var(--border);
   padding: 0 2rem;
 }
 
 @media screen and (min-width: 768px) {
+  aside,
   nav {
     border-left: var(--border);
   }
-}
-
-nav > div {
-  display: inline;
 }
 
 .hidden {
@@ -155,21 +141,31 @@ nav > div {
   margin-bottom: 2rem;
 }
 
-nav > div label {
+aside label,
+nav label {
   user-select: none;
   cursor: pointer;
   padding: 2rem 0;
 }
 
-nav > div label,
+aside label,
+aside input,
+nav label,
 nav input {
   display: block;
   width: 100%;
 }
 
+aside a,
+aside button,
 nav a,
 nav button {
   margin: 0 2rem 2rem 0;
+}
+
+nav a {
+  display: block;
+  width: max-content;
 }
 
 a,
