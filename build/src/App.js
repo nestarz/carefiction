@@ -6,26 +6,23 @@ import Fiction2 from "./../../src/components/Fiction.jsx";
 export default () => {
   const node = useGun({
     peers: ["https://gun.eliasrhouzlane.com/gun", "https://carefiction-gun.herokuapp.com/gun"],
-    root: "alpha-18"
+    root: "alpha-20"
   });
   return h(Router, {
     basepath: location.pathname
   }, h(Route, {
     path: "/"
   }, () => h(Fiction2, {
-    node,
-    fictionKey: "hello"
+    node
   })), h(Route, {
-    path: "/fiction/:fictionKey"
+    path: "/fiction/:fictionKey/"
   }, ({fictionKey}) => h(Fiction2, {
-    node,
-    fictionKey,
-    chapterKey: "Intro"
+    parent: node.get(fictionKey),
+    node: node.get(fictionKey).get("chapters").get("Intro")
   })), h(Route, {
-    path: "/fiction/:fictionKey/chapter/:chapterKey"
+    path: "/fiction/:fictionKey/chapter/:chapterKey/"
   }, ({fictionKey, chapterKey}) => h(Fiction2, {
-    node,
-    fictionKey,
-    chapterKey
+    parent: node.get(fictionKey),
+    node: node.get(fictionKey).get("chapters").get(chapterKey)
   })));
 };

@@ -1,39 +1,41 @@
 import {h, Fragment} from "preact";
-import {useGunState, useGunSetState} from "./../../../src/utils/gun-hooks.js";
+import {useState} from "preact/hooks";
 import {Link} from "wouter-preact";
+import {useGunSetState} from "./../../../src/utils/gun-hooks.js";
 import {session} from "./../../../src/App.jsx";
-import {ChapterControls, ChapterContent} from "./../../../src/components/Chapter.jsx";
+import {BlocksContent, BlocksProducer} from "./../../../src/components/Blocks.jsx";
 import Counter2 from "./../../../src/components/Counter.jsx";
-import {useState, useEffect} from "preact/hooks";
 import InputText2 from "./../../../src/components/InputText.jsx";
-const ChapterLink = ({fictionKey, node}) => {
+const ChapterTitle = ({parent, node}) => {
   const [titles] = useGunSetState(node.get("titles").get("values"));
-  const [count] = useGunState(node.get("interactions").get("count"));
-  const {current: title} = titles.map(({data}) => ({
+  const title = titles.map(({data}) => ({
     ...data
-  })).reduce((a, b) => a.count > b.count ? a : b, {});
+  })).reduce((a, b) => console.log(a) || a.count > b.count ? a : b, {});
   return h(Link, {
-    to: fictionKey ? `/fiction/${fictionKey}/chapter/${node._.get}` : `/fiction/${node._.get}`
-  }, h("span", null, title), h("span", null, count));
+    to: parent ? `/fiction/${parent._.get}/chapter/${node._.get}/` : `/fiction/${node._.get}/`
+  }, h("span", null, title && title.current), h("span", null, title && title.count));
 };
-const ChaptersControls = ({node, type}) => {
-  const [chapters, setChapters] = useGunSetState(node.get(type));
-  const [lock, setLock] = useGunState(node.get(session).get("lock"));
+const ListChapters = ({node, parent}) => {
+  const [chapters] = useGunSetState(node.get("chapters"));
+  return chapters.map(({key, node: child}) => h(ChapterTitle, {
+    key,
+    parent,
+    node: child
+  }));
+};
+const CreateChapter = ({parent, node}) => {
+  const [_, setChapters] = useGunSetState(node.get("chapters"));
+  const [lock, setLock] = useState(false);
   const add = (title) => setChapters({
     createdAt: new Date().toISOString()
   }).get("titles").get("values").get(session).put({
-    createdAt: new Date().toISOString(),
     current: title,
-    count: 1,
-    lock: false
-  }).once(console.log);
-  return h(Fragment, null, chapters.map(({node: child}) => h(ChapterLink, {
-    fictionKey: type === "chapter" ? node._.get : null,
-    node: child
-  })), h("input", {
+    count: 1
+  });
+  return h("input", {
     readOnly: lock,
     type: "text",
-    placeholder: `Start a ${type}...`,
+    placeholder: parent ? `Start a Chapter...` : `Start a Fiction...`,
     onKeyPress: (e) => {
       if (!lock && e.which == 13) {
         add(e.target.value);
@@ -41,38 +43,40 @@ const ChaptersControls = ({node, type}) => {
         e.preventDefault();
       }
     }
-  }));
+  });
 };
-const Titles = ({node}) => {
+const Path = ({node}) => {
   const [titles] = useGunSetState(node.get("titles").get("values"));
-  const {current: title} = titles.map(({data}) => ({
+  const title = titles.map(({data}) => ({
     ...data
   })).reduce((a, b) => a.count > b.count ? a : b, {});
-  useEffect(() => {
-    node.back().map().get("titles").get("values").map().on(console.log);
-  }, [titles]);
   return h(Fragment, null, h("details", null, h("summary", null, h("span", null, ">"), h(InputText2, {
-    placeholder: title,
+    placeholder: title.current,
     node: node.get("titles")
   })), h("div", null, h(Counter2, {
     node: node.get("titles")
   }))));
 };
-export default ({node, fictionKey, chapterKey}) => {
-  const fiction = node.get(fictionKey);
-  const chapter = chapterKey ? node.get(fictionKey).get("chapters").get(chapterKey) : null;
+export default ({parent, node}) => {
   return h(Fragment, null, h("header", null, h("div", null, h(Link, {
     to: "/"
-  }, "Care Fiction"), h(Titles, {
-    node: fiction
-  }), chapter && h(Titles, {
-    node: chapter
-  }))), h("main", null, h("div", null, h(ChapterContent, {
-    node: chapter ?? fiction
-  }))), h("nav", null, h("div", null, h("span", null, "ADD"), h(ChapterControls, {
-    node: chapter ?? fiction
-  }))), h("nav", null, h("div", null, h("span", null, chapter ? "Chapters" : "Fictions"), h(ChaptersControls, {
-    type: chapter ? "chapter" : "fiction",
-    node: fiction
-  }))));
+  }, "Care Fiction"), parent && h(Path, {
+    node: parent
+  }), h(Path, {
+    node
+  }))), h("main", null, h("div", null, h(BlocksContent, {
+    node
+  }))), h("nav", null, h("div", null, h("span", null, "ADD"), h(BlocksProducer, {
+    node
+  }))), h("nav", null, h("div", null, parent ? h(Fragment, null, h("span", null, "Chapters"), h(ListChapters, {
+    parent,
+    node: parent
+  }), h(CreateChapter, {
+    parent,
+    node: parent
+  })) : h(Fragment, null, h("span", null, "Fictions"), h(ListChapters, {
+    node
+  }), h(CreateChapter, {
+    node
+  })))));
 };

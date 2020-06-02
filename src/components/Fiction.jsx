@@ -1,95 +1,85 @@
 /* @jsx h */
 import { h, Fragment } from "preact";
-import { useGunState, useGunSetState } from "../utils/gun-hooks.js";
+import { useState } from "preact/hooks";
 import { Link } from "wouter-preact";
 
+import { useGunSetState } from "../utils/gun-hooks.js";
 import { session } from "../App.jsx";
 
-import { ChapterControls, ChapterContent } from "./Chapter.jsx";
+import { BlocksContent, BlocksProducer } from "./Blocks.jsx";
 import Counter from "./Counter.jsx";
-
-import { useState, useEffect } from "preact/hooks";
 import InputText from "./InputText.jsx";
 
-const ChapterLink = ({ fictionKey, node }) => {
+const ChapterTitle = ({ parent, node }) => {
   const [titles] = useGunSetState(node.get("titles").get("values"));
-  const [count] = useGunState(node.get("interactions").get("count"));
 
-  const { current: title } = titles
+  const title = titles
     .map(({ data }) => ({ ...data }))
-    .reduce((a, b) => (a.count > b.count ? a : b), {});
-  // useEffect(() => {
-  //   node.back().map().get("titles").get("values").map().on(console.log);
-  // }, [titles]);
+    .reduce((a, b) => (console.log(a) || a.count > b.count ? a : b), {});
+
   return (
     <Link
       to={
-        fictionKey
-          ? `/fiction/${fictionKey}/chapter/${node._.get}`
-          : `/fiction/${node._.get}`
+        parent
+          ? `/fiction/${parent._.get}/chapter/${node._.get}/`
+          : `/fiction/${node._.get}/`
       }
     >
-      <span>{title}</span>
-      <span>{count}</span>
+      <span>{title && title.current}</span>
+      <span>{title && title.count}</span>
     </Link>
   );
 };
 
-const ChaptersControls = ({ node, type }) => {
-  const [chapters, setChapters] = useGunSetState(node.get(type));
-  const [lock, setLock] = useGunState(node.get(session).get("lock"));
+const ListChapters = ({ node, parent }) => {
+  const [chapters] = useGunSetState(node.get("chapters"));
 
+  return chapters.map(({ key, node: child }) => (
+    <ChapterTitle key={key} parent={parent} node={child} />
+  ));
+};
+
+const CreateChapter = ({ parent, node }) => {
+  const [_, setChapters] = useGunSetState(node.get("chapters"));
+  const [lock, setLock] = useState(false);
   const add = (title) =>
-    setChapters({ createdAt: new Date().toISOString() })
+    setChapters({
+      createdAt: new Date().toISOString(),
+    })
       .get("titles")
       .get("values")
       .get(session)
-      .put({
-        createdAt: new Date().toISOString(),
-        current: title,
-        count: 1,
-        lock: false,
-      })
-      .once(console.log);
+      .put({ current: title, count: 1 });
 
   return (
-    <>
-      {chapters.map(({ node: child }) => (
-        <ChapterLink
-          fictionKey={type === "chapter" ? node._.get : null}
-          node={child}
-        />
-      ))}
-      <input
-        readOnly={lock}
-        type="text"
-        placeholder={`Start a ${type}...`}
-        onKeyPress={(e) => {
-          if (!lock && e.which == 13) {
-            add(e.target.value);
-            setLock(true);
-            e.preventDefault();
-          }
-        }}
-      />
-    </>
+    <input
+      readOnly={lock}
+      type="text"
+      placeholder={parent ? `Start a Chapter...` : `Start a Fiction...`}
+      onKeyPress={(e) => {
+        if (!lock && e.which == 13) {
+          add(e.target.value);
+          setLock(true);
+          e.preventDefault();
+        }
+      }}
+    />
   );
 };
 
-const Titles = ({ node }) => {
+const Path = ({ node }) => {
   const [titles] = useGunSetState(node.get("titles").get("values"));
-  const { current: title } = titles
+
+  const title = titles
     .map(({ data }) => ({ ...data }))
     .reduce((a, b) => (a.count > b.count ? a : b), {});
-  useEffect(() => {
-    node.back().map().get("titles").get("values").map().on(console.log);
-  }, [titles]);
+
   return (
     <>
       <details>
         <summary>
           <span>></span>
-          <InputText placeholder={title} node={node.get("titles")} />
+          <InputText placeholder={title.current} node={node.get("titles")} />
         </summary>
         <div>
           <Counter node={node.get("titles")} />
@@ -99,38 +89,42 @@ const Titles = ({ node }) => {
   );
 };
 
-export default ({ node, fictionKey, chapterKey }) => {
-  const fiction = node.get(fictionKey);
-  const chapter = chapterKey
-    ? node.get(fictionKey).get("chapters").get(chapterKey)
-    : null;
+export default ({ parent, node }) => {
   return (
     <>
       <header>
         <div>
           <Link to="/">Care Fiction</Link>
-          <Titles node={fiction} />
-          {chapter && <Titles node={chapter} />}
+          {parent && <Path node={parent} />}
+          <Path node={node} />
         </div>
       </header>
       <main>
         <div>
-          <ChapterContent node={chapter ?? fiction} />
+          <BlocksContent node={node} />
         </div>
       </main>
       <nav>
         <div>
           <span>ADD</span>
-          <ChapterControls node={chapter ?? fiction} />
+          <BlocksProducer node={node} />
         </div>
       </nav>
       <nav>
         <div>
-          <span>{chapter ? "Chapters" : "Fictions"}</span>
-          <ChaptersControls
-            type={chapter ? "chapter" : "fiction"}
-            node={fiction}
-          />
+          {parent ? (
+            <>
+              <span>Chapters</span>
+              <ListChapters parent={parent} node={parent} />
+              <CreateChapter parent={parent} node={parent} />
+            </>
+          ) : (
+            <>
+              <span>Fictions</span>
+              <ListChapters node={node} />
+              <CreateChapter node={node} />
+            </>
+          )}
         </div>
       </nav>
     </>

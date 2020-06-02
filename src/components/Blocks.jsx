@@ -15,7 +15,7 @@ const components = {
   drawing: Drawing,
 };
 
-export const ChapterContent = ({ node }) => {
+export const BlocksContent = ({ node }) => {
   const [blocks] = useGunSetState(node.get("blocks"));
   return blocks
     .sort(byCreateAt)
@@ -26,7 +26,7 @@ export const ChapterContent = ({ node }) => {
     ));
 };
 
-export const ChapterControls = ({ node }) => {
+export const BlocksProducer = ({ node }) => {
   const [_, setBlocks] = useGunSetState(node.get("blocks"));
   const add = (type) =>
     setBlocks({

@@ -2,7 +2,7 @@
   "imports": {
     "../src/App.jsx": "../build/src/App.js",
     "../src/components/Blank.jsx": "../build/src/components/Blank.js",
-    "../src/components/Chapter.jsx": "../build/src/components/Chapter.js",
+    "../src/components/Blocks.jsx": "../build/src/components/Blocks.js",
     "../src/components/Counter.jsx": "../build/src/components/Counter.js",
     "../src/components/Drawing.jsx": "../build/src/components/Drawing.js",
     "../src/components/Fiction.jsx": "../build/src/components/Fiction.js",

@@ -11,7 +11,7 @@ const components = {
   image: Image2,
   drawing: Drawing2
 };
-export const ChapterContent = ({node}) => {
+export const BlocksContent = ({node}) => {
   const [blocks] = useGunSetState(node.get("blocks"));
   return blocks.sort(byCreateAt).map(({node: node2, data, remove}) => h("article", {
     className: data.type
@@ -20,7 +20,7 @@ export const ChapterContent = ({node}) => {
     remove
   })));
 };
-export const ChapterControls = ({node}) => {
+export const BlocksProducer = ({node}) => {
   const [_, setBlocks] = useGunSetState(node.get("blocks"));
   const add = (type) => setBlocks({
     createdAt: new Date().toISOString(),

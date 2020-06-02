@@ -13,23 +13,25 @@ export default () => {
       "https://gun.eliasrhouzlane.com/gun",
       "https://carefiction-gun.herokuapp.com/gun",
     ],
-    root: "alpha-18",
+    root: "alpha-20",
   });
 
   return (
     <Router basepath={location.pathname}>
-      <Route path="/">{() => <Fiction node={node} fictionKey="hello" />}</Route>
-      <Route path="/fiction/:fictionKey">
+      <Route path="/">{() => <Fiction node={node} />}</Route>
+      <Route path="/fiction/:fictionKey/">
         {({ fictionKey }) => (
-          <Fiction node={node} fictionKey={fictionKey} chapterKey="Intro" />
+          <Fiction
+            parent={node.get(fictionKey)}
+            node={node.get(fictionKey).get("chapters").get("Intro")}
+          />
         )}
       </Route>
-      <Route path="/fiction/:fictionKey/chapter/:chapterKey">
+      <Route path="/fiction/:fictionKey/chapter/:chapterKey/">
         {({ fictionKey, chapterKey }) => (
           <Fiction
-            node={node}
-            fictionKey={fictionKey}
-            chapterKey={chapterKey}
+            parent={node.get(fictionKey)}
+            node={node.get(fictionKey).get("chapters").get(chapterKey)}
           />
         )}
       </Route>
