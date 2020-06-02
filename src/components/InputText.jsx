@@ -4,7 +4,13 @@ import { useGunState } from "../utils/gun-hooks.js";
 
 import { session } from "../App.jsx";
 
-export default ({ node, placeholder, onEnter = () => null }) => {
+export default ({
+  node,
+  placeholder,
+  onEnter = () => null,
+  onFocus = () => null,
+  onBlur = () => null,
+}) => {
   const [value, setValue] = useGunState(
     node.get("values").get(session).get("current")
   );
@@ -25,6 +31,8 @@ export default ({ node, placeholder, onEnter = () => null }) => {
         readOnly={lock}
         placeholder={placeholder}
         value={value}
+        onFocus={onFocus}
+        onBlur={onBlur}
         onKeyPress={(e) => {
           if (e.which == 13) {
             onEnter(e);

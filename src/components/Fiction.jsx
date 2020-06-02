@@ -19,16 +19,18 @@ const ChapterTitle = ({ parent, node }) => {
     .reduce((a, b) => (a.count > b.count ? a : b), {});
 
   return (
-    <Link
-      to={
-        parent
-          ? `/fiction/${parent._.get}/chapter/${node._.get}/`
-          : `/fiction/${node._.get}/`
-      }
-    >
-      <span>{title && title.current}</span>
-      <span className="count">{title && title.count}</span>
-    </Link>
+    title.current && (
+      <Link
+        to={
+          parent
+            ? `/fiction/${parent._.get}/chapter/${node._.get}/`
+            : `/fiction/${node._.get}/`
+        }
+      >
+        <span>{title && title.current}</span>
+        <span className="count">{title && title.count}</span>
+      </Link>
+    )
   );
 };
 
@@ -89,9 +91,6 @@ const Path = ({ node }) => {
     .reduce((a, b) => (a.count > b.count ? a : b), {});
 
   const ref = useRef();
-  const openDetails = () => {
-    ref.current.open = true;
-  };
   return (
     <>
       {title.current && (
@@ -101,7 +100,7 @@ const Path = ({ node }) => {
             <InputText
               placeholder={title.current}
               node={node.get("titles")}
-              onEnter={openDetails}
+              onFocus={() => (ref.current.open = true)}
             />
           </summary>
           <div>

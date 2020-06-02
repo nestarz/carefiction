@@ -33,3 +33,6 @@ export const byCreateAt = (
   { data: { createdAt: a } },
   { data: { createdAt: b } }
 ) => new Date(b) - new Date(a);
+
+export const byCount = ({ data: { count: a } }, { data: { count: b } }) =>
+  a - b;

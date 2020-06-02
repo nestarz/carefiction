@@ -47,17 +47,19 @@ main > div {
   display: grid;
   grid-gap: 2rem;
   grid-auto-rows: max-content;
-  overflow-y: scroll;
+  overflow-y: auto;
   padding-bottom: 10rem;
 }
 
 main > div > *:last-child {
-  padding-bottom: 50rem;
+  padding-bottom: 10rem;
 }
 
 header > div {
   display: grid;
   grid-gap: 1rem;
+  overflow: hidden;
+  height: 100%;
 }
 
 @media screen and (min-width: 768px) {
@@ -193,6 +195,10 @@ button:hover,
 
 summary > span {
   user-select: none;
+}
+
+details[open] {
+  overflow-y: auto;
 }
 
 details[open] summary > span {
