@@ -83,30 +83,31 @@ const CreateChapter = ({ parent, node }) => {
   );
 };
 
-const Path = ({ node }) => {
+const Path = ({ node, type }) => {
   const [titles] = useGunSetState(node.get("titles").get("values"));
 
   const title = titles
     .map(({ data }) => ({ ...data }))
     .reduce((a, b) => (a.count > b.count ? a : b), {});
-
+  const id = `toggle-${type}`;
   const ref = useRef();
   return (
     <>
       {title.current && (
-        <details ref={ref}>
-          <summary>
+        <div>
+          <input ref={ref} type="checkbox" id={id} class="toggle hidden" />
+          <label for={id}>
             <span>></span>
             <InputText
               placeholder={title.current}
               node={node.get("titles")}
-              onFocus={() => (ref.current.open = true)}
+              onFocus={() => (ref.current.checked = true)}
             />
-          </summary>
-          <div>
+          </label>
+          <div className="vote">
             <Counter node={node.get("titles")} />
           </div>
-        </details>
+        </div>
       )}
     </>
   );
@@ -117,8 +118,8 @@ export default ({ parent, node }) => {
     <>
       <header>
         <Link to="/">Care Fiction</Link>
-        {parent && <Path node={parent} />}
-        <Path node={node} />
+        {parent && <Path node={parent} type="fiction" />}
+        <Path node={node} type="chapter" />
       </header>
       <main>
         <BlocksContent node={node} />

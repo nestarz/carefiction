@@ -60,19 +60,27 @@ const CreateChapter = ({parent, node}) => {
     }
   });
 };
-const Path = ({node}) => {
+const Path = ({node, type}) => {
   const [titles] = useGunSetState(node.get("titles").get("values"));
   const title = titles.map(({data}) => ({
     ...data
   })).reduce((a, b) => a.count > b.count ? a : b, {});
+  const id = `toggle-${type}`;
   const ref = useRef();
-  return h(Fragment, null, title.current && h("details", {
-    ref
-  }, h("summary", null, h("span", null, ">"), h(InputText2, {
+  return h(Fragment, null, title.current && h("div", null, h("input", {
+    ref,
+    type: "checkbox",
+    id,
+    class: "toggle hidden"
+  }), h("label", {
+    for: id
+  }, h("span", null, ">"), h(InputText2, {
     placeholder: title.current,
     node: node.get("titles"),
-    onFocus: () => ref.current.open = true
-  })), h("div", null, h(Counter2, {
+    onFocus: () => ref.current.checked = true
+  })), h("div", {
+    className: "vote"
+  }, h(Counter2, {
     node: node.get("titles")
   }))));
 };
@@ -80,9 +88,11 @@ export default ({parent, node}) => {
   return h(Fragment, null, h("header", null, h(Link, {
     to: "/"
   }, "Care Fiction"), parent && h(Path, {
-    node: parent
+    node: parent,
+    type: "fiction"
   }), h(Path, {
-    node
+    node,
+    type: "chapter"
   })), h("main", null, h(BlocksContent, {
     node
   })), h("aside", null, h("input", {
