@@ -18,11 +18,11 @@ To ensure availability of the content, even when you are the only visitor, there
 
 There is no central authority. The responsability is shared.
 
-The page you see here, is one application built on top of this distributed network of Care Fiction(s).
+The proposed website is one application built on top of this distributed network of Care Fiction(s).
 
-Hosted in a server the application only serve an empty "index.html" page that hold the algorithm to connect us all and fill it with the distributed content and let you add to the chain of content.
+Hosted in a server the application only serve an almost empty "index.html" file that hold the algorithm to connect us all, fill the screen with the distributed content and give tools to let you add to the chain of content.
 
-Yet, any developer is able to innovate by creating new applications, new websites, all while reusing existing data that was created here, by us.
+Yet, any developer is able to innovate by creating new applications, new websites, all while reusing existing data that was created here, by you, by us. Because we own the data both conceptually and physically.
 
 To make it possible, we are reusing the efforts of the open source community, including Prof. Tim Berners-Lee work, inventor of the World Wide Web who advocates for a redesign of the web authority and for true data ownership (see the Solid Project). In our case, this project is built apon the Gun framework to whom we are grateful.
 
