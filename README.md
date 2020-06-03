@@ -1,4 +1,4 @@
-##  Carefiction
+##  Care Fiction
 
 "Commoning" is an umbrella term that brings together all the different ways people achieve to share the access and care of material and immaterial resources that in our society are more likely to be distributed top-down. Anything can be a Commons. A oven in a small village, an open source archive, a vegetables garden.
 We started fiction 0, "The White House", and we'd like to imagine with us how a scenario of commoning could look like. We put a few rudimental tools in place for you to co-write the story, to dream, envision, conceive, project. The more we all add, the more the story becomes richer, and selected. May the dream breach through the screen and become real.
