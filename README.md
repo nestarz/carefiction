@@ -20,8 +20,6 @@ Yet, any developer is able to innovate by creating new applications, new website
 
 To make it possible, we are reusing the efforts of the open source community, including Prof. Tim Berners-Lee work, inventor of the World Wide Web who advocates for a redesign of the web authority and for true data ownership (see the Solid Project). In our case, this project is built apon the Gun framework to whom we are grateful.
 
-<pre>
-The Code: https://github.com/nestarz/carefiction
-The Solid Project: https://solid.mit.edu/
-The Gun Framework: https://gun.eco/
-</pre>
+- The Code: https://github.com/nestarz/carefiction
+- The Solid Project: https://solid.mit.edu/
+- The Gun Framework: https://gun.eco/
