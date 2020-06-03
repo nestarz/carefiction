@@ -1,12 +1,12 @@
+##  Care Fiction
+
+"Commoning" is an umbrella term that brings together all the different ways people achieve to share the access and care of material and immaterial resources that in our society are more likely to be distributed top-down. Anything can be a Commons. A oven in a small village, an open source archive, a vegetables garden.
+
 <p align="center">
   <a href="https://carefiction.netlify.app/">
     <img alt="care-fiction" src="https://raw.githubusercontent.com/nestarz/carefiction/master/assets/mesh-2.png" width="446">
   </a>
 </p>
-
-##  Care Fiction
-
-"Commoning" is an umbrella term that brings together all the different ways people achieve to share the access and care of material and immaterial resources that in our society are more likely to be distributed top-down. Anything can be a Commons. A oven in a small village, an open source archive, a vegetables garden.
 
 #### Care Fiction is decentralized.
 
