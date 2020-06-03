@@ -7,7 +7,6 @@ import Textarea from "./Textarea.jsx";
 import Blank from "./Blank.jsx";
 import Image from "./Image.jsx";
 import Drawing from "./Drawing.jsx";
-import { useEffect } from "preact/hooks";
 
 const components = {
   text: Textarea,
