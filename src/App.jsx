@@ -13,7 +13,7 @@ export default () => {
       "https://gun.eliasrhouzlane.com/gun",
       "https://carefiction-gun.herokuapp.com/gun",
     ],
-    root: "table-carefiction-1",
+    root: "table-carefiction-2",
   });
 
   return (
