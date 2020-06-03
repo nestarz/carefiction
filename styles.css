@@ -235,6 +235,7 @@ textarea,
   font-family: var(--font);
   white-space: pre-line;
   outline: none;
+  word-break:break-word;
 }
 
 textarea {
