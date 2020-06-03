@@ -32,3 +32,7 @@ To make it possible, we are reusing the efforts of the open source community, in
 - The Code: https://github.com/nestarz/carefiction
 - The Solid Project: https://solid.mit.edu/
 - The Gun Framework: https://gun.eco/
+
+#### Us
+
+We are three students from Design Academy Eindhoven who are interested in the topic of commoning. Feel free to get more involved, send us an email at []@carefiction.nl.
