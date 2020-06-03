@@ -7,7 +7,9 @@
     "wouter-preact": "./wouter-preact/2.4.0/wouter-preact.js",
     "gun/lib/radix.js": "./gun/0.2020.520/radix.js",
     "gun/lib/radisk.js": "./gun/0.2020.520/radisk.js",
-    "gun/lib/rindexed.js": "./gun/0.2020.520/rindexed.js"
+    "gun/lib/rindexed.js": "./gun/0.2020.520/rindexed.js",
+    "gun/lib/open.js": "./gun/0.2020.520/open.js",
+    "gun/lib/load.js": "./gun/0.2020.520/load.js"
   },
   "scopes": {
     "./preact/10.4.4/": {

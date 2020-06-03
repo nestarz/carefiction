@@ -8,6 +8,7 @@
     "../src/components/Fiction.jsx": "../build/src/components/Fiction.js",
     "../src/components/Image.jsx": "../build/src/components/Image.js",
     "../src/components/InputText.jsx": "../build/src/components/InputText.js",
+    "../src/components/RenderGunDocument.jsx": "../build/src/components/RenderGunDocument.js",
     "../src/components/Textarea.jsx": "../build/src/components/Textarea.js"
   }
 }

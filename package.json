@@ -19,7 +19,9 @@
     "gun": "0.2020.520",
     "gun/lib/radix.js": "0.2020.520",
     "gun/lib/radisk.js": "0.2020.520",
-    "gun/lib/rindexed.js": "0.2020.520"
+    "gun/lib/rindexed.js": "0.2020.520",
+    "gun/lib/open.js": "0.2020.520",
+    "gun/lib/load.js": "0.2020.520"
   },
   "devDependencies": {
     "gun": "^0.2020.520",

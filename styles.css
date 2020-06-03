@@ -71,11 +71,25 @@ header {
   }
 }
 
-header a {
+header a,
+.p2p-data-page a {
   text-transform: uppercase;
   background: white;
   align-self: baseline;
   user-select: none;
+}
+
+.p2p-data-page {
+  margin: 1rem;
+  max-width: 30rem;
+  display: grid;
+  grid-gap: 1rem;
+  grid-template-columns: 1fr 1fr;
+  text-align: center;
+}
+
+.p2p-data-page span {
+  grid-column: 1 / -1;
 }
 
 header > div {

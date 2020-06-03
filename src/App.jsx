@@ -6,6 +6,7 @@ import { useGun } from "./utils/gun-hooks.js";
 export const session = new Date().toISOString();
 
 import Fiction from "./components/Fiction.jsx";
+import RenderGunDocument from "./components/RenderGunDocument.jsx";
 
 export default () => {
   const node = useGun({
@@ -42,6 +43,9 @@ export default () => {
                 .get("Intro")}
             />
           )}
+        </Route>
+        <Route path="/p2p/data/">
+          {() => <RenderGunDocument node={node} />}
         </Route>
         <Route path="/:rest*">{() => <Fiction node={node} />}</Route>
       </Switch>

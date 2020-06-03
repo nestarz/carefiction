@@ -52,7 +52,5 @@ export const useGunState = (node, initialState = undefined) => {
 };
 
 export const useGun = ({ peers, root }) => {
-  const gun = window.Gun({ peers, localStorage: false }).get(root);
-  // gun.open(console.log); to screenshot the database;
-  return gun;
+  return window.Gun({ peers, localStorage: false }).get(root);
 };
