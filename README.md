@@ -14,7 +14,7 @@ The text you read, the image you upload, the sketch you draw, the vote you make,
 
 #### It's peer-to-peer, like torrents.
 
-To ensure availability of the content, even when you are the only visitor, there is a special visitor, a 24h connected visitor, who is in reality a computer living in a datacenter.
+To ensure availability of the content, even when you are the only visitor, there is a special visitor, a 24h connected visitor, who is in reality a computer living in a datacenter somewhere in France.
 
 There is no central authority. The responsability is shared.
 
