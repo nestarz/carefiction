@@ -20,11 +20,11 @@ const ChapterTitle = ({parent, node}) => {
 };
 const ListChapters = ({node, parent}) => {
   const [chapters] = useGunSetState(node.get("chapters"));
-  return chapters.sort(byCreateAt).reverse().map(({key, node: child}) => h(ChapterTitle, {
+  return chapters.sort(byCreateAt).reverse().map(({key, node: child, remove}) => h(Fragment, null, h(ChapterTitle, {
     key,
     parent,
     node: child
-  }));
+  })));
 };
 const CreateChapter = ({parent, node}) => {
   const [_, setChapters] = useGunSetState(node.get("chapters"));
@@ -108,7 +108,7 @@ export default ({parent, node}) => {
     ref: main
   }, h(BlocksContent, {
     node
-  })), h("aside", null, h("input", {
+  })), parent && h("aside", null, h("input", {
     type: "checkbox",
     id: "toggle-add",
     class: "toggle hidden"

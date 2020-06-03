@@ -40,8 +40,13 @@ const ListChapters = ({ node, parent }) => {
   return chapters
     .sort(byCreateAt)
     .reverse()
-    .map(({ key, node: child }) => (
-      <ChapterTitle key={key} parent={parent} node={child} />
+    .map(({ key, node: child, remove }) => (
+      <>
+        {/* <span className="hidden" onClick={remove}>
+          x
+        </span> */}
+        <ChapterTitle key={key} parent={parent} node={child} />
+      </>
     ));
 };
 
@@ -135,13 +140,13 @@ export default ({ parent, node }) => {
       <main ref={main}>
         <BlocksContent node={node} />
       </main>
-      <aside>
+      {parent && <aside>
         <input type="checkbox" id="toggle-add" class="toggle hidden" />
         <label for="toggle-add">Add</label>
         <div className="details">
           <BlocksProducer node={node} onUpdate={triggerScrollDown} />
         </div>
-      </aside>
+      </aside>}
       <nav>
         <input type="checkbox" id="toggle-list" class="toggle hidden" />
         {parent ? (

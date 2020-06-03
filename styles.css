@@ -192,6 +192,14 @@ nav a {
   width: max-content;
 }
 
+nav {
+  grid-row: span 2;
+}
+
+aside + nav {
+  grid-row: inherit;
+}
+
 a,
 button {
   font-family: var(--font);
