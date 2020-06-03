@@ -114,6 +114,17 @@ const Path = ({ node, type }) => {
 };
 
 export default ({ parent, node }) => {
+  const main = useRef();
+  const scrollDown = () => {
+    main.current.scrollTo({
+      top: main.current.scrollHeight,
+      behavior: "smooth",
+    });
+  };
+  const triggerScrollDown = () => {
+    setTimeout(scrollDown);
+    setTimeout(scrollDown, 500);
+  };
   return (
     <>
       <header>
@@ -121,14 +132,14 @@ export default ({ parent, node }) => {
         {parent && <Path node={parent} type="fiction" />}
         <Path node={node} type="chapter" />
       </header>
-      <main>
+      <main ref={main}>
         <BlocksContent node={node} />
       </main>
       <aside>
         <input type="checkbox" id="toggle-add" class="toggle hidden" />
         <label for="toggle-add">Add</label>
         <div className="details">
-          <BlocksProducer node={node} />
+          <BlocksProducer node={node} onUpdate={triggerScrollDown} />
         </div>
       </aside>
       <nav>

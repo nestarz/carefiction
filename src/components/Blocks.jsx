@@ -7,6 +7,7 @@ import Textarea from "./Textarea.jsx";
 import Blank from "./Blank.jsx";
 import Image from "./Image.jsx";
 import Drawing from "./Drawing.jsx";
+import { useEffect } from "preact/hooks";
 
 const components = {
   text: Textarea,
@@ -27,13 +28,15 @@ export const BlocksContent = ({ node }) => {
     ));
 };
 
-export const BlocksProducer = ({ node }) => {
+export const BlocksProducer = ({ node, onUpdate = () => null }) => {
   const [_, setBlocks] = useGunSetState(node.get("blocks"));
-  const add = (type) =>
+  const add = (type) => {
     setBlocks({
       createdAt: new Date().toISOString(),
       type,
     });
+    onUpdate(type);
+  };
   return Object.keys(components).map((type) => (
     <button key={type} onClick={() => add(type)}>
       {type}

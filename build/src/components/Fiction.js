@@ -85,6 +85,17 @@ const Path = ({node, type}) => {
   }))));
 };
 export default ({parent, node}) => {
+  const main = useRef();
+  const scrollDown = () => {
+    main.current.scrollTo({
+      top: main.current.scrollHeight,
+      behavior: "smooth"
+    });
+  };
+  const triggerScrollDown = () => {
+    setTimeout(scrollDown);
+    setTimeout(scrollDown, 500);
+  };
   return h(Fragment, null, h("header", null, h(Link, {
     to: "/"
   }, "Care Fiction"), parent && h(Path, {
@@ -93,7 +104,9 @@ export default ({parent, node}) => {
   }), h(Path, {
     node,
     type: "chapter"
-  })), h("main", null, h(BlocksContent, {
+  })), h("main", {
+    ref: main
+  }, h(BlocksContent, {
     node
   })), h("aside", null, h("input", {
     type: "checkbox",
@@ -104,7 +117,8 @@ export default ({parent, node}) => {
   }, "Add"), h("div", {
     className: "details"
   }, h(BlocksProducer, {
-    node
+    node,
+    onUpdate: triggerScrollDown
   }))), h("nav", null, h("input", {
     type: "checkbox",
     id: "toggle-list",

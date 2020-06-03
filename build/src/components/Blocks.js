@@ -5,6 +5,7 @@ import Textarea2 from "./../../../src/components/Textarea.jsx";
 import Blank2 from "./../../../src/components/Blank.jsx";
 import Image2 from "./../../../src/components/Image.jsx";
 import Drawing2 from "./../../../src/components/Drawing.jsx";
+import {useEffect} from "preact/hooks";
 const components = {
   text: Textarea2,
   blank: Blank2,
@@ -21,12 +22,15 @@ export const BlocksContent = ({node}) => {
     remove
   })));
 };
-export const BlocksProducer = ({node}) => {
+export const BlocksProducer = ({node, onUpdate = () => null}) => {
   const [_, setBlocks] = useGunSetState(node.get("blocks"));
-  const add = (type) => setBlocks({
-    createdAt: new Date().toISOString(),
-    type
-  });
+  const add = (type) => {
+    setBlocks({
+      createdAt: new Date().toISOString(),
+      type
+    });
+    onUpdate(type);
+  };
   return Object.keys(components).map((type) => h("button", {
     key: type,
     onClick: () => add(type)
