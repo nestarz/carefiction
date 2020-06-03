@@ -4,7 +4,7 @@ import { useGunState, useGunSetState } from "../utils/gun-hooks.js";
 
 import { session } from "../App.jsx";
 import { useState } from "preact/hooks";
-import { classs, byCount } from "../utils/utils.js";
+import { classs, byCount, byCreateAt } from "../utils/utils.js";
 
 const Button = ({ node, lock, onClick }) => {
   const [count, setCount] = useGunState(node.get("count"));
@@ -36,6 +36,7 @@ export default ({ node }) => {
   const [lock, setLock] = useGunState(node.get(session).get("lock"));
 
   return values
+    .sort(byCreateAt)
     .sort(byCount)
     .reverse()
     .map(({ key, node }) => (

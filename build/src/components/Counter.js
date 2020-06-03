@@ -2,7 +2,7 @@ import {h, Fragment} from "preact";
 import {useGunState, useGunSetState} from "./../../../src/utils/gun-hooks.js";
 import {session} from "./../../../src/App.jsx";
 import {useState} from "preact/hooks";
-import {classs, byCount} from "./../../../src/utils/utils.js";
+import {classs, byCount, byCreateAt} from "./../../../src/utils/utils.js";
 const Button = ({node, lock, onClick}) => {
   const [count, setCount] = useGunState(node.get("count"));
   const [current] = useGunState(node.get("current"));
@@ -26,7 +26,7 @@ const Button = ({node, lock, onClick}) => {
 export default ({node}) => {
   const [values] = useGunSetState(node.get("values"));
   const [lock, setLock] = useGunState(node.get(session).get("lock"));
-  return values.sort(byCount).reverse().map(({key, node: node2}) => h(Button, {
+  return values.sort(byCreateAt).sort(byCount).reverse().map(({key, node: node2}) => h(Button, {
     key,
     node: node2,
     lock,
