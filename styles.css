@@ -146,9 +146,21 @@ nav {
   display: none;
 }
 
+aside label,
+nav label {
+  user-select: none;
+  cursor: pointer;
+  padding: 2rem 0;
+}
+
 @media screen and (min-width: 768px) {
   .details {
     display: block;
+  }
+
+  aside label,
+  nav label {
+    cursor: inherit;
   }
 }
 
@@ -158,13 +170,6 @@ nav {
 
 .details input {
   margin-bottom: 2rem;
-}
-
-aside label,
-nav label {
-  user-select: none;
-  cursor: pointer;
-  padding: 2rem 0;
 }
 
 aside label,
