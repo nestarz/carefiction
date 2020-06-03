@@ -8,7 +8,7 @@ We are three students from Design Academy Eindhoven who are interested in the to
 
 #### Care Fiction is decentralized.
 
-By being here, you become one node of the mesh. The fiction you see, write or act on is distributed among all the nodes, which means, all current visitors share between them the content of the site.
+By using the app, you become one node of the mesh. The fiction you see, write or act on is distributed among all the nodes, which means, all current visitors share between them the content of the site.
 
 The text you read, the image you upload, the sketch you draw, the vote you make, all this is shared and synchronized between all of us.
 
