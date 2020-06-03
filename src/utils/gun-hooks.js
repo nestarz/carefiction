@@ -52,30 +52,7 @@ export const useGunState = (node, initialState = undefined) => {
 };
 
 export const useGun = ({ peers, root }) => {
-  return window.Gun({ peers, localStorage: false }).get(root);
+  const gun = window.Gun({ peers, localStorage: false }).get(root);
+  // gun.open(console.log); to screenshot the database;
+  return gun;
 };
-
-// export const gunWorker = (worker, key = "100") => ({
-//   worker,
-//   get: (next) =>
-//     worker.get([key, next].join("/")) ||
-//     gunWorker(worker, [key, next].join("/")),
-//   put: (data) => worker.put(key, data) || gunWorker(worker, key),
-// });
-
-// export const useGun = () => {
-//   const worker = new Worker("/src/utils/gun-worker.js");
-//   worker.addEventListener("message", (e) => {
-//     console.log("Worker said: ", e.data);
-//   });
-//   const post = (id, ...data) =>
-//     worker.postMessage(JSON.stringify({ id, data }));
-//   return gunWorker({
-//     get: (key) => post("get", key),
-//     put: (key, data) => post("put", key, data),
-//   });
-// };
-
-// useGun()
-//   .get("test")
-//   .put("MDR");

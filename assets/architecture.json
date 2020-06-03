@@ -1,0 +1,184 @@
+{
+  "blocks": {
+    "kaz2h2cbZgK213c": null,
+    "kaz2qx715nox8rx": null,
+    "kaz2zgsrESIhmGc": null,
+    "kaz30do1BkcJAP2": null,
+    "kaz30h2jwWn5Dsm": null,
+    "kaz3xa46yTbdmyv": null,
+    "kaz3xbowz3fE23f": null,
+    "kazgpuk4jAroh6p": null,
+    "kazi9v0bHsXuW8c": {
+      "createdAt": "2020-06-03T15:28:34.619Z",
+      "current": "Welcome!\nCare Fiction is a thinking toy for commoning co-fabulation.\nThe practice of ‘commoning’ consists in the horizontal access, maintenance and governance – in a word, care – of shared resources, such as water, food, knowledge, space. We all encountered ‘commons’ in our lived experience: a communal garden, an open source software, a co-housing project. Commons can be material and immaterial.\n\nBy bringing to the foreground the phase 0 of the social enterprise process – the dreaming stage – we hope to provide a playful space for ‘commoning thinking.’\nGuided by the anarchic cooperation of the ants colonies, we defined an uncontrolled and decentralized playground. Any anonymous agent can co-write an existing fiction or decide to start a new one, add images, throw ideas into the pot, reconfigure previous ones. The website itself is hosted by all the agents, who become nodes once they join.\n\nWe set the game in motion by offering a physical place to start thinking from: an abandoned house in Eindhoven. The story opens in a near future when a commoning is already happening there: How does it look like? Who has access to it? How are decisions made?\n\nThis project is part of STIGMERGY, a Design Academy Eindhoven seminar and exhibition curated by Martina Muzi in spring 2020. We are three students who share the interest in commoning. Feel free to get more involved, send us an email. eleonoratoniolo@fastmail.com elias.rhouzlane@gmail.com francesca.tambussi@gmail.com",
+      "lock": true,
+      "type": "text"
+    },
+    "kazikhjfy8baSsm": {
+      "createdAt": "2020-06-03T15:36:50.379Z",
+      "current": "EXTRA NOTES ON THE SITE ARCHITECTURE\n\n#### Care Fiction is decentralized.\nBy using the app, you become one node of the mesh. The fiction you see,\nwrite or act on is distributed among all the nodes, which means, all\ncurrent visitors share between them the content of the site.\nThe text you read, the image you upload, the sketch you draw, the vote\nyou make, all this is shared and synchronized between all of us.\n\n#### It's peer-to-peer, like torrents.\nTo ensure availability of the content, even when you are the only\nvisitor, there is a special visitor, a 24h connected visitor, who is in\nreality a computer living in a datacenter somewhere in France.\n\n#### There is no central authority. The responsability is shared.\nThe proposed website is one application built on top of this distributed\nnetwork of Care Fiction(s).\nHosted in a server the application only serve an almost empty\n\"index.html\" file that hold the algorithm to connect us all, fill the\nscreen with the distributed content and give tools to let you add to the\nchain of content.\nYet, any developer is able to innovate by creating new applications, new\nwebsites, all while reusing existing data that was created here, by you,\nby us. Because we own the data both conceptually and physically.\n\n#### A collective effort\nTo make it possible, we are reusing the efforts of the open source\ncommunity, including Prof. Tim Berners-Lee work, inventor of the World\nWide Web who advocates for a redesign of the web authority and for true\ndata ownership (see the Solid Project). In our case, this project is\nbuilt apon the Gun framework to whom we are grateful.\n- The Code: https://github.com/nestarz/carefiction\n- The Solid Project: https://solid.mit.edu/\n- The Gun Framework: https://gun.eco/",
+      "lock": true,
+      "type": "text"
+    }
+  },
+  "chapters": {
+    "kaz2jz80KLfq2Ab": null,
+    "kaz3xgcql2RbtAr": null,
+    "kaz54qerhKXAMdJ": null,
+    "kazcndgwlPI0TzV": null,
+    "kazebf8nngXrCoA": null,
+    "kaztasy8XSjvn7f": null,
+    "kaztuilaT25GyXf": {
+      "chapters": {
+        "Intro": {
+          "blocks": {
+            "kaztunt2VLNWFS0": {
+              "createdAt": "2020-06-03T20:52:40.838Z",
+              "current": "an April day, 2021 ",
+              "lock": true,
+              "type": "text"
+            },
+            "kaztuv60rqlMUoX": {
+              "createdAt": "2020-06-03T20:52:50.376Z",
+              "current": " It's a Sunday, you're biking around Eindhoven. While turning around a corner you notice a big white villa. It seems busy inside and a few people are chatting animatedly in the garden. It seems like someone is building a... ",
+              "lock": true,
+              "type": "text"
+            },
+            "kaztuyaabWVnJyy": {
+              "createdAt": "2020-06-03T20:52:54.418Z",
+              "lock": true,
+              "type": "blank",
+              "values": {
+                "2020-06-03T20:27:07.247Z": {
+                  "count": 1,
+                  "createdAt": "2020-06-03T20:53:00.271Z",
+                  "current": "long table",
+                  "lock": true
+                },
+                "2020-06-03T20:53:04.247Z": {
+                  "count": 1,
+                  "createdAt": "2020-06-03T20:53:06.599Z",
+                  "current": "stage",
+                  "lock": true
+                },
+                "2020-06-03T20:53:08.733Z": {
+                  "count": 1,
+                  "createdAt": "2020-06-03T20:53:11.255Z",
+                  "current": "patio",
+                  "lock": true
+                },
+                "2020-06-03T20:53:13.962Z": {
+                  "count": 1,
+                  "createdAt": "2020-06-03T20:53:17.774Z",
+                  "current": "3D printer",
+                  "lock": true
+                }
+              }
+            },
+            "kaztvskgurA1kuk": {
+              "createdAt": "2020-06-03T20:53:33.664Z",
+              "current": "You pull to the side of the road, get off your bike and walk closer to the entrance gate. On a name plaque you read...",
+              "lock": true,
+              "type": "text"
+            },
+            "kaztvweiUOdpHr6": {
+              "createdAt": "2020-06-03T20:53:38.634Z",
+              "lock": true,
+              "type": "blank",
+              "values": {
+                "2020-06-03T20:53:13.962Z": {
+                  "count": 1,
+                  "createdAt": "2020-06-03T20:53:46.413Z",
+                  "current": "Eindhoven Social House",
+                  "lock": true
+                },
+                "2020-06-03T20:53:49.864Z": {
+                  "count": 1,
+                  "createdAt": "2020-06-03T20:53:56.692Z",
+                  "current": "Snowflake Villa",
+                  "lock": true
+                },
+                "2020-06-03T20:53:58.857Z": {
+                  "count": 1,
+                  "createdAt": "2020-06-03T20:54:16.844Z",
+                  "current": "Humucity",
+                  "lock": true
+                }
+              }
+            },
+            "kaztwwcd13aVgeS": null,
+            "kaztwz8pQjUTR4M": {
+              "createdAt": "2020-06-03T20:54:28.969Z",
+              "type": "image",
+              "src": "data:image/jpeg;base64,",
+              "lock": true
+            },
+            "kaztxe3udDgy0vI": {
+              "createdAt": "2020-06-03T20:54:48.234Z",
+              "type": "text",
+              "current": "Cool name, you think. Underneath it, a short text describes it as a commoning project. \nYou enter the gate and walk towards the small crowd of people, you ask them what this place is. One of them kindly replies: it's a space for... ",
+              "lock": true
+            },
+            "kaztydlcu1xrUPF": {
+              "createdAt": "2020-06-03T20:55:34.224Z",
+              "type": "blank",
+              "lock": true,
+              "values": {
+                "2020-06-03T20:53:58.857Z": {
+                  "current": "co-living",
+                  "lock": true,
+                  "count": 1,
+                  "createdAt": "2020-06-03T20:55:46.288Z"
+                },
+                "2020-06-03T20:55:50.035Z": {
+                  "current": "cultural production",
+                  "lock": true,
+                  "count": 1,
+                  "createdAt": "2020-06-03T20:56:00.199Z"
+                }
+              }
+            },
+            "kaztzqye75ntiIO": {
+              "createdAt": "2020-06-03T20:56:38.198Z",
+              "type": "text",
+              "current": "They are running it together, they add, they all take care of it under a shared ownership.  Wah, that must be though. It slips out of your mouth before even thinking. The person in front of you hints a smile. Yeah, sometimes, they say, but otherwise I wouldn't be able to have a space where I can...  "
+            },
+            "kaztzumtoMimusU": {
+              "createdAt": "2020-06-03T20:56:42.965Z",
+              "type": "blank",
+              "lock": true,
+              "values": {
+                "2020-06-03T20:55:50.035Z": {
+                  "current": "live and grow vegetables",
+                  "lock": true,
+                  "count": 1,
+                  "createdAt": "2020-06-03T20:57:12.731Z"
+                }
+              }
+            }
+          },
+          "createdAt": "2020-06-03T20:52:34.078Z",
+          "titles": {
+            "values": {
+              "2020-06-03T20:27:07.247Z": {
+                "count": 1,
+                "createdAt": "2020-06-03T20:52:34.078Z",
+                "current": "Intro"
+              }
+            }
+          }
+        }
+      },
+      "createdAt": "2020-06-03T20:52:34.078Z",
+      "titles": {
+        "values": {
+          "2020-06-03T20:27:07.247Z": {
+            "count": 1,
+            "createdAt": "2020-06-03T20:52:34.078Z",
+            "current": "Eindhoven Social House"
+          }
+        }
+      }
+    }
+  }
+}
