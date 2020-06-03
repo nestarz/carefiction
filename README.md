@@ -6,7 +6,7 @@ By being here, you become one node of the mesh. The fiction you see, write or ac
 
 The text you read, the image you upload, the sketch you draw, the vote you make, all this is shared and synchronized between all of us.
 
-It's peer-to-peer, like torrents.
+#### It's peer-to-peer, like torrents.
 
 To ensure availability of the content, even when you are the only visitor, there is a special visitor, a 24h connected visitor, who is in reality a computer living in a datacenter.
 
