@@ -22,7 +22,7 @@ export const BlocksContent = ({ node }) => {
     .reverse()
     .map(({ key, node, data, remove }) => (
       <article key={key} className={data.type}>
-        {/* <span className="hidden" onClick={remove}>Danger</span> */}
+        {/* <span className="hidden" onClick={remove}>Remove</span> */}
         {h(components[data.type], { node, remove })}
       </article>
     ));
