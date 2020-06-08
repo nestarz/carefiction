@@ -1,0 +1,99 @@
+<style>
+  * {
+    box-sizing: border-box;
+  }
+  body,
+  html {
+    font-size: 10px;
+    background: #e7e7e7;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0;
+    font-family: "andale mono", monospace;
+  }
+  article {
+    font-size: 1.7rem;
+    cursor: pointer;
+    background: white;
+    border: 2px solid;
+    padding: 1rem;
+    margin: 2rem;
+    max-height: 100vh;
+    max-width: 100vh;
+    display: none;
+    user-select: none;
+  }
+  .visible {
+    display: grid;
+    grid-gap: 1rem;
+  }
+  img {
+    max-width: 100%;
+  }
+</style>
+
+<script type="module">
+  async function start() {
+    const sequences = document.querySelectorAll("article");
+    for (const sequence of sequences) {
+      sequence.classList.toggle("visible");
+      await new Promise((r) => sequence.addEventListener("click", r));
+      sequence.classList.toggle("visible");
+    }
+    start();
+  }
+  start();
+</script>
+
+<body>
+  <article>
+    architecture review
+  </article>
+  <article>
+    <span>Care Fiction is decentralized</span>
+  </article>
+  <article>
+    <img src="http://www.denoormanstrips.nl/wp-content/uploads/2014/02/AntColony.jpg"/>
+  </article>
+  <article>
+    You become one node of the mesh. One ant of the colony.
+  </article>
+  <article>
+    It's peer-to-peer, like torrents. 
+  </article>
+  <article>
+    <img src="peers.png"/>
+  </article>
+  <article>
+    <img src="fiction1.png"/>
+  </article>
+  <article>
+    This is shown in the DNA
+  </article>
+  <article>
+    <img src="here.png"/>
+  </article>
+  <article>
+    <img src="france.png"/>
+  </article>
+  <article>
+    There is no central authority. The responsability and trust is shared.
+  </article>
+  <article>
+    Because we own the data both conceptually and physically. 
+  </article>
+  <article>
+    Redesign of the web authority and for true data ownership.
+  </article>
+  <article>
+    Collective Effort
+  </article>
+  <article>
+    This shared design is built apon the Gun framework.
+  </article>
+  <article>
+    <img src="gun.png">
+  </article>
+</body>
