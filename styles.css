@@ -23,6 +23,7 @@ body {
 body > div {
   display: grid;
   grid-template-rows: auto 1fr 5fr;
+  grid-template-rows: max-content auto 1fr;
   height: 100vh;
 }
 
@@ -147,6 +148,8 @@ nav {
   display: inline;
   border-top: var(--border);
   padding: 0 2rem;
+  z-index: 99999;
+  background: var(--primary);
 }
 
 @media screen and (min-width: 768px) {
@@ -167,6 +170,16 @@ nav label {
   padding: 2rem 0;
 }
 
+.toggle:checked ~ .details {
+  display: block;
+}
+
+nav .toggle:checked ~ .details {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
 @media screen and (min-width: 768px) {
   .details {
     display: block;
@@ -176,10 +189,6 @@ nav label {
   nav label {
     cursor: inherit;
   }
-}
-
-.toggle:checked ~ .details {
-  display: block;
 }
 
 .details input {
@@ -201,17 +210,13 @@ nav button {
   margin: 0 2rem 2rem 0;
 }
 
-nav a {
-  display: block;
-  width: max-content;
-}
-
 nav {
   grid-row: span 2;
 }
 
 aside + nav {
   grid-row: inherit;
+  overflow-y: auto;
 }
 
 a,
@@ -257,7 +262,7 @@ textarea,
   font-family: var(--font);
   white-space: pre-line;
   outline: none;
-  word-break:break-word;
+  word-break: break-word;
 }
 
 textarea {

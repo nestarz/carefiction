@@ -5,7 +5,8 @@
   "license": "MIT",
   "author": "Elias Rhouzlane",
   "scripts": {
-    "build": "esbuild src/index.js --outdir=dist --jsx-factory=h --jsx-fragment=Fragment --bundle --target=es2015 --minify"
+    "build": "esbuild src/index.js --outdir=dist --jsx-factory=h --jsx-fragment=Fragment --bundle --target=es2015 --minify",
+    "dev": "esdev build && esdev serve"
   },
   "dependencies": {
     "@eliaspourquoi/heritage": "^0.1.9",
