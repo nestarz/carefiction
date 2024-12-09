@@ -29,12 +29,12 @@ export default ({ node, remove, placeholder }) => {
           ref={ref}
           readOnly={lock}
           placeholder={placeholder}
-          value={value}
-          onChange={(e) => {
+          defaultValue={value}
+          onInput={(e) => {
             if (!lock) setValue(e.target.value);
           }}
           onKeyPress={(e) => {
-            !lock && setValue(e.target.value);
+            // !lock && setValue(e.target.value);
             if (e.which == 13 && !e.shiftKey) {
               e.preventDefault();
             }
