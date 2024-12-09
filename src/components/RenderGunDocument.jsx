@@ -1,5 +1,3 @@
-/* @jsx h */
-import { h, Fragment } from "preact";
 import { useEffect, useState } from "preact/hooks";
 
 export default ({ node }) => {

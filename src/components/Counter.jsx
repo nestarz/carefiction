@@ -1,8 +1,6 @@
-/* @jsx h */
-import { h, Fragment } from "preact";
 import { useGunState, useGunSetState } from "../utils/gun-hooks.js";
 
-import { session } from "../App.jsx";
+import { session } from "../../App.jsx";
 import { useState } from "preact/hooks";
 import { classs, byCount, byCreateAt } from "../utils/utils.js";
 

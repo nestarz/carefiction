@@ -1,6 +1,3 @@
-/* @jsx h */
-import { h, Fragment } from "preact";
-
 import { useGunState } from "../utils/gun-hooks.js";
 import { toBase64, getSizeKo, compressImage } from "../utils/utils.js";
 

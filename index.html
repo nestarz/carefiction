@@ -4,23 +4,38 @@
     <meta charset="utf-8" />
 
     <title>Care Fiction</title>
-    <meta name="title" content="Care Fiction">
-    <meta name="description" content="Join us in a game of collaborative fiction writing around and about a commoning project. “Commoning” is an ombrella term that brings together all the different ways people achieve to share the access and care of material and immaterial resources that in our society are more likely to be distributed top-down. Anything can be a common. A oven in a small village, an open source archive, a vegetables garden.">
-    
+    <meta name="title" content="Care Fiction" />
+    <meta
+      name="description"
+      content="Join us in a game of collaborative fiction writing around and about a commoning project. “Commoning” is an ombrella term that brings together all the different ways people achieve to share the access and care of material and immaterial resources that in our society are more likely to be distributed top-down. Anything can be a common. A oven in a small village, an open source archive, a vegetables garden."
+    />
+
     <!-- Open Graph / Facebook -->
-    <meta property="og:type" content="website">
-    <meta property="og:url" content="https://carefiction.netlify.app/">
-    <meta property="og:title" content="Care Fiction">
-    <meta property="og:description" content="Join us in a game of collaborative fiction writing around and about a commoning project. “Commoning” is an ombrella term that brings together all the different ways people achieve to share the access and care of material and immaterial resources that in our society are more likely to be distributed top-down. Anything can be a common. A oven in a small village, an open source archive, a vegetables garden.">
-    <meta property="og:image" content="https://carefiction.netlify.app/housedream.jpg">
-    
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://carefiction.netlify.app/" />
+    <meta property="og:title" content="Care Fiction" />
+    <meta
+      property="og:description"
+      content="Join us in a game of collaborative fiction writing around and about a commoning project. “Commoning” is an ombrella term that brings together all the different ways people achieve to share the access and care of material and immaterial resources that in our society are more likely to be distributed top-down. Anything can be a common. A oven in a small village, an open source archive, a vegetables garden."
+    />
+    <meta
+      property="og:image"
+      content="https://carefiction.netlify.app/housedream.jpg"
+    />
+
     <!-- Twitter -->
-    <meta property="twitter:card" content="summary_large_image">
-    <meta property="twitter:url" content="https://carefiction.netlify.app/">
-    <meta property="twitter:title" content="Care Fiction">
-    <meta property="twitter:description" content="Join us in a game of collaborative fiction writing around and about a commoning project. “Commoning” is an ombrella term that brings together all the different ways people achieve to share the access and care of material and immaterial resources that in our society are more likely to be distributed top-down. Anything can be a common. A oven in a small village, an open source archive, a vegetables garden.">
-    <meta property="twitter:image" content="https://carefiction.netlify.app/housedream.jpg">
-    
+    <meta property="twitter:card" content="summary_large_image" />
+    <meta property="twitter:url" content="https://carefiction.netlify.app/" />
+    <meta property="twitter:title" content="Care Fiction" />
+    <meta
+      property="twitter:description"
+      content="Join us in a game of collaborative fiction writing around and about a commoning project. “Commoning” is an ombrella term that brings together all the different ways people achieve to share the access and care of material and immaterial resources that in our society are more likely to be distributed top-down. Anything can be a common. A oven in a small village, an open source archive, a vegetables garden."
+    />
+    <meta
+      property="twitter:image"
+      content="https://carefiction.netlify.app/housedream.jpg"
+    />
+
     <meta
       name="author"
       content="Eleonora Toniolo; Elias Rhouzlane; Francesca Tambussi"
@@ -32,27 +47,70 @@
   </head>
 
   <body>
-    <script src="/web_modules/gun/0.2020.520/gun.js"></script>
-    <script src="/web_modules/gun/0.2020.520/radix.js"></script>
-    <script src="/web_modules/gun/0.2020.520/radisk.js"></script>
-    <script src="/web_modules/gun/0.2020.520/store.js"></script>
-    <script src="/web_modules/gun/0.2020.520/rindexed.js"></script>
-
-    <script src="/web_modules/gun/0.2020.520/open.js"></script>
-    <script src="/web_modules/gun/0.2020.520/load.js"></script>
-
-    <script
-      async="true"
-      defer="true"
-      src="/web_modules/es-module-shims/0.4.6/es-module-shims.js"
-    ></script>
-    <script type="importmap-shim" src="/web_modules/import-map.json"></script>
-    <script type="importmap-shim" src="/build/build-import-map.json"></script>
-    <script
-      async="true"
-      defer="true"
-      type="module-shim"
-      src="/src/index.js"
-    ></script>
+    <script type="importmap">
+    {
+      "imports": {
+        "preact": "https://esm.sh/preact@10.25.1",
+        "preact/": "https://esm.sh/preact@10.25.1/",
+        "wouter-preact": "https://esm.sh/wouter-preact@3.3.5?external=preact",
+        "gun": "https://esm.sh/gun@0.2020.1240",
+        "gun/": "https://esm.sh/gun@0.2020.1240/",
+        "esbuild-wasm": "https://esm.sh/esbuild-wasm@0.24.0",
+        "esbuild-wasm/": "https://esm.sh/esbuild-wasm@0.24.0/",
+        "urlbat": "https://esm.sh/urlbat@4.1.0"
+      }
+    }
+  </script>
+    <script type="module">
+      import * as esbuild from "esbuild-wasm";
+      await esbuild.initialize({
+        wasmURL: import.meta.resolve("esbuild-wasm/esbuild.wasm"),
+      });
+      const baseElement = document.querySelector("base");
+      const baseUrl = baseElement ? baseElement.href : window.location.origin;
+      const transpiledCode = await esbuild.build({
+        stdin: {
+          contents: "import './App.jsx';",
+          loader: "tsx",
+          resolveDir: ".",
+        },
+        plugins: [{
+          name: "relative-resolver-in-browser",
+          setup: (build) => {
+            build.onResolve({ filter: /^\./ }, (args) => ({
+              path: new URL(args.path, new URL(args.importer, baseUrl)).href,
+              namespace: "relative-resolver",
+            }));
+            build.onLoad(
+              { filter: /.*/, namespace: "relative-resolver" },
+              async (args) => {
+                const contents = await fetch(args.path) //{ cache: "force-cache" })
+                  .then((res) => res.text());
+                const loader =
+                  args.path.endsWith(".jsx") || args.path.endsWith(".tsx")
+                    ? "tsx"
+                    : "js";
+                return { contents, loader };
+              },
+            );
+          },
+        }],
+        target: "es2022",
+        format: "esm",
+        bundle: true,
+        jsxImportSource: "preact",
+        jsx: "automatic",
+        external: Object.keys(
+          JSON.parse(document.querySelector('[type="importmap"]').textContent)
+            .imports,
+        ),
+      });
+      const scriptElement = document.createElement("script");
+      scriptElement.type = "module";
+      scriptElement.textContent = new TextDecoder().decode(
+        transpiledCode.outputFiles[0].contents,
+      );
+      document.body.appendChild(scriptElement);
+    </script>
   </body>
 </html>

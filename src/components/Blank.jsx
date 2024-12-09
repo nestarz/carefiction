@@ -1,6 +1,3 @@
-/* @jsx h */
-import { h, Fragment } from "preact";
-
 import InputText from "./InputText.jsx";
 import Counter from "./Counter.jsx";
 import { useGunState } from "../utils/gun-hooks.js";

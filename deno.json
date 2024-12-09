@@ -1,0 +1,5 @@
+{
+  "imports": {
+    "@kitsonk/kv-toolbox": "jsr:@kitsonk/kv-toolbox@^0.24.0"
+  }
+}

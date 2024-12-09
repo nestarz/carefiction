@@ -1,5 +1,4 @@
-/* @jsx h */
-import { h, Fragment } from "preact";
+import { h } from "preact";
 import { useGunSetState } from "../utils/gun-hooks.js";
 import { byCreateAt } from "../utils/utils.js";
 

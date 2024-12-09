@@ -1,11 +1,9 @@
-/* @jsx h */
-import { h, Fragment } from "preact";
 import { useState, useRef } from "preact/hooks";
 import { Link } from "wouter-preact";
 
 import { useGunSetState } from "../utils/gun-hooks.js";
 import { byCreateAt } from "../utils/utils.js";
-import { session } from "../App.jsx";
+import { session } from "../../App.jsx";
 
 import { BlocksContent, BlocksProducer } from "./Blocks.jsx";
 import Counter from "./Counter.jsx";
@@ -102,7 +100,7 @@ const Path = ({ node, type }) => {
         <div>
           <input ref={ref} type="checkbox" id={id} class="toggle hidden" />
           <label for={id}>
-            <span>></span>
+            <span>{'>'}</span>
             <InputText
               placeholder={title.current}
               node={node.get("titles")}

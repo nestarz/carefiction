@@ -1,4 +1,35 @@
-import { useState, useEffect } from "preact/hooks";
+import "gun";
+import "gun/lib/radix.js";
+import "gun/lib/radisk.js";
+import "gun/lib/store.js";
+import "gun/lib/rindexed.js";
+import "gun/lib/open.js";
+import "gun/lib/load.js";
+
+import { useEffect, useState } from "preact/hooks";
+import urlbat from "urlbat";
+
+const opt = {
+  store: {
+    get: function (key, done) {
+      fetch(urlbat("/gun", { key }))
+        .then((r) => r.text())
+        .then((node) => done(undefined, node))
+        .catch(() => done());
+    },
+    put: function (key, node, done) {
+      fetch(urlbat("/gun", { key }), {
+        method: "PUT",
+        headers: { "Content-Type": "text/plain" },
+        body: node,
+      })
+        .then((r) => r.text())
+        .then(() => done())
+        .catch((err) => done(err));
+    },
+  },
+};
+
 
 const getId = (key) => key.split("/").pop();
 
@@ -51,6 +82,8 @@ export const useGunState = (node, initialState = undefined) => {
   return [value, (value) => node.put(value)];
 };
 
-export const useGun = ({ peers, root }) => {
-  return window.Gun({ peers, localStorage: false }).get(root);
+export const useGun = ({ root }) => {
+  const gun = new Gun({ ...opt, localStorage: false });
+  console.log(gun);
+  return gun.get(root);
 };

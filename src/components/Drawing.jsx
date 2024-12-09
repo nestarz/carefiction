@@ -1,5 +1,3 @@
-/* @jsx h */
-import { h, Fragment } from "preact";
 import { useState, useRef, useMemo } from "preact/hooks";
 import { useGunState } from "../utils/gun-hooks.js";
 import { classs } from "../utils/utils.js";

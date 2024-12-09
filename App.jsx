@@ -1,19 +1,15 @@
-/* @jsx h */
-import { h, Fragment } from "preact";
+import { render } from "preact";
 import { Route, Router, Switch } from "wouter-preact";
-import { useGun } from "./utils/gun-hooks.js";
+import { useGun } from "./src/utils/gun-hooks.js";
 
 export const session = new Date().toISOString();
 
-import Fiction from "./components/Fiction.jsx";
-import RenderGunDocument from "./components/RenderGunDocument.jsx";
+import Fiction from "./src/components/Fiction.jsx";
+import RenderGunDocument from "./src/components/RenderGunDocument.jsx";
 
-export default () => {
+const App = () => {
   const node = useGun({
-    peers: [
-      "https://gun.eliasrhouzlane.com/gun",
-      "https://carefiction-gun.herokuapp.com/gun",
-    ],
+    peers: ["/gun"],
     root: "table-carefiction-2",
   });
 
@@ -48,7 +44,19 @@ export default () => {
           {() => <RenderGunDocument node={node} />}
         </Route>
         <Route path="/:rest*">{() => <Fiction node={node} />}</Route>
+        <Route path="/*">{() => <Fiction node={node} />}</Route>
       </Switch>
     </Router>
   );
 };
+
+const root = document.body.insertBefore(
+  document.createElement("div"),
+  document.body.firstChild,
+);
+
+render(<App />, root);
+
+console.log(root);
+
+export default App;
