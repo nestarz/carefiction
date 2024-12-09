@@ -12,7 +12,8 @@
 
     <!-- Open Graph / Facebook -->
     <meta property="og:type" content="website" />
-    <meta property="og:url" content="https://carefiction.netlify.app/" />
+    <meta property="og:url" content="https://carefiction.deno.dev/" />
+    <meta property="canonical" content="https://carefiction.deno.dev/" />
     <meta property="og:title" content="Care Fiction" />
     <meta
       property="og:description"
@@ -20,12 +21,12 @@
     />
     <meta
       property="og:image"
-      content="https://carefiction.netlify.app/housedream.jpg"
+      content="https://carefiction.deno.dev/housedream.jpg"
     />
 
     <!-- Twitter -->
     <meta property="twitter:card" content="summary_large_image" />
-    <meta property="twitter:url" content="https://carefiction.netlify.app/" />
+    <meta property="twitter:url" content="https://carefiction.deno.dev/" />
     <meta property="twitter:title" content="Care Fiction" />
     <meta
       property="twitter:description"
@@ -33,7 +34,7 @@
     />
     <meta
       property="twitter:image"
-      content="https://carefiction.netlify.app/housedream.jpg"
+      content="https://carefiction.deno.dev/housedream.jpg"
     />
 
     <meta
@@ -48,21 +49,29 @@
 
   <body>
     <script type="importmap">
-    {
-      "imports": {
-        "preact": "https://esm.sh/preact@10.25.1",
-        "preact/": "https://esm.sh/preact@10.25.1/",
-        "wouter-preact": "https://esm.sh/wouter-preact@3.3.5?external=preact",
-        "gun": "https://esm.sh/gun@0.2020.1240",
-        "gun/": "https://esm.sh/gun@0.2020.1240/",
-        "esbuild-wasm": "https://esm.sh/esbuild-wasm@0.24.0",
-        "esbuild-wasm/": "https://esm.sh/esbuild-wasm@0.24.0/",
-        "urlbat": "https://esm.sh/urlbat@4.1.0"
+      {
+        "imports": {
+          "preact": "https://esm.sh/preact@10.25.1",
+          "preact/": "https://esm.sh/preact@10.25.1/",
+          "wouter-preact": "https://esm.sh/wouter-preact@3.3.5?external=preact",
+          "gun": "https://esm.sh/gun@0.2020.1240",
+          "gun/": "https://esm.sh/gun@0.2020.1240/",
+          "esbuild-wasm": "https://esm.sh/esbuild-wasm@0.24.0",
+          "esbuild-wasm/": "https://esm.sh/esbuild-wasm@0.24.0/",
+          "urlbat": "https://esm.sh/urlbat@4.1.0"
+        }
       }
-    }
-  </script>
+    </script>
     <script type="module">
-      import * as esbuild from "esbuild-wasm";
+      if (
+        window.location.origin !== "carefiction.deno.dev" &&
+        !(
+          window.location.origin.includes("localhost") ||
+          window.location.origin.includes("0.0.0.0")
+        )
+      )
+        window.location.replace("https://carefiction.deno.dev/");
+      const esbuild = await import("esbuild-wasm");
       await esbuild.initialize({
         wasmURL: import.meta.resolve("esbuild-wasm/esbuild.wasm"),
       });
@@ -74,27 +83,29 @@
           loader: "tsx",
           resolveDir: ".",
         },
-        plugins: [{
-          name: "relative-resolver-in-browser",
-          setup: (build) => {
-            build.onResolve({ filter: /^\./ }, (args) => ({
-              path: new URL(args.path, new URL(args.importer, baseUrl)).href,
-              namespace: "relative-resolver",
-            }));
-            build.onLoad(
-              { filter: /.*/, namespace: "relative-resolver" },
-              async (args) => {
-                const contents = await fetch(args.path) //{ cache: "force-cache" })
-                  .then((res) => res.text());
-                const loader =
-                  args.path.endsWith(".jsx") || args.path.endsWith(".tsx")
-                    ? "tsx"
-                    : "js";
-                return { contents, loader };
-              },
-            );
+        plugins: [
+          {
+            name: "relative-resolver-in-browser",
+            setup: (build) => {
+              build.onResolve({ filter: /^\./ }, (args) => ({
+                path: new URL(args.path, new URL(args.importer, baseUrl)).href,
+                namespace: "relative-resolver",
+              }));
+              build.onLoad(
+                { filter: /.*/, namespace: "relative-resolver" },
+                async (args) => {
+                  const contents = await fetch(args.path) //{ cache: "force-cache" })
+                    .then((res) => res.text());
+                  const loader =
+                    args.path.endsWith(".jsx") || args.path.endsWith(".tsx")
+                      ? "tsx"
+                      : "js";
+                  return { contents, loader };
+                }
+              );
+            },
           },
-        }],
+        ],
         target: "es2022",
         format: "esm",
         bundle: true,
@@ -102,13 +113,13 @@
         jsx: "automatic",
         external: Object.keys(
           JSON.parse(document.querySelector('[type="importmap"]').textContent)
-            .imports,
+            .imports
         ),
       });
       const scriptElement = document.createElement("script");
       scriptElement.type = "module";
       scriptElement.textContent = new TextDecoder().decode(
-        transpiledCode.outputFiles[0].contents,
+        transpiledCode.outputFiles[0].contents
       );
       document.body.appendChild(scriptElement);
     </script>
