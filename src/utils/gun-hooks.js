@@ -8,28 +8,40 @@ import "gun/lib/load.js";
 
 import { useEffect, useState } from "preact/hooks";
 import urlbat from "urlbat";
+import { encodeHex } from "@std/encoding/hex";
 
 const opt = {
   store: {
     get: function (key, done) {
-      fetch(urlbat("/gun", { key }))
-        .then((r) => r.text())
+      fetch(
+        urlbat(
+          "https://carefiction.assets.elias.systems/gun/care-fiction-1/:key",
+          { key: `${encodeHex(key)}.json` },
+        ),
+      )
+        .then((r) => r.status === 200 ? r.text() : Promise.reject())
         .then((node) => done(undefined, node))
         .catch(() => done());
     },
     put: function (key, node, done) {
-      fetch(urlbat("/gun", { key }), {
+      fetch(urlbat("/gun", { key: `${encodeHex(key)}.json` }), {
         method: "PUT",
-        headers: { "Content-Type": "text/plain" },
-        body: node,
       })
         .then((r) => r.text())
+        .then((url) =>
+          fetch(url, {
+            method: "PUT",
+            body: new File(
+              [new Blob([node], { type: "application/json" })],
+              `${encodeHex(key)}.json`,
+            ),
+          })
+        )
         .then(() => done())
         .catch((err) => done(err));
     },
   },
 };
-
 
 const getId = (key) => key.split("/").pop();
 

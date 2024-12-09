@@ -1,6 +1,19 @@
-import { openKvToolbox } from "@kitsonk/kv-toolbox";
+import { S3Client } from "@bradenmacdonald/s3-lite-client";
+import { join } from "@std/path/join";
 
-const kv = await openKvToolbox();
+export const getS3Uri = (key: string) =>
+  new URL(key, Deno.env.get("S3_PUBLIC_URL")!);
+
+export const s3Client = new S3Client({
+  accessKey: Deno.env.get("S3_ACCESS_KEY_ID")!,
+  secretKey: Deno.env.get("S3_SECRET_ACCESS_KEY")!,
+  endPoint: Deno.env.get("S3_ENDPOINT_URL")! ??
+    "error.eu.r2.cloudflarestorage.com",
+  region: Deno.env.get("S3_BUCKET_REGION")!,
+  bucket: Deno.env.get("S3_DEFAULT_BUCKET")!,
+  useSSL: true,
+  pathStyle: true,
+});
 
 await Deno.serve(async (req) => {
   if (req.method === "OPTIONS") {
@@ -9,17 +22,13 @@ await Deno.serve(async (req) => {
 
   const url = new URL(req.url);
   if (url.pathname.startsWith("/gun")) {
-    const key = url.searchParams.get("key") as keyof typeof kv;
-    if (req.method === "GET") {
-      const stream = await kv.getBlob(["gun", "care-fiction-8", key]);
-      if (stream.value) return new Response(stream.value);
-    }
-    if (req.method === "PUT") {
-      await kv.setBlob(
-        ["gun", "care-fiction-8", key],
-        new Blob([await req.blob()], { type: "text/plain" }),
-      );
-      return new Response(null);
+    const key = url.searchParams.get("key");
+    const s3key = key ? join("gun", "care-fiction-1", key) : null;
+    if (req.method === "PUT" && s3key) {
+      const url = await s3Client.getPresignedUrl("PUT", s3key, {
+        expirySeconds: 60 * 3,
+      });
+      return new Response(url);
     }
     return new Response(null, { status: 404 });
   }

@@ -1,5 +1,7 @@
 {
   "imports": {
-    "@kitsonk/kv-toolbox": "jsr:@kitsonk/kv-toolbox@^0.24.0"
+    "@bradenmacdonald/s3-lite-client": "jsr:@bradenmacdonald/s3-lite-client@^0.7.6",
+    "@kitsonk/kv-toolbox": "jsr:@kitsonk/kv-toolbox@^0.24.0",
+    "@std/path": "jsr:@std/path@^1.0.8"
   }
 }
